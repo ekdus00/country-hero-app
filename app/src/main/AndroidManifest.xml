@@ -21,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".JobPost"></activity>
+        <activity android:name=".JobList"></activity>
+        <activity android:name=".JobDetail"></activity>
+        <activity android:name=".JobListAdapter"></activity>
+        <activity android:name=".JobFilter"></activity>
+        <activity android:name=".ReviewPost"></activity>
+        <activity android:name=".ReviewList"></activity>
+        <activity android:name=".ReviewListAdapter"></activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>
