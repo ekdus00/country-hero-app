@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -29,6 +30,11 @@
         <activity android:name=".ReviewPost"></activity>
         <activity android:name=".ReviewList"></activity>
         <activity android:name=".ReviewListAdapter"></activity>
+        <activity android:name=".HomeApplicant"></activity>
+        <activity android:name=".HomeApplicantAdapter"></activity>
+        <activity android:name=".HomeRecruiter"></activity>
+        <activity android:name=".HomeRecruiterAdapter"></activity>
+        <activity android:name=".HomeJobListAdapter"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

@@ -10,45 +10,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>{
+public class HomeRecruiterAdapter extends RecyclerView.Adapter<HomeRecruiterAdapter.ViewHolder>{
+
     private ArrayList<String> localDataSet;
-    private ArrayList<String> localDataSet2;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
-        private TextView textView2;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.job_list_address);
-            textView2 = itemView.findViewById(R.id.job_list_title);
+            textView = itemView.findViewById(R.id.recruiter_status_title);
         }
         public TextView getTextView() {
             return textView;
         }
-        public TextView getTextView2() {
-            return textView2;
-        }
     }
-    public JobListAdapter (ArrayList<String> dataSet) {
+    public HomeRecruiterAdapter (ArrayList<String> dataSet) {
         localDataSet = dataSet;
-//        localDataSet2 = dataSet2;
     }
 
     @NonNull
     @Override
-    public JobListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HomeRecruiterAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.job_list_item, parent, false);
-        JobListAdapter.ViewHolder viewHolder = new JobListAdapter.ViewHolder(view);
+                .inflate(R.layout.home_recruiter_status_item, parent, false);
+        HomeRecruiterAdapter.ViewHolder viewHolder = new HomeRecruiterAdapter.ViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull JobListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeRecruiterAdapter.ViewHolder holder, int position) {
         String text = localDataSet.get(position);
-        String text2 = localDataSet2.get(position);
         holder.textView.setText(text);
-        holder.textView2.setText(text2);
     }
 
     @Override
@@ -56,3 +48,4 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         return localDataSet.size();
     }
 }
+
