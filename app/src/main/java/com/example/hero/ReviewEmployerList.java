@@ -14,11 +14,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import androidx.appcompat.widget.Toolbar;
 
-
-public class ReviewList extends AppCompatActivity {
+public class ReviewEmployerList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.review_list);
+        setContentView(R.layout.review_employer_list);
 
         Button btn_Back = findViewById(R.id.btn_back);
         btn_Back.setOnClickListener(new View.OnClickListener() {
@@ -28,7 +27,7 @@ public class ReviewList extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.review_list_recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.review_employer_list_recyclerView);
 
         //예시데이터
         ArrayList<String> testDataSet = new ArrayList<>();
@@ -39,7 +38,7 @@ public class ReviewList extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((Context) this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ReviewListAdapter customAdapter = new ReviewListAdapter(testDataSet);
+        ReviewEmployerListAdapter customAdapter = new ReviewEmployerListAdapter(testDataSet);
         recyclerView.setAdapter(customAdapter);
 
 

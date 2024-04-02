@@ -8,11 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
-
-public class ReviewPost extends AppCompatActivity {
+public class ReviewEmployerPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.review_post);
+        setContentView(R.layout.review_employer_post);
 
         Button btn_Back = findViewById(R.id.btn_back);
         btn_Back.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +25,6 @@ public class ReviewPost extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView textView = toolbar.findViewById(R.id.toolbar_title);
-        textView.setText("(공고제목)");
+        textView.setText("(구직자 이름)");
     }
 }
