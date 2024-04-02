@@ -66,12 +66,12 @@ public class JobPost extends AppCompatActivity {
         editText = findViewById(R.id.job_post_title);
         sendButton = findViewById(R.id.job_post_send);
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makePostRequest();
-            }
-        });
+//        sendButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                makePostRequest();
+//            }
+//        });
 
         btn_Work_Start = findViewById(R.id.start_work);
         btn_Work_End = findViewById(R.id.end_work);
@@ -121,9 +121,9 @@ public class JobPost extends AppCompatActivity {
 
 //        makePostRequest();
 
-        if (requestQueue == null){
-            requestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
+//        if (requestQueue == null){
+//            requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        }
 
     }
 
@@ -183,8 +183,7 @@ public class JobPost extends AppCompatActivity {
 
         public void onSelectImageClick (View view){
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        }
+            startActivityForResult(intent, PICK_IMAGE_REQUEST);}
 
         protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data){
             super.onActivityResult(requestCode, resultCode, data);
@@ -200,8 +199,7 @@ public class JobPost extends AppCompatActivity {
             }
         }
 
-        private Bitmap resizeImage (Uri imageUri,int targetWidth, int targetHeight) throws
-        IOException {
+        private Bitmap resizeImage (Uri imageUri,int targetWidth, int targetHeight) throws IOException {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri), null, options);
@@ -209,7 +207,6 @@ public class JobPost extends AppCompatActivity {
             int imageWidth = options.outWidth;
             int imageHeight = options.outHeight;
             int scaleFactor = Math.min(imageWidth / targetWidth, imageHeight / targetHeight);
-
             options.inJustDecodeBounds = false;
             options.inSampleSize = scaleFactor;
 

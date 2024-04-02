@@ -88,6 +88,8 @@
 
             </LinearLayout>
             <LinearLayout
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="30dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -107,6 +109,8 @@
                     android:text="(급여금액)"/>
             </LinearLayout>
             <LinearLayout
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="35dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <Button

@@ -10,31 +10,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>{
+public class EmployerDataAdapter extends RecyclerView.Adapter<EmployerDataAdapter.ViewHolder>{
+
     private ArrayList<String> localDataSet;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.job_list_address);
+            textView = itemView.findViewById(R.id.employer_comment_writer);
         }
         public TextView getTextView() {
             return textView;
         }
     }
-    public JobListAdapter (ArrayList<String> dataSet) { localDataSet = dataSet; }
+    public EmployerDataAdapter (ArrayList<String> dataSet) {
+        localDataSet = dataSet;
+    }
 
     @NonNull
     @Override
-    public JobListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EmployerDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.job_list_item, parent, false);
-        JobListAdapter.ViewHolder viewHolder = new JobListAdapter.ViewHolder(view);
+                .inflate(R.layout.employer_comment_item, parent, false);
+        EmployerDataAdapter.ViewHolder viewHolder = new EmployerDataAdapter.ViewHolder(view);
+
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull JobListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EmployerDataAdapter.ViewHolder holder, int position) {
         String text = localDataSet.get(position);
         holder.textView.setText(text);
     }

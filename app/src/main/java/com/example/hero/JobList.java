@@ -38,8 +38,9 @@ public class JobList extends AppCompatActivity {
         setContentView(R.layout.job_list);
 
         Button search_detail = findViewById(R.id.search_detail);
-        RecyclerView recyclerView = findViewById(R.id.job_list_recyclerView);
         textView = findViewById(R.id.job_list_sum);
+
+        RecyclerView recyclerView = findViewById(R.id.job_list_recyclerView);
 
         //예시데이터
         ArrayList<String> testDataSet = new ArrayList<>();
@@ -61,11 +62,11 @@ public class JobList extends AppCompatActivity {
             }
         });
 
-        makeRequest();
-
-        if (requestQueue == null){
-            requestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
+//        makeRequest();
+//
+//        if (requestQueue == null){
+//            requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        }
     }
 
     public void makeRequest() {
@@ -75,16 +76,6 @@ public class JobList extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     println("응답->" + response);
-
-                    processResponse(response);
-
-                }
-
-                public void processResponse(String response){
-                    Gson gson = new Gson();
-                    JobListGsonParse jobListGsonParse = gson.fromJson(response, JobListGsonParse.class);
-                    //임시
-                    println(jobListGsonParse.jobListResult.dailyJobListResult.size() + "개");
                 }
             },
             new Response.ErrorListener() {

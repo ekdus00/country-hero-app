@@ -15,13 +15,13 @@ public class HomeApplicant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_applicant);
 
+        //첫번째 recycleview
         RecyclerView recyclerView = findViewById(R.id.home_applicant_recyclerView);
 
         //예시데이터
         ArrayList<String> testDataSet = new ArrayList<>();
         for (int i = 0; i<20; i++) {
-            testDataSet.add("공고제목" + i);
-        }
+            testDataSet.add("공고제목" + i);}
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((Context) this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -29,15 +29,13 @@ public class HomeApplicant extends AppCompatActivity {
         HomeApplicantAdapter customAdapter = new HomeApplicantAdapter(testDataSet);
         recyclerView.setAdapter(customAdapter);
 
-
         //두번째 recycleview
         RecyclerView recyclerView2 = findViewById(R.id.home_job_list_recyclerView);
 
         //예시데이터
         ArrayList<String> testDataSet2 = new ArrayList<>();
         for (int i = 0; i<20; i++) {
-            testDataSet2.add("공고제목" + i);
-        }
+            testDataSet2.add("공고제목" + i);}
 
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager((Context) this);
         recyclerView2.setLayoutManager(linearLayoutManager2);
