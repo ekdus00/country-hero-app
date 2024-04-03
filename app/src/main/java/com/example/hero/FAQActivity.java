@@ -1,4 +1,4 @@
-package com.example.faq;
+package com.example.hero;
 
 import android.os.Bundle;
 import android.view.View;
