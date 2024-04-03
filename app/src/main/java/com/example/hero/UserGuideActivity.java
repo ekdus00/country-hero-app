@@ -1,4 +1,4 @@
-package com.example.userguide;
+package com.example.hero;
 
 import androidx.appcompat.app.AppCompatActivity;
 
