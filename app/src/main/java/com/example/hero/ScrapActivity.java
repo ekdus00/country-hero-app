@@ -1,4 +1,4 @@
-package com.example.scrap;
+package com.example.hero;
 
 import androidx.appcompat.app.AppCompatActivity;
 
