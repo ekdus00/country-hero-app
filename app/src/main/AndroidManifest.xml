@@ -41,6 +41,12 @@
         <activity android:name=".MyPageApplicant"></activity>
         <activity android:name=".MyPageRecruiter"></activity>
         <activity android:name=".ResumePost"></activity>
+        <activity android:name=".ScrapActivity"
+            android:exported="true" />
+        <activity android:name=".FAQActivity"
+            android:exported="true" />
+        <activity android:name=".UserGuideActivity"
+            android:exported="true" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
