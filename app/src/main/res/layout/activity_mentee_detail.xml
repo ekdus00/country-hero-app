@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:id="@+id/back_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:text="목록" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:padding="0dp"
+            android:text="함께 일하실 분 구합니다!"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="70dp"
+        android:gravity="center_vertical"
+        >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/baseline_account_circle_24"
+            />
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="김성결"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:layout_marginStart="10dp"
+            />
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="2024.03.14"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로그램 정보"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="110dp"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/layout_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/border_top_bottom_gray"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:layout_marginTop="140dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/border_bottom_gray"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="match_parent"
+                android:text="활동 지역"
+                android:textStyle="bold"
+                android:background="#C2D5C3"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="경북 경주시"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_marginStart="10dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/border_bottom_gray"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="match_parent"
+                android:text="활동 기간"
+                android:textStyle="bold"
+                android:background="#C2D5C3"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="2024.06.04~2024.07.05"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_marginStart="10dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/border_bottom_gray"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="match_parent"
+                android:text="모집 인원"
+                android:textStyle="bold"
+                android:background="#C2D5C3"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="5명"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_marginStart="10dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/baseline_image_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintVertical_bias="0.77"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="소개말"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/layout_info"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/txt_introduction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_gray"
+        android:padding="10dp"
+        android:layout_below="@+id/layout_info"
+        android:layout_marginTop="50dp"
+        android:text="우리 농장은 최고의 품질과 안전성을 자랑합니다. 신선한 채소와 과일을 전문적으로"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="5dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="교육 내용 및 사진"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/txt_introduction"
+        android:layout_marginTop="20dp"
+        />
+    
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:src="@drawable/img"
+        android:layout_below="@+id/layout_info"
+        android:layout_marginTop="160dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="참여 링크"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/layout_info"
+        android:layout_marginTop="320dp"
+        />
+
+    <TextView
+        android:id="@+id/txt_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_gray"
+        android:padding="10dp"
+        android:layout_below="@+id/layout_info"
+        android:layout_marginTop="350dp"
+        android:text="https://www.naver.com/"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="5dp"
+        />
+
+
+
+</RelativeLayout>
