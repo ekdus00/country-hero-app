@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:padding="5dp"
+    android:background="@drawable/rounded_background"
+    >
+    <TextView
+        android:id="@+id/txt_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="충북 보은군"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사과 선별 및 포장"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/txt_state"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:text="합격"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_background_green"
+        android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        />
+
+
+</RelativeLayout>
