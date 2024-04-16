@@ -1,33 +1,37 @@
 package com.example.hero.object;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
 public class Job {
     int _id;
     String job_name;
     String user_id;
-    String created_job_date;
-    String updated_job_date;
-    String area_id;
-    String start_work_date;
-    String end_work_date;
-    String start_work_time;
-    String end_work_time;
+    Timestamp created_job_date;
+    Timestamp updated_job_date;
+    int area_id;
+    Date start_work_date;
+    Date end_work_date;
+    Time start_work_time;
+    Time end_work_time;
     String work_day;
-    String pay;
-    String crop_id;
-    String recruit_count;
-    String start_recruit_date;
-    String end_recruit_date;
+    int pay;
+    int crop_id;
+    int recruit_count;
+    Date start_recruit_date;
+    Date end_recruit_date;
     String age;
     String career;
     String spec;
     String job_intro;
     String work_address;
     String work_address_detail;
-    String file_id;
+    int file_id;
     String state;
 
 
-    public Job(int _id, String job_name, String user_id, String created_job_date, String updated_job_date, String area_id, String start_work_date, String end_work_date, String start_work_time, String end_work_time, String work_day, String pay, String crop_id, String recruit_count, String start_recruit_date, String end_recruit_date, String age, String career, String spec, String job_intro, String work_address, String work_address_detail, String file_id, String state) {
+    public Job(int _id, String job_name, String user_id, Timestamp created_job_date, Timestamp updated_job_date, int area_id, Date start_work_date, Date end_work_date, Time start_work_time, Time end_work_time, String work_day, int pay, int crop_id, int recruit_count, Date start_recruit_date, Date end_recruit_date, String age, String career, String spec, String job_intro, String work_address, String work_address_detail, int file_id, String state) {
         this._id = _id;
         this.job_name = job_name;
         this.user_id = user_id;

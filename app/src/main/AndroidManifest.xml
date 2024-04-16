@@ -41,6 +41,10 @@
         <activity android:name=".MyPageApplicant"></activity>
         <activity android:name=".MyPageRecruiter"></activity>
         <activity android:name=".ResumePost"></activity>
+        <activity android:name=".EmployerStatus"></activity>
+        <activity android:name=".EmployerStatusDetail"></activity>
+        <activity android:name=".WorkerStatus"></activity>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

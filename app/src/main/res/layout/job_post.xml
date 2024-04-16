@@ -61,11 +61,13 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp">
                             <Spinner
-                                android:id="@+id/work_area_region"
+                                android:id="@+id/spinner_province"
+                                android:spinnerMode="dialog"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent" />
                             <Spinner
-                                android:id="@+id/work_area_district"
+                                android:id="@+id/spinner_city"
+                                android:spinnerMode="dialog"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent" />
                         </LinearLayout>
@@ -182,13 +184,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent">
                                 <Spinner
-                                    android:entries="@array/work_time"
+                                    android:entries="@array/work_time1"
                                     android:id="@+id/working_time_start"
+                                    android:spinnerMode="dialog"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
                                 <Spinner
-                                    android:entries="@array/work_time"
+                                    android:entries="@array/work_time2"
                                     android:id="@+id/working_time_end"
+                                    android:spinnerMode="dialog"
                                     android:layout_marginLeft="10dp"
                                     android:layout_width="125dp"
                                     android:layout_height="wrap_content" />
@@ -216,10 +220,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
                                 <RadioGroup
+                                    android:id="@+id/work_salary_radioGroup"
                                     android:orientation="horizontal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent">
-
                                     <RadioButton
                                         android:id="@+id/work_salary1"
                                         android:layout_width="100dp"
@@ -239,6 +243,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
                                 <EditText
+                                    android:id="@+id/work_salary_value"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
                                 </EditText>
@@ -309,6 +314,7 @@
                             android:textColor="@color/black"
                             android:text="모집인원" />
                         <EditText
+                            android:id="@+id/textView_recruit_number"
                             android:layout_marginLeft="10dp"
                             android:layout_width="250dp"
                             android:layout_height="match_parent">
@@ -330,11 +336,13 @@
                             <Spinner
                                 android:entries="@array/work_crop1"
                                 android:id="@+id/work_crop1"
+                                android:spinnerMode="dialog"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent" />
                             <Spinner
                                 android:entries="@array/work_crop2"
                                 android:id="@+id/work_crop2"
+                                android:spinnerMode="dialog"
                                 android:layout_marginLeft="10dp"
                                 android:layout_width="125dp"
                                 android:layout_height="match_parent" />
@@ -351,6 +359,7 @@
                             android:textColor="@color/black"
                             android:text="나이" />
                         <EditText
+                            android:id="@+id/textView_recruit_age"
                             android:layout_marginLeft="10dp"
                             android:layout_width="250dp"
                             android:layout_height="match_parent">
@@ -377,6 +386,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
                                 <RadioGroup
+                                    android:id="@+id/work_prefer_radioGroup"
                                     android:orientation="horizontal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent">
@@ -440,6 +450,7 @@
                             android:textColor="@color/black"
                             android:text="소개" />
                         <EditText
+                            android:id="@+id/textView_recruit_introduction"
                             android:layout_marginLeft="10dp"
                             android:layout_width="match_parent"
                             android:background="@drawable/border_layout"
