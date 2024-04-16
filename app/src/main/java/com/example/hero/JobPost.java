@@ -90,6 +90,10 @@ public class JobPost extends AppCompatActivity {
     private Spinner work_crop1;
     private Spinner work_crop2;
 
+    String workStartTime = "";
+    String workEndTime = "";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +125,6 @@ public class JobPost extends AppCompatActivity {
 
         spinnerProvince = findViewById(R.id.spinner_province);
         spinnerCity= findViewById(R.id.spinner_city);
-        working_time_start = findViewById(R.id.working_time_start);
-        working_time_end= findViewById(R.id.working_time_end);
         work_crop1 = findViewById(R.id.work_crop1);
         work_crop2= findViewById(R.id.work_crop2);
 
@@ -139,6 +141,40 @@ public class JobPost extends AppCompatActivity {
         work_crop2 = findViewById(R.id.work_crop2);
         textView_recruit_age = findViewById(R.id.textView_recruit_age);
         textView_recruit_introduction = findViewById(R.id.textView_recruit_introduction);
+
+        working_time_start = findViewById(R.id.working_time_start);
+        working_time_end= findViewById(R.id.working_time_end);
+
+        ArrayAdapter<CharSequence> adapterStart = ArrayAdapter.createFromResource(this,
+                R.array.work_time1, android.R.layout.simple_spinner_item);
+        adapterStart.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        working_time_start.setAdapter(adapterStart);
+
+        ArrayAdapter<CharSequence> adapterEnd = ArrayAdapter.createFromResource(this,
+                R.array.work_time2, android.R.layout.simple_spinner_item);
+        adapterEnd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        working_time_end.setAdapter(adapterEnd);
+
+        ArrayAdapter<CharSequence> adapterProvince = ArrayAdapter.createFromResource(this,
+                R.array.work_time2, android.R.layout.simple_spinner_item);
+        adapterProvince.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerProvince.setAdapter(adapterProvince);
+
+        ArrayAdapter<CharSequence> adapterCity = ArrayAdapter.createFromResource(this,
+                R.array.work_time2, android.R.layout.simple_spinner_item);
+        adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCity.setAdapter(adapterCity);
+
+        ArrayAdapter<CharSequence> adapterCrop1 = ArrayAdapter.createFromResource(this,
+                R.array.work_time2, android.R.layout.simple_spinner_item);
+        adapterCrop1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        work_crop1.setAdapter(adapterCrop1);
+
+        ArrayAdapter<CharSequence> adapterCrop2 = ArrayAdapter.createFromResource(this,
+                R.array.work_time2, android.R.layout.simple_spinner_item);
+        adapterCrop2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        work_crop2.setAdapter(adapterCrop2);
+
 
 
         btn_Back.setOnClickListener(new View.OnClickListener() {
@@ -198,27 +234,30 @@ public class JobPost extends AppCompatActivity {
         Log.w("JobPostRequest","공고작성 폼 보냄");
         try {
             String post_title = job_post_title.getText().toString();
-            String work_area_region = job_post_title.getText().toString();
-            String work_area_district = job_post_title.getText().toString();
             String textView_date_start = job_post_title.getText().toString();
             String textView_date_end = job_post_title.getText().toString();
-            String working_time_start = job_post_title.getText().toString();
-            String working_time_end = job_post_title.getText().toString();
             String work_salary_value = job_post_title.getText().toString();
             String textView_recruit_start = job_post_title.getText().toString();
             String textView_recruit_end = job_post_title.getText().toString();
             String textView_recruit_number = job_post_title.getText().toString();
-            String work_crop1 = job_post_title.getText().toString();
-            String work_crop2 = job_post_title.getText().toString();
             String textView_recruit_age = job_post_title.getText().toString();
             String textView_recruit_introduction = job_post_title.getText().toString();
+
+            workStartTime = working_time_start.getSelectedItem().toString();
+            workEndTime = working_time_end.getSelectedItem().toString();
+            spinnerProvince = working_time_start.getSelectedItem().toString();
+            spinnerCity = working_time_end.getSelectedItem().toString();
+            work_crop1 = working_time_start.getSelectedItem().toString();
+            work_crop2 = working_time_end.getSelectedItem().toString();
+            
+            //+사진, 주소
 
             selectedWorkDayText = getWorkDay();
             selectedSalaryText = getSalary();
             selectedPreferText = getPrefer();
 
             CustomTask task = new CustomTask();
-            String result = task.execute(post_title, work_area_region, work_area_district, textView_date_start, textView_date_end, working_time_start, working_time_end, work_salary_value, textView_recruit_start, textView_recruit_end, textView_recruit_number, work_crop1, work_crop2, textView_recruit_age, textView_recruit_introduction, selectedWorkDayText, selectedSalaryText, selectedPreferText).get();
+            String result = task.execute(post_title, spinnerProvince, spinnerCity, textView_date_start, textView_date_end, workStartTime, workEndTime, work_salary_value, textView_recruit_start, textView_recruit_end, textView_recruit_number, work_crop1, work_crop2, textView_recruit_age, textView_recruit_introduction, selectedWorkDayText, selectedSalaryText, selectedPreferText).get();
             Log.w("받은값", result);
 
             Intent intent = new Intent(JobPost.this, JobPost.class);
@@ -242,7 +281,7 @@ public class JobPost extends AppCompatActivity {
                 conn.setDoOutput(true);
 
                 OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
-                sendMsg = "공고명"+strings[0]+"작업지역1"+strings[1]+"작업지역2"+strings[2]+"작업기간1"+strings[3]+"작업기간2"+strings[4]+"작업시간1"+strings[5]+"작업시간2"+strings[6]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1];
+//                sendMsg = "공고명"+strings[0]+"작업지역1"+strings[1]+"작업지역2"+strings[2]+"작업기간1"+strings[3]+"작업기간2"+strings[4]+"작업시간1"+strings[5]+"작업시간2"+strings[6]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1]+"작업지역1"+strings[1];
                 osw.write(sendMsg);
                 osw.flush();
                 
@@ -317,6 +356,32 @@ public class JobPost extends AppCompatActivity {
                 });
 
         RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonArrayRequest);
+    }
+
+    private void loadCrop1() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "서버주소";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    ArrayList<String> country = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            country.add(response.getString(i));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                            android.R.layout.simple_spinner_item, country);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerProvince.setAdapter(adapter);
+                },
+                error -> {
+                    // Handle error
+                });
+
         queue.add(jsonArrayRequest);
     }
 
