@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hero"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ActivityResumeWrite"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -22,32 +28,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".JobPost"></activity>
-        <activity android:name=".JobList"></activity>
-        <activity android:name=".JobDetail"></activity>
-        <activity android:name=".JobListAdapter"></activity>
-        <activity android:name=".JobFilter"></activity>
-        <activity android:name=".ReviewPost"></activity>
-        <activity android:name=".ReviewList"></activity>
-        <activity android:name=".ReviewListAdapter"></activity>
-        <activity android:name=".HomeApplicant"></activity>
-        <activity android:name=".HomeApplicantAdapter"></activity>
-        <activity android:name=".HomeRecruiter"></activity>
-        <activity android:name=".HomeRecruiterAdapter"></activity>
-        <activity android:name=".HomeJobListAdapter"></activity>
-        <activity android:name=".EmployerData"></activity>
-        <activity android:name=".ModifyApplicant"></activity>
-        <activity android:name=".ModifyRecruiter"></activity>
-        <activity android:name=".MyPageApplicant"></activity>
-        <activity android:name=".MyPageRecruiter"></activity>
-        <activity android:name=".ResumePost"></activity>
-        <activity android:name=".ScrapActivity"
+        <activity android:name=".JobPost" />
+        <activity android:name=".JobList" />
+        <activity android:name=".JobDetail" />
+        <activity android:name=".JobListAdapter" />
+        <activity android:name=".JobFilter" />
+        <activity android:name=".ReviewPost" />
+        <activity android:name=".ReviewList" />
+        <activity android:name=".ReviewListAdapter" />
+        <activity android:name=".HomeApplicant" />
+        <activity android:name=".HomeApplicantAdapter" />
+        <activity android:name=".HomeRecruiter" />
+        <activity android:name=".HomeRecruiterAdapter" />
+        <activity android:name=".HomeJobListAdapter" />
+        <activity android:name=".EmployerData" />
+        <activity android:name=".ModifyApplicant" />
+        <activity android:name=".ModifyRecruiter" />
+        <activity android:name=".MyPageApplicant" />
+        <activity android:name=".MyPageRecruiter" />
+        <activity android:name=".ResumePost" />
+        <activity
+            android:name=".ScrapActivity"
             android:exported="true" />
-        <activity android:name=".FAQActivity"
+        <activity
+            android:name=".FAQActivity"
             android:exported="true" />
-        <activity android:name=".UserGuideActivity"
+        <activity
+            android:name=".UserGuideActivity"
             android:exported="true" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 </manifest>
