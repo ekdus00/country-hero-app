@@ -21,6 +21,10 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="지원현황"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <androidx.core.widget.NestedScrollView
@@ -47,10 +51,14 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="승인된 공고"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
+                    android:layout_width="370dp"
                     android:layout_height="300dp">
                     <LinearLayout
                         android:orientation="vertical"
@@ -73,10 +81,14 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="보류된 공고"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
+                    android:layout_width="370dp"
                     android:layout_height="300dp">
                     <LinearLayout
                         android:orientation="vertical"
@@ -99,10 +111,14 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="이전 활동 내역"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
+                    android:layout_width="370dp"
                     android:layout_height="300dp">
                     <LinearLayout
                         android:orientation="vertical"

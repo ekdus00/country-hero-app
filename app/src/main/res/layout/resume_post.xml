@@ -105,7 +105,7 @@
                             android:text="소개" />
                         <EditText
                             android:id="@+id/resume_easy_login"
-                            android:layout_width="wrap_content"
+                            android:layout_width="230dp"
                             android:layout_height="wrap_content">
                         </EditText>
                     </TableRow>

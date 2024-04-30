@@ -50,12 +50,12 @@
     </Button>
 
     <Button
-        android:id="@+id/btn1"
+        android:id="@+id/btn9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginTop="292dp"
-        android:text="공고게시"
+        android:text="마이페이지(구인자)"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </Button>
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginTop="352dp"
-        android:text="마이페이지"
+        android:text="마이페이지(구직자)"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </Button>
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginTop="470dp"
-        android:text="상호평가목록"
+        android:text="상호평가(구인자)"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </Button>
@@ -99,18 +99,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginTop="530dp"
-        android:text="상호평가"
+        android:text="상호평가(구직자)"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </Button>
 
     <Button
-        android:id="@+id/btn9"
+        android:id="@+id/btn10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
-        android:layout_marginTop="530dp"
-        android:text="구인자 정보"
+        android:layout_marginTop="590dp"
+        android:text="공고현황상세"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </Button>

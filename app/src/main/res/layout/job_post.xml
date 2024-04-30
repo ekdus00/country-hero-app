@@ -409,6 +409,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
                                 <EditText
+                                    android:id="@+id/textview_work_prefer"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
                                 </EditText>
@@ -425,18 +426,39 @@
                             android:background="#CCD9C8"
                             android:textColor="@color/black"
                             android:text="주소" />
-                        <LinearLayout>
-                            <Button
-                                android:id="@+id/address_btn"
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginLeft="7dp"
-                                android:text="주소검색" />
-                            <EditText
-                                android:layout_width="250dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="5dp"/>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <Button
+                                    android:id="@+id/address_btn"
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginLeft="7dp"
+                                    android:text="주소검색" />
+                                <TextView
+                                    android:id="@+id/address_main_textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <EditText
+                                    android:hint="상세주소작성"
+                                    android:id="@+id/address_detail_editView"
+                                    android:layout_width="250dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp"/>
+                            </LinearLayout>
+
                         </LinearLayout>
                     </TableRow>
                     <TableRow
@@ -468,14 +490,16 @@
                             android:textColor="@color/black"
                             android:text="이미지첨부" />
                         <LinearLayout>
+
                             <Button
                                 android:id="@+id/selectImageButton"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginLeft="7dp"
-                                android:text="사진첨부"
-                                android:onClick="onSelectImageClick" />
+                                android:onClick="onSelectImageClick"
+                                android:text="사진첨부" />
+
                             <ImageView
                                 android:id="@+id/post_image_imageView"
                                 android:layout_width="wrap_content"

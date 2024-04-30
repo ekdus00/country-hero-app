@@ -2,10 +2,12 @@
 <resources>
     <string-array name="work_area1">
         <item>전라남도</item>
+        <item>서울시</item>
     </string-array>
 
     <string-array name="work_area2">
         <item>영암군</item>
+        <item>강남구</item>
     </string-array>
 
     <string-array name="work_time1">
@@ -64,10 +66,12 @@
 
     <string-array name="work_crop1">
         <item>밭농사</item>
+        <item>미곡류</item>
     </string-array>
 
     <string-array name="work_crop2">
         <item>배추</item>
+        <item>벼</item>
     </string-array>
 
     <string-array name="job_list_range">

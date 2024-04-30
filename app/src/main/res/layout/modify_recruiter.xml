@@ -147,6 +147,8 @@
                             android:text="네이버"
                             android:layout_marginLeft="10dp"
                             android:layout_width="250dp"
+                            android:layout_gravity="left"
+                            android:gravity="center"
                             android:layout_height="match_parent">
                         </TextView>
                     </TableRow>

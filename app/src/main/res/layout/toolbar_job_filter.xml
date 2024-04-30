@@ -25,9 +25,9 @@
             android:textSize="20sp">
         </TextView>
         <Button
-            android:text="X"
+            android:text="닫기"
             android:id="@+id/filter_back_btn"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="45dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Button>

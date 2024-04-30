@@ -25,16 +25,18 @@
         <activity android:name=".JobPost"></activity>
         <activity android:name=".JobList"></activity>
         <activity android:name=".JobDetail"></activity>
-        <activity android:name=".JobListAdapter"></activity>
+        <activity android:name=".adapter.JobListAdapter"></activity>
         <activity android:name=".JobFilter"></activity>
         <activity android:name=".ReviewPost"></activity>
         <activity android:name=".ReviewList"></activity>
-        <activity android:name=".ReviewListAdapter"></activity>
+        <activity android:name=".ReviewEmployerPost"></activity>
+        <activity android:name=".ReviewEmployerList"></activity>
+        <activity android:name=".adapter.ReviewListAdapter"></activity>
         <activity android:name=".HomeApplicant"></activity>
-        <activity android:name=".HomeApplicantAdapter"></activity>
+        <activity android:name=".adapter.HomeApplicantAdapter"></activity>
         <activity android:name=".HomeRecruiter"></activity>
-        <activity android:name=".HomeRecruiterAdapter"></activity>
-        <activity android:name=".HomeJobListAdapter"></activity>
+        <activity android:name=".adapter.HomeRecruiterAdapter"></activity>
+        <activity android:name=".adapter.HomeJobListAdapter"></activity>
         <activity android:name=".EmployerData"></activity>
         <activity android:name=".ModifyApplicant"></activity>
         <activity android:name=".ModifyRecruiter"></activity>
@@ -44,6 +46,7 @@
         <activity android:name=".EmployerStatus"></activity>
         <activity android:name=".EmployerStatusDetail"></activity>
         <activity android:name=".WorkerStatus"></activity>
+        <activity android:name=".AddressActivity"></activity>
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

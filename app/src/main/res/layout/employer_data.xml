@@ -32,6 +32,9 @@
                     <TextView
                         android:id="@+id/employer_title1"
                         android:text="구인자 정보"
+                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -86,6 +89,9 @@
                 <TextView
                     android:id="@+id/employer_title2"
                     android:text="상호평가 총 평점"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
@@ -111,6 +117,9 @@
                 <TextView
                     android:id="@+id/employer_title3"
                     android:text="상호평가 항복 별 평점"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
@@ -179,6 +188,10 @@
                 <TextView
                     android:id="@+id/employer_title4"
                     android:text="상호평가 한줄 평"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <androidx.core.widget.NestedScrollView

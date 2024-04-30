@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hero.adapter.HomeApplicantAdapter;
+import com.example.hero.adapter.HomeJobListAdapter;
+
 import java.util.ArrayList;
 
 public class HomeRecruiter extends AppCompatActivity {
@@ -43,12 +46,21 @@ public class HomeRecruiter extends AppCompatActivity {
         HomeJobListAdapter customAdapter2 = new HomeJobListAdapter(testDataSet);
         recyclerView2.setAdapter(customAdapter2);
 
-        Button Button1 = (Button) findViewById(R.id.home_recruiter_title1_btn);
+        Button home_recruiter_title3_btn = (Button) findViewById(R.id.home_recruiter_title3_btn);
 
-        Button1.setOnClickListener(new View.OnClickListener() {
+        home_recruiter_title3_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), JobList.class);
+                startActivity(intent);
+            }
+        });
+
+        Button home_recruiter_title1_btn = (Button) findViewById(R.id.home_recruiter_title1_btn);
+        home_recruiter_title1_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), EmployerStatus.class);
                 startActivity(intent);
             }
         });

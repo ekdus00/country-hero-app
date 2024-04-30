@@ -1,17 +1,22 @@
 package com.example.hero;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hero.adapter.JobListAdapter;
 import com.example.hero.object.Job;
 
-import com.example.hero.Listener.OnJobItemClickListener;
+import com.example.hero.listener.OnJobItemClickListener;
+
+import java.util.ArrayList;
 
 public class JobList extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -26,36 +31,35 @@ public class JobList extends AppCompatActivity {
         setContentView(R.layout.job_list);
 
         Button search_detail = findViewById(R.id.search_detail);
-//        textView = findViewById(R.id.job_list_sum);
 
-        rootView = findViewById(android.R.id.content);
-        initUI(rootView);
+
+        RecyclerView recyclerView = findViewById(R.id.job_list_recyclerView);
+
+        //예시데이터
+        ArrayList<String> testDataSet = new ArrayList<>();
+        for (int i = 0; i<20; i++) {
+            testDataSet.add("주소" + i);
+        }
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager((Context) this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        JobListAdapter customAdapter = new JobListAdapter(testDataSet);
+        recyclerView.setAdapter(customAdapter);
+
+        search_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), JobFilter.class);
+                startActivity(intent);
+            }
+        });
+
+//        rootView = findViewById(android.R.id.content);
+//        initUI(rootView);
 
     }
 
-
-
-//        RecyclerView recyclerView = findViewById(R.id.job_list_recyclerView);
-//
-//        //예시데이터
-//        ArrayList<String> testDataSet = new ArrayList<>();
-//        for (int i = 0; i<20; i++) {
-//            testDataSet.add("주소" + i);
-//        }
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager((Context) this);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//
-//        JobListAdapter customAdapter = new JobListAdapter(testDataSet);
-//        recyclerView.setAdapter(customAdapter);
-
-//        search_detail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), JobFilter.class);
-//                startActivity(intent);
-//            }
-//        });
 
 //        makeRequest();
 //
@@ -64,24 +68,24 @@ public class JobList extends AppCompatActivity {
 //        }
 
 
-        private void initUI (ViewGroup rooView){
-            recyclerView = rooView.findViewById(R.id.job_list_recyclerView);
-
-//            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-//            recyclerView.setLayoutManager(layoutManager);
-
-            adapter = new JobListAdapter();
-//            adapter.addItem(new Job(0, "(공고제목)", 0, ));
-
-            recyclerView.setAdapter(adapter);
-
-            adapter.setOnItemClickListener(new OnJobItemClickListener() {
-                @Override
-                public void onItemClick(JobListAdapter.ViewHolder holder, View view, int position) {
-                    Job item = adapter.getItem(position);
-                }
-            });
-        }
+//        private void initUI (ViewGroup rooView){
+//            recyclerView = rooView.findViewById(R.id.job_list_recyclerView);
+//
+////            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+////            recyclerView.setLayoutManager(layoutManager);
+//
+//            adapter = new JobListAdapter();
+////            adapter.addItem(new Job(0, "(공고제목)", 0, ));
+//
+//            recyclerView.setAdapter(adapter);
+//
+//            adapter.setOnItemClickListener(new OnJobItemClickListener() {
+//                @Override
+//                public void onItemClick(JobListAdapter.ViewHolder holder, View view, int position) {
+//                    Job item = adapter.getItem(position);
+//                }
+//            });
+//        }
 
 }
 

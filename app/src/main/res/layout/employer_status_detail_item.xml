@@ -38,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:textSize="15dp"
-                        android:text="(단계 그림)"/>
+                        android:text="(이미지)"/>
                     <TextView
                         android:id="@+id/worker_rating"
                         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
 
             </LinearLayout>
             <LinearLayout
-                android:layout_marginLeft="45dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                     android:text="(보류/승인)"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">

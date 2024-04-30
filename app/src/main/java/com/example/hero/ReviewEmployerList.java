@@ -4,15 +4,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
-import androidx.appcompat.widget.Toolbar;
+
+import com.example.hero.adapter.ReviewEmployerListAdapter;
 
 public class ReviewEmployerList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {

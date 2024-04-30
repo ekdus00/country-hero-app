@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
         Button button = findViewById(R.id.button);
 
-        Button Button1 = (Button) findViewById(R.id.btn1);
         Button Button3 = (Button) findViewById(R.id.btn3);
         Button Button4 = (Button) findViewById(R.id.btn4);
         Button Button5 = (Button) findViewById(R.id.btn5);
@@ -30,15 +29,7 @@ public class MainActivity extends AppCompatActivity {
         Button Button7 = (Button) findViewById(R.id.btn7);
         Button Button8 = (Button) findViewById(R.id.btn8);
         Button Button9 = (Button) findViewById(R.id.btn9);
-
-
-        Button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JobPost.class);
-                startActivity(intent);
-            }
-        });
+        Button Button10 = (Button) findViewById(R.id.btn10);
 
         Button3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,10 +39,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), EmployerStatusDetail.class);
+                startActivity(intent);
+            }
+        });
+
+        Button9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MyPageRecruiter.class);
+                startActivity(intent);
+            }
+        });
+
         Button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ReviewList.class);
+                Intent intent = new Intent(getApplicationContext(), ReviewEmployerPost.class);
                 startActivity(intent);
             }
         });
@@ -84,14 +91,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MyPageApplicant.class);
-                startActivity(intent);
-            }
-        });
-
-        Button9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), EmployerData.class);
                 startActivity(intent);
             }
         });

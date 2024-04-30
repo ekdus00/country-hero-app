@@ -1,4 +1,4 @@
-package com.example.hero;
+package com.example.hero.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,37 +8,39 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hero.R;
+
 import java.util.ArrayList;
 
-public class EmployerDataAdapter extends RecyclerView.Adapter<EmployerDataAdapter.ViewHolder>{
+public class ReviewEmployerListAdapter extends RecyclerView.Adapter<ReviewEmployerListAdapter.ViewHolder>{
 
     private ArrayList<String> localDataSet;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.employer_comment_writer);
+            textView = itemView.findViewById(R.id.review_employer_list_title);
         }
         public TextView getTextView() {
             return textView;
         }
     }
-    public EmployerDataAdapter (ArrayList<String> dataSet) {
+    public ReviewEmployerListAdapter (ArrayList<String> dataSet) {
         localDataSet = dataSet;
     }
 
     @NonNull
     @Override
-    public EmployerDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReviewEmployerListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.employer_comment_item, parent, false);
-        EmployerDataAdapter.ViewHolder viewHolder = new EmployerDataAdapter.ViewHolder(view);
+                .inflate(R.layout.review_employer_list_item, parent, false);
+        ReviewEmployerListAdapter.ViewHolder viewHolder = new ReviewEmployerListAdapter.ViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EmployerDataAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReviewEmployerListAdapter.ViewHolder holder, int position) {
         String text = localDataSet.get(position);
         holder.textView.setText(text);
     }
@@ -48,3 +50,4 @@ public class EmployerDataAdapter extends RecyclerView.Adapter<EmployerDataAdapte
         return localDataSet.size();
     }
 }
+

@@ -33,12 +33,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
-                    android:layout_margin="20dp"
+                    android:layout_margin="10dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <Button
                         android:id="@+id/myPage_logout_btn"
+                        android:layout_marginLeft="180dp"
                         android:text="로그아웃"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -49,17 +50,24 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_margin="20dp"
+                    android:layout_margin="10dp"
+                    android:paddingLeft="50dp"
+                    android:paddingBottom="20dp"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/myPage_imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:src="@drawable/mypage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"/>
                     <TextView
                         android:id="@+id/myPage_name_textView"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="70dp"
                         android:text="(회원이름)"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -75,6 +83,11 @@
                     android:text="상호평가"
                     android:layout_width="370dp"
                     android:layout_height="wrap_content"/>
+<!--                <Button-->
+<!--                    android:id="@+id/myPage_employer_status_btn"-->
+<!--                    android:text="나의공고"-->
+<!--                    android:layout_width="370dp"-->
+<!--                    android:layout_height="wrap_content"/>-->
             </LinearLayout>
 
         </LinearLayout>

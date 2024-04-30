@@ -126,9 +126,11 @@
                             android:textColor="@color/black"
                             android:text="간편 로그인 정보" />
                         <TextView
+                            android:layout_gravity="left"
                             android:id="@+id/modify_easy_login"
                             android:text="네이버"
                             android:layout_marginLeft="10dp"
+                            android:gravity="center"
                             android:layout_width="250dp"
                             android:layout_height="match_parent">
                         </TextView>

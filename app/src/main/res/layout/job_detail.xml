@@ -2,330 +2,396 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D8D8D8"
+    android:background="#E3E3E3"
     android:orientation="vertical">
+
     <ScrollView
-        android:fillViewport="true"
-        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <include layout="@layout/toolbar_job_detail"
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar_job_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/toolbar"/>
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
-                android:background="#D8D8D8"
-                android:layout_margin="20dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="#E3E3E3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/job_detail_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="2024.04.01" />
+
                 <LinearLayout
-                    android:background="#FFFFFF"
-                    android:layout_margin="20dp"
-                    android:padding="15dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
                         android:text="근무조건"
-                        android:textSize="17dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:textSize="17dp" />
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="급여"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="급여" />
+
                         <TextView
                             android:id="@+id/job_detail_salary"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="작업지역"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="작업지역" />
+
                         <TextView
                             android:id="@+id/job_detail_address"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="작업기간"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="작업기간" />
+
                         <TextView
                             android:id="@+id/job_detail_jobperiod"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="작업시간"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="작업시간" />
+
                         <TextView
                             android:id="@+id/job_detail_jobtime"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="#FFFFFF"
-                    android:layout_margin="20dp"
-                    android:padding="15dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
                         android:text="모집내용"
-                        android:textSize="17dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:textSize="17dp" />
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="픔목"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="픔목" />
+
                         <TextView
                             android:id="@+id/job_detail_item"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
+
                         <ImageView
                             android:id="@+id/job_detail_work_step"
-                            android:text="(작업단계)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(작업단계)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="모집기간"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="모집기간" />
+
                         <TextView
                             android:id="@+id/job_detail_recruitPeriod"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="모집인원"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="모집인원" />
+
                         <TextView
                             android:id="@+id/job_detail_recruitNumber"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="나이"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="나이" />
+
                         <TextView
                             android:id="@+id/job_detail_age"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="#FFFFFF"
-                    android:layout_margin="20dp"
-                    android:padding="15dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="구인자정보"
-                            android:textSize="17dp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginRight="130dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="130dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="구인자정보"
+                            android:textSize="17dp" />
+
                         <Button
-                            android:text="더보기"
+                            android:id="@+id/job_detail_employer_btn"
                             android:layout_width="80dp"
-                            android:layout_height="50dp"/>
+                            android:layout_height="50dp"
+                            android:text="더보기" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="구인자명"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="구인자명" />
+
                         <TextView
                             android:id="@+id/job_detail_recruiterName"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="작업장 주소"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="작업장 주소" />
+
                         <TextView
                             android:id="@+id/job_detail_addressDetail"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="#FFFFFF"
-                    android:layout_margin="20dp"
-                    android:padding="15dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
                         android:text="기타정보"
-                        android:textSize="17dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:textSize="17dp" />
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="우대조건"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="우대조건" />
+
                         <TextView
                             android:id="@+id/job_detail_preference"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:text="소개"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="소개" />
+
                         <TextView
                             android:id="@+id/job_detail_content"
-                            android:text="(값)"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="(값)" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
-                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
                     <Button
-                        android:background="#325904"
-                        android:textColor="@color/white"
-                        android:text="지원하기"
-                        android:gravity="center"
                         android:layout_width="150dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="#325904"
+                        android:gravity="center"
+                        android:text="지원하기"
+                        android:textColor="@color/white" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:background="#FFFFFF"
-                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:padding="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
+
                     <TextView
-                        android:text="질문하기"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:text="질문하기" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <EditText
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"/>
+                            android:layout_width="260dp"
+                            android:layout_height="wrap_content" />
+
                         <Button
-                            android:text="보내기"
                             android:id="@+id/search_cancel"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="보내기" />
                     </LinearLayout>
                 </LinearLayout>
 

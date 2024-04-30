@@ -1,6 +1,6 @@
 
 
-package com.example.hero;
+package com.example.hero.adapter;
 
         import android.view.LayoutInflater;
         import android.view.View;
@@ -9,6 +9,8 @@ package com.example.hero;
 
         import androidx.annotation.NonNull;
         import androidx.recyclerview.widget.RecyclerView;
+
+        import com.example.hero.R;
 
         import java.util.ArrayList;
 

@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hero.adapter.EmployerDataAdapter;
+
 import java.util.ArrayList;
 
 public class EmployerData extends AppCompatActivity {
