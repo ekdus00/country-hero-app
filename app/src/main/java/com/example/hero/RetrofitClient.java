@@ -1,5 +1,6 @@
 package com.example.hero;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,24 +11,27 @@ public class RetrofitClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
+
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                    .build();
+                .addInterceptor(chain -> {
+                    Request original = chain.request();
+                    if (original.method().equals("GET") && original.body() != null) {
+                        // 본문을 GET 요청에 추가
+                        Request modifiedRequest = original.newBuilder()
+                                .method("POST", original.body())
+                                .build();
+                        return chain.proceed(modifiedRequest);
+                    }
+                    return chain.proceed(original);
+                })
+                .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         }
         return retrofit;
     }
 }
-
-
-//    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-//            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//
-//                    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-//                    httpClient.addInterceptor(loggingInterceptor);
-

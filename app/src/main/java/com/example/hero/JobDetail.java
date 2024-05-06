@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class JobDetail extends AppCompatActivity {
+    private ApiService ApiService;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_detail);
@@ -29,6 +30,25 @@ public class JobDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+//        ApiService = RetrofitClient.getClient().create(ApiService.class);
+//
+//        Job request = new Job(1, "userType", "user_id"); // 요청 데이터 예시
+//        Call<Job> call = ApiService.getJobDetail(jobDetailRequest);
+//        call.enqueue(new Callback<Job>() {
+//            @Override
+//            public void onResponse(Call<Job> call, Response<Job> response) {
+//                if (response.isSuccessful()) {
+//                    Job jobDetails = response.body();
+//                    // 여기에서 jobDetails를 사용하여 UI 업데이트
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Job> call, Throwable t) {
+//                Log.e("JobDetail", "공고상세페이지 서버요청 실패", t);
+//            }
+//        });
 
 
     }

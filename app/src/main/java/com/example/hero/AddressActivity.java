@@ -32,9 +32,10 @@ public class AddressActivity extends AppCompatActivity {
 
     public class KakaoJavaScriptInterface {
         @JavascriptInterface
-        public void processDATA(String address) {
+        public void processDATA(String postcode, String address) {
             Intent intent = new Intent();
             intent.putExtra("address", address);
+            intent.putExtra("postcode", postcode);
             setResult(RESULT_OK, intent);
             finish();
         }

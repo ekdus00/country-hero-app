@@ -58,18 +58,19 @@
                             android:textColor="@color/black"
                             android:text="작업지역" />
                         <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp">
+                            android:layout_marginLeft="5dp">
                             <Spinner
                                 android:id="@+id/spinner_province"
                                 android:spinnerMode="dialog"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent" />
+                                android:layout_width="140dp"
+                                android:layout_height="wrap_content" />
                             <Spinner
                                 android:id="@+id/spinner_city"
                                 android:spinnerMode="dialog"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent" />
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </TableRow>
                     <TableRow
@@ -332,7 +333,7 @@
                             android:text="농작물품목" />
                         <LinearLayout
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp">
+                            android:layout_marginLeft="15dp">
                             <Spinner
                                 android:entries="@array/work_crop1"
                                 android:id="@+id/work_crop1"
@@ -343,7 +344,6 @@
                                 android:entries="@array/work_crop2"
                                 android:id="@+id/work_crop2"
                                 android:spinnerMode="dialog"
-                                android:layout_marginLeft="10dp"
                                 android:layout_width="125dp"
                                 android:layout_height="match_parent" />
                         </LinearLayout>
@@ -431,7 +431,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <LinearLayout
-                                android:orientation="horizontal"
+                                android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                                 <Button
@@ -442,7 +442,17 @@
                                     android:layout_marginLeft="7dp"
                                     android:text="주소검색" />
                                 <TextView
-                                    android:id="@+id/address_main_textView"
+                                    android:text="(우편번호)"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:id="@+id/address_postcode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:text="(주소)"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:id="@+id/address_main"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
                             </LinearLayout>
@@ -452,7 +462,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                                 <EditText
-                                    android:hint="상세주소작성"
+                                    android:hint="상세주소"
                                     android:id="@+id/address_detail_editView"
                                     android:layout_width="250dp"
                                     android:layout_height="match_parent"

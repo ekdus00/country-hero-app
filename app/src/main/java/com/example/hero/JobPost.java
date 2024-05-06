@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -63,7 +65,6 @@ public class JobPost extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView post_ImageView;
 
-    private EditText editText;
     private Button btn_send;
 
     public TextView job_post_title;
@@ -77,9 +78,11 @@ public class JobPost extends AppCompatActivity {
     public TextView textView_recruit_introduction;
     public TextView textview_work_prefer;
 
-    public TextView address_main_textView;
+    public TextView address_main;
+    public TextView address_postcode;
 
-    String selectedWorkDayText = "";
+    public TextView address_detail_editView;
+
     String selectedSalaryText = "";
     String selectedPreferText = "";
 
@@ -108,12 +111,12 @@ public class JobPost extends AppCompatActivity {
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //공고제목 에딧
                 String text_title = job_post_title.getText().toString();
 
                 //작업지역 스피너
-
+                String text_workProvince = spinnerProvince.getSelectedItem().toString();
+                String text_workCity = spinnerCity.getSelectedItem().toString();
 
                 //작업기간 데이트피커
                 String text_dateStart = textView_date_start.getText().toString();
@@ -140,7 +143,8 @@ public class JobPost extends AppCompatActivity {
                 String text_recruitNumber = textView_recruit_number.getText().toString();
 
                 //농작물품목 스피너
-
+                String text_workCrop1 = work_crop1.getSelectedItem().toString();
+                String text_workCrop2 = work_crop2.getSelectedItem().toString();
 
                 //나이 에딧
                 String text_recruitAge = textView_recruit_age.getText().toString();
@@ -152,7 +156,9 @@ public class JobPost extends AppCompatActivity {
                 String text_preferValue = textview_work_prefer.getText().toString();
 
                 //주소
-
+                String text_addressMain = address_postcode.getText().toString();
+//                String text_addressMain = address_postcode.getText().toString();
+                String text_addressDetail = address_detail_editView.getText().toString();
 
                 //소개
                 String text_introduction = textView_recruit_introduction.getText().toString();
@@ -160,18 +166,10 @@ public class JobPost extends AppCompatActivity {
                 //이미지
                 //imageUri
 
-//
-//              workStartTime = working_time_start.getSelectedItem().toString();
-//              workEndTime = working_time_end.getSelectedItem().toString();
-
-//              spinnerProvince = working_time_start.getSelectedItem().toString();
-//              spinnerCity = working_time_end.getSelectedItem().toString();
-
-//              work_crop1 = working_time_start.getSelectedItem().toString();
-//              work_crop2 = working_time_end.getSelectedItem().toString();
-
-                JobPostSend(text_title, text_dateStart, text_dateEnd, text_workDay, text_workTimeStart, text_workTimeEnd, text_salaryType, text_salaryValue, text_recruitStart, text_recruitEnd,
-                        text_recruitNumber, text_recruitAge, text_preferType,text_preferValue, text_introduction, imageUri);
+                JobPostSend(text_title, text_workProvince, text_workCity, text_dateStart, text_dateEnd, text_workDay, text_workTimeStart, text_workTimeEnd,
+                        text_salaryType, text_salaryValue, text_recruitStart, text_recruitEnd, text_recruitNumber, text_workCrop1,
+                        text_workCrop2, text_recruitAge, text_preferType, text_preferValue, text_addressMain, text_addressDetail,
+                        text_introduction, imageUri);
             }
         });
 
@@ -212,14 +210,13 @@ public class JobPost extends AppCompatActivity {
         textView_recruit_age = findViewById(R.id.textView_recruit_age);
         textView_recruit_introduction = findViewById(R.id.textView_recruit_introduction);
 
-        working_time_start = findViewById(R.id.working_time_start);
-        working_time_end= findViewById(R.id.working_time_end);
+        address_detail_editView= findViewById(R.id.address_detail_editView);
 
         spinnerProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCountry = parent.getItemAtPosition(position).toString();
-                loadCities(selectedCountry);  // 도시 목록을 로드하는 함수 호출
+                loadCities(selectedCountry);  // 도시 목록 로드
             }
 
             @Override
@@ -232,7 +229,7 @@ public class JobPost extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCropForm = parent.getItemAtPosition(position).toString();
-                loadCropTypes(selectedCropForm);  // 농작물 품목 데이터 로드
+                loadCropTypes(selectedCropForm);  // 농작물 품목 로드
             }
 
             @Override
@@ -254,28 +251,10 @@ public class JobPost extends AppCompatActivity {
         adapterEnd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         working_time_end.setAdapter(adapterEnd);
 
-//        ArrayAdapter<CharSequence> adapterProvince = ArrayAdapter.createFromResource(this,
-//                R.array.work_time2, android.R.layout.simple_spinner_item);
-//        adapterProvince.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerProvince.setAdapter(adapterProvince);
-//
-//        ArrayAdapter<CharSequence> adapterCity = ArrayAdapter.createFromResource(this,
-//                R.array.work_time2, android.R.layout.simple_spinner_item);
-//        adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerCity.setAdapter(adapterCity);
-//
-//        ArrayAdapter<CharSequence> adapterCrop1 = ArrayAdapter.createFromResource(this,
-//                R.array.work_time2, android.R.layout.simple_spinner_item);
-//        adapterCrop1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        work_crop1.setAdapter(adapterCrop1);
-//
-//        ArrayAdapter<CharSequence> adapterCrop2 = ArrayAdapter.createFromResource(this,
-//                R.array.work_time2, android.R.layout.simple_spinner_item);
-//        adapterCrop2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        work_crop2.setAdapter(adapterCrop2);
 
         Button address_btn = findViewById(R.id.address_btn);
-        address_main_textView = findViewById(R.id.address_main_textView);
+        address_postcode = findViewById(R.id.address_postcode);
+        address_main = findViewById(R.id.address_main);
 
         address_btn.setOnClickListener(v -> {
             Intent intent = new Intent(JobPost.this, AddressActivity.class);
@@ -318,7 +297,7 @@ public class JobPost extends AppCompatActivity {
 
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
         File file = new File(fileUri.getPath());
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("job_post_image/jpeg"), file);
 
 //        File file = FileUtils.getFile(this, fileUri);  // FileUtils는 별도로 구현해야 함
 //        RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
@@ -326,38 +305,54 @@ public class JobPost extends AppCompatActivity {
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
 
-    private Map<String, RequestBody> prepareTextMap(String text_title, String text_dateStart, String text_dateEnd, String text_workDay, String text_workTimeStart, String text_workTimeEnd, String text_salaryType, String text_salaryValue,
-                                                    String text_recruitStart, String text_recruitEnd, String text_recruitNumber, String text_recruitAge,
-                                                    String text_preferType, String text_preferValue, String text_introduction) {
-        Map<String, RequestBody> data = new HashMap<>();
+    private Map<String, RequestBody> prepareTextMap(
+            String text_title, String text_workProvince, String text_workCity, String text_dateStart, String text_dateEnd, String text_workDay, String text_workTimeStart, String text_workTimeEnd,
+            String text_salaryType, String text_salaryValue, String text_recruitStart, String text_recruitEnd, String text_recruitNumber,
+            String text_workCrop1, String text_workCrop2, String text_recruitAge, String text_preferType, String text_preferValue,
+            String text_addressMain, String text_addressDetail, String text_introduction) {
 
-        data.put("key1", RequestBody.create(MediaType.parse("text/plain"), text_title));
-        data.put("key2", RequestBody.create(MediaType.parse("text/plain"), text_dateStart));
-        data.put("key3", RequestBody.create(MediaType.parse("text/plain"), text_dateEnd));
-        data.put("key4", RequestBody.create(MediaType.parse("text/plain"), text_workDay));
-        data.put("key5", RequestBody.create(MediaType.parse("text/plain"), text_workTimeStart));
-        data.put("key6", RequestBody.create(MediaType.parse("text/plain"), text_salaryType));
-        data.put("key7", RequestBody.create(MediaType.parse("text/plain"), text_workTimeEnd));
-        data.put("key8", RequestBody.create(MediaType.parse("text/plain"), text_salaryValue));
-        data.put("key9", RequestBody.create(MediaType.parse("text/plain"), text_recruitStart));
-        data.put("key10", RequestBody.create(MediaType.parse("text/plain"), text_recruitEnd));
-        data.put("key11", RequestBody.create(MediaType.parse("text/plain"), text_recruitNumber));
-        data.put("key12", RequestBody.create(MediaType.parse("text/plain"), text_recruitAge));
-        data.put("key13", RequestBody.create(MediaType.parse("text/plain"), text_preferType));
-        data.put("key14", RequestBody.create(MediaType.parse("text/plain"), text_preferValue));
-        data.put("key15", RequestBody.create(MediaType.parse("text/plain"), text_introduction));
+            Map<String, RequestBody> data = new HashMap<>();
 
-        return data;
+            data.put("key_text_title", RequestBody.create(MediaType.parse("text/plain"), text_title));
+            data.put("key_text_workProvince", RequestBody.create(MediaType.parse("text/plain"), text_workProvince));
+            data.put("key_text_workCity", RequestBody.create(MediaType.parse("text/plain"), text_workCity));
+
+            data.put("key_text_dateStart", RequestBody.create(MediaType.parse("text/plain"), text_dateStart));
+            data.put("key_text_dateEnd", RequestBody.create(MediaType.parse("text/plain"), text_dateEnd));
+            data.put("key_text_workDay", RequestBody.create(MediaType.parse("text/plain"), text_workDay));
+            data.put("key_text_workTimeStart", RequestBody.create(MediaType.parse("text/plain"), text_workTimeStart));
+            data.put("key_text_salaryType", RequestBody.create(MediaType.parse("text/plain"), text_salaryType));
+            data.put("key_text_workTimeEnd", RequestBody.create(MediaType.parse("text/plain"), text_workTimeEnd));
+            data.put("key_text_salaryValue", RequestBody.create(MediaType.parse("text/plain"), text_salaryValue));
+            data.put("key_text_recruitStart", RequestBody.create(MediaType.parse("text/plain"), text_recruitStart));
+            data.put("key_text_recruitEnd", RequestBody.create(MediaType.parse("text/plain"), text_recruitEnd));
+            data.put("key_text_recruitNumber", RequestBody.create(MediaType.parse("text/plain"), text_recruitNumber));
+
+            data.put("key_text_workCrop1", RequestBody.create(MediaType.parse("text/plain"), text_workCrop1));
+            data.put("key_text_workCrop2", RequestBody.create(MediaType.parse("text/plain"), text_workCrop2));
+
+            data.put("key_text_recruitAge", RequestBody.create(MediaType.parse("text/plain"), text_recruitAge));
+            data.put("key_text_preferType", RequestBody.create(MediaType.parse("text/plain"), text_preferType));
+            data.put("key_text_preferValue", RequestBody.create(MediaType.parse("text/plain"), text_preferValue));
+            data.put("key_text_addressMain", RequestBody.create(MediaType.parse("text/plain"), text_addressMain));
+            data.put("key_text_addressDetail", RequestBody.create(MediaType.parse("text/plain"), text_addressDetail));
+            data.put("key_text_introduction", RequestBody.create(MediaType.parse("text/plain"), text_introduction));
+
+            return data;
     }
 
-    public void JobPostSend(String text_title, String text_dateStart, String text_dateEnd, String text_workDay, String text_workTimeStart, String text_workTimeEnd, String text_salaryType, String text_salaryValue,
-                            String text_recruitStart, String text_recruitEnd, String text_recruitNumber, String text_recruitAge,
-                            String text_preferType, String text_preferValue, String text_introduction, Uri imageUri) {
+    public void JobPostSend(
+            String text_title, String text_workProvince, String text_workCity, String text_dateStart, String text_dateEnd, String text_workDay, String text_workTimeStart,
+            String text_workTimeEnd, String text_salaryType, String text_salaryValue, String text_recruitStart, String text_recruitEnd,
+            String text_recruitNumber, String text_workCrop1, String text_workCrop2, String text_recruitAge, String text_preferType, String text_preferValue, String text_addressMain,
+            String text_addressDetail, String text_introduction, Uri imageUri) {
 
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+
         MultipartBody.Part filePart = prepareFilePart("image", imageUri);
-        Map<String, RequestBody> textData = prepareTextMap(text_title, text_dateStart, text_dateEnd, text_workDay, text_workTimeStart, text_workTimeEnd, text_salaryType, text_salaryValue, text_recruitStart, text_recruitEnd,
-                text_recruitNumber, text_recruitAge, text_preferType,text_preferValue, text_introduction);
+        Map<String, RequestBody> textData = prepareTextMap(text_title, text_workProvince, text_workCity, text_dateStart, text_dateEnd, text_workDay, text_workTimeStart,
+                text_workTimeEnd, text_salaryType, text_salaryValue, text_recruitStart, text_recruitEnd, text_recruitNumber, text_workCrop1,
+                text_workCrop2, text_recruitAge, text_preferType, text_preferValue, text_addressMain, text_addressDetail, text_introduction);
 
         Call<Void> call = apiService.JobPostSend(filePart, textData);
         call.enqueue(new Callback<Void>() {
@@ -375,10 +370,7 @@ public class JobPost extends AppCompatActivity {
                 System.out.println("Error: " + t.getMessage());
             }
         });
-
-
     }
-
 
     public void loadCountries() {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
@@ -394,10 +386,8 @@ public class JobPost extends AppCompatActivity {
                     spinnerProvince.setAdapter(adapter);
                 } else {
                     Log.e("API_CALL", "Response error: " + response.errorBody());
-
                 }
             }
-
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
                 Log.e("JobPost", "시/도 에러 발생", t);
@@ -424,7 +414,6 @@ public class JobPost extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
                 Log.e("API_CALL", "Failed to fetch cities", t);
@@ -447,7 +436,6 @@ public class JobPost extends AppCompatActivity {
                     Log.e("API_CALL", "Response error: " + response.errorBody());
                 }
             }
-
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
                 Log.e("API_CALL", "Error fetching crop forms", t);
@@ -468,7 +456,6 @@ public class JobPost extends AppCompatActivity {
                     work_crop2.setAdapter(adapter);
                 }
             }
-
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
                 Log.e("API_CALL", "Error fetching crop types", t);
@@ -477,19 +464,19 @@ public class JobPost extends AppCompatActivity {
     }
 
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == AddressActivity.ADDRESS_REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                // 주소를 가져와서 보여주는 부분
-//                String addressData = data != null ? data.getStringExtra("address") : null;
-//                address_main_textView.setText(addressData);
-//            }
-//        }
-//    }
+        if (requestCode == AddressActivity.ADDRESS_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // 주소를 가져와서 보여주는 부분
+                String addressData = data != null ? data.getStringExtra("address") : null;
+                String postcodeData = data != null ? data.getStringExtra("postcode") : null;
+                address_postcode.setText(postcodeData);
+                address_main.setText(addressData);
+            }
+        }
+    }
 
 
 
@@ -515,19 +502,19 @@ public class JobPost extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);}
 
-    protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            imageUri = data.getData();
-            try {
-                Bitmap bitmap = resizeImage(imageUri, 200, 200);
-                post_ImageView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data){
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+//            imageUri = data.getData();
+//            try {
+//                Bitmap bitmap = resizeImage(imageUri, 200, 200);
+//                post_ImageView.setImageBitmap(bitmap);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     private Bitmap resizeImage (Uri imageUri,int targetWidth, int targetHeight) throws IOException {
         BitmapFactory.Options options = new BitmapFactory.Options();
