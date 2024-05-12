@@ -115,4 +115,17 @@
         app:layout_constraintTop_toTopOf="parent">
     </Button>
 
+    <Button
+        android:id="@+id/scrap_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="590dp"
+        android:text="scrap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </Button>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,12 +17,12 @@ public class ScrapActivity extends AppCompatActivity {
 
     // 뒤로가기 버튼
     LinearLayout backBtn;
-    ScrapAdapter scrapAdapter;
+    ClipAdapter clipAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_scrap);
 
         // 뒤로가기 버튼을 클릭했을때 이벤트 등록
         backBtn = findViewById(R.id.back_btn);
@@ -44,11 +44,11 @@ public class ScrapActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Map<String, Response>> call, Response<Map<String, Response>> response) {
                 if (response.isSuccessful()) {
-                    ArrayList<ScrapData> list = new ArrayList<ScrapData>();
-                    for(ScrapData data: (ScrapData[])response.body().values().toArray()) {
+                    ArrayList<ClipDTO> list = new ArrayList<ClipDTO>();
+                    for(ClipDTO data: (ClipDTO[])response.body().values().toArray()) {
                         list.add(data);
                     }
-                    scrapAdapter = new ScrapAdapter(list);
+                    clipAdapter = new ClipAdapter(list, getApplicationContext());
                 }
             }
 

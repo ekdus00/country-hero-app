@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Button Button7 = (Button) findViewById(R.id.btn7);
         Button Button8 = (Button) findViewById(R.id.btn8);
         Button Button9 = (Button) findViewById(R.id.btn9);
+        Button scrapBtn = (Button) findViewById(R.id.scrap_btn);
 
 
         Button1.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +93,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), EmployerData.class);
+                startActivity(intent);
+            }
+        });
+
+        scrapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ScrapActivity.class);
                 startActivity(intent);
             }
         });
