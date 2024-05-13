@@ -34,6 +34,7 @@
             android:layout_marginRight="40dp"
             android:drawableTint="#000000"
             android:text="(공고제목)"
+            android:id="@+id/job_detail_title"
             android:textColor="@color/black"
             android:textSize="20sp">
         </TextView>

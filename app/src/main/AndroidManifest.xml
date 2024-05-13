@@ -13,6 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hero"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="ucriwj2zb0" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -22,6 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".JobPost"></activity>
         <activity android:name=".JobList"></activity>
         <activity android:name=".JobDetail"></activity>
@@ -49,7 +55,11 @@
         <activity android:name=".AddressActivity"></activity>
 
     </application>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 </manifest>

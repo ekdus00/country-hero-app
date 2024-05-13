@@ -127,7 +127,7 @@
 
 package com.example.hero.adapter;
 import com.example.hero.R;
-import com.example.hero.object.JobInfoDTO;
+import com.example.hero.dto.JobInfoDTO;
 
 
 import android.view.LayoutInflater;
@@ -141,29 +141,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobViewHolder>{
+        public List<JobInfoDTO> jobList;
+        private OnItemClickListener listener;
 
-        private List<JobInfoDTO> jobList;
+        public interface OnItemClickListener {
+            void onItemClick(int position);
+        }
 
-        public JobListAdapter(List<JobInfoDTO> jobList) {
+        public JobListAdapter(List<JobInfoDTO> jobList, OnItemClickListener listener) {
             this.jobList = jobList;
+            this.listener = listener;
         }
 
         @NonNull
         @Override
         public JobViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_list_item, parent, false);
-            return new JobViewHolder(view);
+            return new JobViewHolder(view, listener);
         }
 
         @Override
         public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
             JobInfoDTO job = jobList.get(position);
-            holder.job_list_title.setText(job.getJobName());
+            holder.bind(job, listener);
 
-            holder.job_list_address_country.setText(job.getCountry());
-            holder.job_list_address_city.setText(job.getCity());
-            holder.job_list_item_crop_form.setText(job.getCropForm());
-            holder.job_list_item_crop_type.setText(job.getCropType());
+//            holder.job_list_title.setText(job.getJobName());
+//
+//            holder.job_list_address_country.setText(job.getCountry());
+//            holder.job_list_address_city.setText(job.getCity());
+//            holder.job_list_item_crop_form.setText(job.getCropForm());
+//            holder.job_list_item_crop_type.setText(job.getCropType());
 
 //            holder.job_list_work_period_start.setText(job.getStartWorkDate());
 //            holder.job_list_work_period_end.setText(job.getEndWorkDate());
@@ -189,14 +196,9 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobViewH
 //            SimpleDateFormat dateFormat4 = new SimpleDateFormat("yyyy-MM-dd");
 //            String stringDate4 = dateFormat4.format(date4);
 //            holder.job_list_recruitment_period_end.setText(stringDate4);
-
-            holder.job_list_type.setText(job.getJobName());
-            holder.job_list_salary.setText(job.getPay());
-        }
-
-        @Override
-        public int getItemCount() {
-            return jobList.size();
+//
+//            holder.job_list_type.setText(job.getJobName());
+//            holder.job_list_salary.setText(job.getPay());
         }
 
         public static class JobViewHolder extends RecyclerView.ViewHolder {
@@ -211,7 +213,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobViewH
             TextView job_list_recruitment_period_end;
             TextView job_list_type;
             TextView job_list_salary;
-            public JobViewHolder(@NonNull View itemView) {
+            public JobViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
                 super(itemView);
                 job_list_address_country = itemView.findViewById(R.id.job_list_address_country);
                 job_list_address_city = itemView.findViewById(R.id.job_list_address_city);
@@ -228,41 +230,61 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobViewH
 
                 job_list_type = itemView.findViewById(R.id.job_list_type);
                 job_list_salary = itemView.findViewById(R.id.job_list_salary);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION && listener != null) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                });
+            }
+            public void bind(JobInfoDTO job, OnItemClickListener listener) {
+                job_list_title.setText(job.getJobName());
+//
+                job_list_address_country.setText(job.getCountry());
+                job_list_address_city.setText(job.getCity());
+                job_list_item_crop_form.setText(job.getCropForm());
+                job_list_item_crop_type.setText(job.getCropType());
+
+//                job_list_work_period_start.setText(job.getStartWorkDate());
+//                job_list_work_period_end.setText(job.getEndWorkDate());
+//                job_list_recruitment_period_start.setText(job.getStartRecruitDate());
+//                job_list_recruitment_period_end.setText(job.getEndRecruitDate());
+
+//            Date date1 = job.getStartWorkDate();
+//            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+//            String stringDate1 = dateFormat1.format(date1);
+//            holder.job_list_work_period_start.setText(stringDate1);
+//
+//            Date date2 = job.getEndWorkDate();
+//            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+//            String stringDate2 = dateFormat2.format(date2);
+//            holder.job_list_work_period_end.setText(stringDate2);
+//
+//            Date date3 = job.getStartRecruitDate();
+//            SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd");
+//            String stringDate3 = dateFormat3.format(date3);
+//            holder.job_list_recruitment_period_start.setText(stringDate3);
+//
+//            Date date4 = job.getEndRecruitDate();
+//            SimpleDateFormat dateFormat4 = new SimpleDateFormat("yyyy-MM-dd");
+//            String stringDate4 = dateFormat4.format(date4);
+//            holder.job_list_recruitment_period_end.setText(stringDate4);
+
+            job_list_type.setText(job.getJobName());
+            job_list_salary.setText(job.getPay());
+
             }
         }
 
-//        private ArrayList<String> localDataSet;
-//        public static class ViewHolder extends RecyclerView.ViewHolder {
-//            private TextView textView;
-//            public ViewHolder(@NonNull View itemView) {
-//                super(itemView);
-//                textView = itemView.findViewById(R.id.job_list_address);
-//            }
-//            public TextView getTextView() {
-//                return textView;
-//            }
-//        }
-//        public JobListAdapter (ArrayList<String> dataSet) { localDataSet = dataSet; }
-//
-//        @NonNull
-//        @Override
-//        public JobListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            View view = LayoutInflater.from(parent.getContext())
-//                    .inflate(R.layout.job_list_item, parent, false);
-//            JobListAdapter.ViewHolder viewHolder = new JobListAdapter.ViewHolder(view);
-//            return viewHolder;
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(@NonNull JobListAdapter.ViewHolder holder, int position) {
-//            String text = localDataSet.get(position);
-//            holder.textView.setText(text);
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return localDataSet.size();
-//        }
+        @Override
+        public int getItemCount() {
+            if(jobList==null) return 0;
+            return jobList.size();
+        }
 
 
     }

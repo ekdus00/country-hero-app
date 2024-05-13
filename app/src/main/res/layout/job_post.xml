@@ -436,6 +436,7 @@
                                 android:layout_height="wrap_content">
                                 <Button
                                     android:id="@+id/address_btn"
+                                    android:onClick="onSelectAddressClick"
                                     android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"

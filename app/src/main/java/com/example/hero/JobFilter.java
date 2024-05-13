@@ -119,15 +119,19 @@ public class JobFilter extends AppCompatActivity{
                 // 사용자 아이디, 타입
 //                intent.putExtra("userId", filter_area_region.getSelectedItem().toString());
 //                intent.putExtra("userType", filter_area_district.getSelectedItem().toString());
+                
+                //임시
+                intent.putExtra("userId", "keh223377");
+                intent.putExtra("userType", "구인자");
 
                 intent.putStringArrayListExtra("area", area);
                 intent.putStringArrayListExtra("crop", crop);
 
-                intent.putExtra("filter_salary_low", filter_salary_low.getText().toString());
-                intent.putExtra("filter_salary_high", filter_salary_high.getText().toString());
+                intent.putExtra("payLoe", filter_salary_low.getText().toString());
+                intent.putExtra("payGoe", filter_salary_high.getText().toString());
 
-                intent.putExtra("filter_period_start", filter_period_start.getText().toString());
-                intent.putExtra("filter_period_end", filter_period_end.getText().toString());
+                intent.putExtra("startWorkDate", filter_period_start.getText().toString());
+                intent.putExtra("endWorkDate", filter_period_end.getText().toString());
 
                 startActivity(intent);
 
@@ -185,7 +189,7 @@ public class JobFilter extends AppCompatActivity{
             }
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
-                Log.e("JobPost", "시/도 에러 발생", t);
+                Log.e("JobFilter", "시/도 에러 발생", t);
             }
         });
     }

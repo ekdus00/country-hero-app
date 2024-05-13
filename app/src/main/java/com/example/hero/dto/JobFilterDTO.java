@@ -1,4 +1,4 @@
-package com.example.hero.object;
+package com.example.hero.dto;
 
 import java.time.LocalDate;
 import java.util.List;

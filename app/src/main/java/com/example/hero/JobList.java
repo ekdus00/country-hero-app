@@ -1,5 +1,6 @@
 package com.example.hero;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,31 +18,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.adapter.JobListAdapter;
 
-import com.example.hero.object.JobFilterDTO;
-import com.example.hero.object.JobInfoDTO;
+import com.example.hero.dto.JobFilterDTO;
+import com.example.hero.dto.JobInfoDTO;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.util.Map;
 import android.Manifest;
 
 
 public class JobList extends AppCompatActivity {
     RecyclerView recyclerView;
     JobListAdapter adapter;
+    private List<JobInfoDTO> jobList;
     private ApiService ApiService;
     public TextView job_list_keyword;
     public Spinner job_list_range;
@@ -49,6 +46,7 @@ public class JobList extends AppCompatActivity {
     private double userLatitude = 0.0;
     private double userLongitude = 0.0;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private Context context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +55,37 @@ public class JobList extends AppCompatActivity {
         Button search_detail = findViewById(R.id.search_detail);
         Button search_btn = findViewById(R.id.search_btn);
 
-        recyclerView = findViewById(R.id.job_list_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+//        Call<List<JobInfoDTO>> call = apiService.getJobList();
+//        call.enqueue(new Callback<List<JobInfoDTO>>() {
+//            @Override
+//            public void onResponse(Call<List<JobInfoDTO>> call, Response<List<JobInfoDTO>> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    jobList = response.body(); // 데이터를 jobList에 저장
+//                    adapter.notifyDataSetChanged(); // 어댑터에 데이터 변경 알림
+//                } else {
+//                    Log.e("loadJobData", "Response not successful");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<JobInfoDTO>> call, Throwable t) {
+//                Log.e("loadJobData", "Failed to load data", t);
+//            }
+//        });
 
-        // 초기에 빈 어댑터 설정
-        adapter = new JobListAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
+        recyclerView = findViewById(R.id.job_list_recyclerView);
+        adapter = new JobListAdapter(jobList, new JobListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                JobInfoDTO job = jobList.get(position);
+                Intent intent = new Intent(JobList.this, JobDetail.class);
+                intent.putExtra("jobId", job.getId());
+//                intent.putExtra("userId", job.getId());
+//                intent.putExtra("userType", job.getId());
+                startActivity(intent);
+            }
+        });
 
         job_list_keyword = findViewById(R.id.job_list_keyword);
         job_list_range = findViewById(R.id.job_list_range);
@@ -105,17 +128,25 @@ public class JobList extends AppCompatActivity {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
 //        Map<String, RequestBody> textData = prepareTextMap(text_workProvince, text_workCity, text_crop1, text_crop2, text_salaryType, text_salaryValue, text_workStart, text_workEnd, text_job_list_keyword, text_job_list_range);
 
-        Call<List<JobInfoDTO>> call = apiService.JobListSend(jobFilterDTO);
+        // SharedPreferences 사용할 경우
+        TokenManager tokenManager = new TokenManager(context);
+        String token = tokenManager.getToken();
+        //        Call<List<JobInfoDTO>> call = apiService.getJobPostList("Bearer " + token, jobFilterDTO);
+
+//        Call<List<JobInfoDTO>> call = apiService.JobListSend(requestBody);
+
+        Call<List<JobInfoDTO>> call = apiService.JobListSend("Bearer " + "Iqsi2uvUlsxp7n417b&with_pin&step=agree_term&inapp_view&oauth_os", jobFilterDTO);
         call.enqueue(new Callback<List<JobInfoDTO>>() {
             @Override
             public void onResponse(Call<List<JobInfoDTO>> call, Response<List<JobInfoDTO>> response) {
                 if (response.isSuccessful()) {
                     System.out.println("Data uploaded successfully");
                     Log.e("JobList", "공고목록 서버요청 성공");
+                    jobList = response.body(); // 데이터를 jobList에 저장
+                    adapter.notifyDataSetChanged(); // 어댑터에 데이터 변경 알림
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(JobList.this));
 
-//                    List<JobInfoDTO> jobs = response.body();
-//                    adapter = new JobListAdapter(jobs);
-//                    recyclerView.setAdapter(adapter);
                 } else {
                     System.out.println("Upload failed: " + response.message());
                     Log.e("JobList", "공고목록 서버응답 실패" + response.code() + ", " + response.message());
@@ -132,7 +163,7 @@ public class JobList extends AppCompatActivity {
 
     private void processIntentData() {
         Intent intent = getIntent();
-        if (intent != null) {
+//        if (intent != null) {
             String userId = intent.getStringExtra("userId");
             String userType = intent.getStringExtra("userType");
             ArrayList<String> area = intent.getStringArrayListExtra("area");
@@ -161,7 +192,12 @@ public class JobList extends AppCompatActivity {
             jobFilterDTO.setUserLongitude(userLongitude);
 
             JobListSend(jobFilterDTO);
-        }
+
+//            Gson gson = new Gson();
+//            String json = gson.toJson(jobFilterDTO);
+//            RequestBody requestBody = RequestBody.create(json, okhttp3.MediaType.parse("application/json; charset=utf-8"));
+//            JobListSend(requestBody);
+//        }
     }
 
     private Integer getIntegerFromIntent(Intent intent, String key) {

@@ -1,10 +1,9 @@
-package com.example.hero.object;
+package com.example.hero.dto;
 
 import android.net.Uri;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 public class JobPostCreateRequestDTO {
     private String userId; //공고 작성자
