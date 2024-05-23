@@ -24,7 +24,7 @@
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="95dp"
+        android:layout_marginLeft="50dp"
         android:drawableTint="#000000"
         android:text="@string/job_post"
         android:textColor="@color/black"

@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"/>
                     <ImageView
                         android:id="@+id/myPage_rating_imageView"
-                        android:src="@drawable/sprout"
+                        android:src="@drawable/level_2_img"
                         android:layout_gravity="center"
                         android:layout_width="40dp"
                         android:layout_height="40dp"/>

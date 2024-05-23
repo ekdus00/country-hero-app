@@ -71,9 +71,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0"
+                                    android:tag="여자"
                                     android:text="여자" />
                                 <RadioButton
                                     android:text="남자"
+                                    android:tag="남자"
                                     android:layout_weight="1"
                                     android:id="@+id/radio_man"
                                     android:layout_width="wrap_content"

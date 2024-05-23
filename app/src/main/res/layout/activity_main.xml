@@ -1,118 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:text="서버 요청 확인 메세지"
-        android:id="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    android:orientation="vertical"
+    tools:context=".etc.MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/homeOwner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="60dp"
-        android:text="서버 요청 버튼"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="홈화면(구직자)">
     </Button>
 
     <Button
-        android:id="@+id/btn6"
+        android:id="@+id/homeWorker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="170dp"
-        android:text="홈화면(구직자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="홈화면(구인자)">
     </Button>
 
     <Button
-        android:id="@+id/btn7"
+        android:id="@+id/jobList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="232dp"
-        android:text="홈화면(구인자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="공고목록">
     </Button>
 
     <Button
-        android:id="@+id/btn9"
+        android:id="@+id/token"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="292dp"
-        android:text="마이페이지(구인자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="토큰 재발급">
     </Button>
 
     <Button
-        android:id="@+id/btn8"
+        android:id="@+id/jobPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="352dp"
-        android:text="마이페이지(구직자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="공고작성">
     </Button>
 
     <Button
-        android:id="@+id/btn3"
+        android:id="@+id/jobDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="410dp"
-        android:text="공고상세페이지"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="공고상세">
     </Button>
 
     <Button
-        android:id="@+id/btn4"
+        android:id="@+id/review1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="470dp"
-        android:text="상호평가(구인자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="상호평가(구직자)">
     </Button>
 
     <Button
-        android:id="@+id/btn5"
+        android:id="@+id/review2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="530dp"
-        android:text="상호평가(구직자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="상호평가(구인자)">
     </Button>
 
     <Button
-        android:id="@+id/btn10"
+        android:id="@+id/userType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="590dp"
-        android:text="공고현황상세"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:text="추가정보입력">
     </Button>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인">
+    </Button>
+
+    <Button
+        android:id="@+id/my1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="마이페이지(구인자)">
+    </Button>
+
+</LinearLayout>

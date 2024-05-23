@@ -42,12 +42,6 @@
                         android:layout_margin="5dp"
                         android:textSize="15dp"
                         android:text="(품목)"/>
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_margin="1dp"-->
-<!--                        android:textSize="15dp"-->
-<!--                        android:text=">"/>-->
                     <TextView
                         android:id="@+id/job_list_item_crop_type"
                         android:layout_width="wrap_content"
@@ -153,18 +147,23 @@
                     android:layout_margin="5dp"
                     android:textSize="15dp"
                     android:text="(급여금액)"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="35dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
                 <Button
                     android:text="지원하기"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 </Button>
             </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginTop="35dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content">-->
+<!--                <Button-->
+<!--                    android:text="지원하기"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content">-->
+<!--                </Button>-->
+<!--            </LinearLayout>-->
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

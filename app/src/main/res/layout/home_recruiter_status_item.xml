@@ -34,7 +34,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:textSize="15dp"
-                        android:text="()명 지원"/>
+                        android:text="(인원수)"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textSize="15dp"
+                        android:text="명 지원"/>
                 </LinearLayout>
 
             </LinearLayout>

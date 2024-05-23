@@ -64,6 +64,28 @@
         <item>23:00</item>
     </string-array>
 
+    <string-array name="join_spinner">
+        <item>1990</item>
+        <item>1991</item>
+        <item>1992</item>
+        <item>1993</item>
+        <item>1994</item>
+        <item>1995</item>
+        <item>1996</item>
+        <item>1997</item>
+        <item>1998</item>
+        <item>1999</item>
+        <item>2000</item>
+        <item>2001</item>
+        <item>2002</item>
+        <item>2003</item>
+        <item>2004</item>
+        <item>2005</item>
+        <item>2006</item>
+
+
+    </string-array>
+
     <string-array name="work_crop1">
         <item>밭농사</item>
         <item>미곡류</item>
