@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,14 +12,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Hero"
-        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.Hero_home"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityResumeWrite"
+            android:name=".activity.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.JobPost"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,33 +29,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".JobPost" />
-        <activity android:name=".JobList" />
-        <activity android:name=".JobDetail" />
-        <activity android:name=".JobListAdapter" />
-        <activity android:name=".JobFilter" />
-        <activity android:name=".ReviewPost" />
-        <activity android:name=".ReviewList" />
-        <activity android:name=".ReviewListAdapter" />
-        <activity android:name=".HomeApplicant" />
-        <activity android:name=".HomeApplicantAdapter" />
-        <activity android:name=".HomeRecruiter" />
-        <activity android:name=".HomeRecruiterAdapter" />
-        <activity android:name=".HomeJobListAdapter" />
-        <activity android:name=".EmployerData" />
-        <activity android:name=".ModifyApplicant" />
-        <activity android:name=".ModifyRecruiter" />
-        <activity android:name=".MyPageApplicant" />
-        <activity android:name=".MyPageRecruiter" />
-        <activity android:name=".ResumePost" />
         <activity
-            android:name=".ScrapActivity"
+            android:name=".activity.FAQActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.UserGuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ScrapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ActivityMatching"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ActivityBoardWrite"
+            android:exported="true"
+            android:theme="@style/MaterialCustomRoot" />
+        <activity
+            android:name=".activity.ActivityResumeWrite"
             android:exported="true" />
         <activity
-            android:name=".FAQActivity"
+            android:name=".activity.ActivityMenteeDetailPage"
             android:exported="true" />
         <activity
-            android:name=".UserGuideActivity"
+            android:name=".activity.ActivityMentorDetailPage"
             android:exported="true" />
     </application>
 
