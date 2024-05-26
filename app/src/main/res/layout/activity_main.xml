@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="스크랩 화면" />
+        android:text="스크랩" />
 
     <Button
         android:id="@+id/user_guide_btn"
@@ -68,6 +68,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="설정 화면" />
+        android:text="설정 화면"/>
+
+    <Button
+        android:id="@+id/refresh_token_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="토큰 리프레시" />
 
 </LinearLayout>

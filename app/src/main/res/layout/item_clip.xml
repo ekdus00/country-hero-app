@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/scrap_item"
+    android:id="@+id/clip_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,6 +25,7 @@
                 android:textColor="#496a52"
                 />
             <TextView
+                android:id="@+id/cropType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -41,7 +42,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/jobTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -52,7 +53,7 @@
                 android:textStyle="bold"
                 />
             <TextView
-                android:id="@+id/star_work_date"
+                android:id="@+id/work_period"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
@@ -62,7 +63,7 @@
                 android:textStyle="bold"
                 />
             <TextView
-                android:id="@+id/end_work_date"
+                android:id="@+id/recreuit_period"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

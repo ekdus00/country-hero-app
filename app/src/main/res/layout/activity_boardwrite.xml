@@ -91,26 +91,36 @@
                     />
 
             </RelativeLayout>
-            <RadioButton
+            <RadioGroup
+                android:id="@+id/writer_type"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="30dp"
-                android:text="멘토"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:checked="true"
-                />
-            <RadioButton
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="30dp"
-                android:text="멘티"
-                android:textStyle="bold"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="3.1">
+                <RadioButton
+                    android:id="@+id/radio_mentor"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp"
+                    android:text="멘토"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:checked="true"
+                    />
+
+                <RadioButton
+                    android:id="@+id/radio_mentee"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight="2"
+                    android:text="멘티"
+                    android:textStyle="bold" />
+            </RadioGroup>
+
         </LinearLayout>
 
 
@@ -146,6 +156,7 @@
 
             </RelativeLayout>
             <EditText
+                android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="match_parent"
@@ -154,7 +165,6 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="center"
-                android:text="농촌 산악회"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 />
@@ -332,6 +342,7 @@
 
             </RelativeLayout>
             <EditText
+                android:id="@+id/txt_edu_content"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="match_parent"
@@ -342,7 +353,6 @@
                 android:padding="10dp"
                 android:gravity="top|start"
                 android:inputType="textMultiLine"
-                android:text="감자 수확의 모든것을 알려드립니다."
                 android:textSize="15sp"
                 android:textStyle="bold"
 
@@ -366,6 +376,7 @@
                 android:gravity="center"
                 />
             <EditText
+                android:id="@+id/sns_url"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="match_parent"
@@ -374,7 +385,6 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="center"
-                android:text="www.naver.com"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 />
@@ -404,6 +414,7 @@
                 android:layout_marginStart="10dp"
                 >
                 <ImageButton
+                    android:id="@+id/select_image"
                     android:layout_width="0dp"
                     android:layout_weight="0.3"
                     android:layout_height="30dp"
@@ -424,6 +435,15 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/post_matching"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="게시하기"
+            android:textColor="@color/white"
+            android:backgroundTint="#49654A"
+            android:layout_gravity="center"
+            />
     </LinearLayout>
 
     <ImageButton
@@ -439,15 +459,7 @@
         android:visibility="gone"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="게시하기"
-        android:textColor="@color/white"
-        android:backgroundTint="#49654A"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="550dp"
-        />
+
 
 
 </RelativeLayout>

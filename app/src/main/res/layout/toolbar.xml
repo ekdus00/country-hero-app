@@ -15,7 +15,7 @@
         android:backgroundTint="@color/white"
         android:drawableLeft="@drawable/back_button"
         style="?android:attr/borderlessButtonStyle"
-        android:text="@string/back"
+        android:text="이전"
         android:textSize="18sp"
         android:textColor="@color/black">
     </Button>
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="95dp"
         android:drawableTint="#000000"
-        android:text="@string/job_post"
+        android:text="공고작성"
         android:textColor="@color/black"
         android:textSize="20sp">
     </TextView>

@@ -53,6 +53,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -84,7 +85,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txt_date"
+                    android:id="@+id/txt_crated_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -130,6 +131,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txt_user_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
@@ -159,6 +161,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txt_grade"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
@@ -188,6 +191,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txt_career"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
@@ -216,6 +220,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txt_area"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
@@ -245,6 +250,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txt_edu_date"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
@@ -282,7 +288,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txt_introduction"
+                android:id="@+id/txt_edu_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_info"
@@ -305,6 +311,7 @@
                 android:padding="10dp">
 
                 <EditText
+                    android:id="@+id/txt_comment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -313,12 +320,22 @@
                     android:textSize="13sp" />
 
                 <ImageButton
+                    android:id="@+id/submit_comment_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
                     android:src="@drawable/baseline_send_24" />
 
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="4dp"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         </LinearLayout>
     </ScrollView>
 

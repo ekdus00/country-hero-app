@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activity.ScrapActivity">
 
@@ -52,7 +53,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="40dp"
         android:paddingHorizontal="24dp"
         android:orientation="vertical"
         android:background="#E1E3E5">
@@ -60,230 +60,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingVertical="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:padding="8dp"
-            android:orientation="horizontal"
-            android:background="@drawable/background_rectangle_radius_8_black">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="광주 광산구"
-                        android:textSize="12dp"
-                        android:textColor="#496a52"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:padding="2dp"
-                        android:gravity="center"
-                        android:text="품목 > 오이"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:background="@drawable/background_rectangle_radius_8_color_e1e3e5"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="2dp"
-                        android:text="오이 내리기 및 집개질"
-                        android:textSize="14dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:text="작업기간: 2024-06-01 ~ 2024-06-27"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="모집기간: 2024-05-06 ~ 2024-05-28"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="3"
-                android:layout_gravity="center"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_gravity="center"
-                    android:text="일급"
-                    android:textStyle="bold"
-                    android:textSize="10dp"
-                    android:textColor="@color/black"
-                    android:background="@drawable/background_rectangle_radius_8_color_e1e3e5"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:text="80,000원"
-                    />
-            </LinearLayout>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginHorizontal="4dp"
-                android:padding="2dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="취소하기"
-                android:textSize="12dp"
-                android:textColor="@color/white"
-                android:background="@drawable/background_rectangle_radius_8_color_496a52"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:padding="8dp"
-            android:orientation="horizontal"
-            android:background="@drawable/background_rectangle_radius_8_black">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="광주 광산구"
-                        android:textSize="12dp"
-                        android:textColor="#496a52"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:padding="2dp"
-                        android:gravity="center"
-                        android:text="품목 > 고추"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:background="@drawable/background_rectangle_radius_8_color_e1e3e5"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="2dp"
-                        android:text="고추 따기"
-                        android:textSize="14dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:text="작업기간: 2024-06-01 ~ 2024-07-10"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="모집기간: 2024-05-06 ~ 2024-05-28"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="3"
-                android:layout_gravity="center"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp"
-                    android:layout_gravity="center"
-                    android:text="일급"
-                    android:textStyle="bold"
-                    android:textSize="10dp"
-                    android:textColor="@color/black"
-                    android:background="@drawable/background_rectangle_radius_8_color_e1e3e5"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:text="72,000원"
-                    />
-            </LinearLayout>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginHorizontal="4dp"
-                android:padding="2dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="취소하기"
-                android:textSize="12dp"
-                android:textColor="@color/white"
-                android:background="@drawable/background_rectangle_radius_8_color_496a52"
-                />
-        </LinearLayout>
 
     </LinearLayout>
 

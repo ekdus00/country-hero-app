@@ -16,6 +16,7 @@
         android:paddingTop="10dp"
         >
         <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
             android:layout_width="0dp"
             android:layout_weight="2.5"
             android:layout_height="wrap_content"
@@ -24,6 +25,7 @@
             app:iconifiedByDefault="false"
             />
         <Button
+            android:id="@+id/go_board_write_btn"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

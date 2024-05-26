@@ -22,7 +22,7 @@
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/back_button"
             style="?android:attr/borderlessButtonStyle"
-            android:text="@string/back"
+            android:text="이전"
             android:textSize="18sp"
             android:textColor="@color/black">
         </Button>
