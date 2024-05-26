@@ -1,131 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:text="서버 요청 확인 메세지"
-        android:id="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    android:padding="8dp"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:id="@+id/matching_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="60dp"
-        android:text="서버 요청 버튼"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
+        android:text="매칭 목록조회 화면" />
 
     <Button
-        android:id="@+id/btn6"
-        android:layout_width="wrap_content"
+        android:id="@+id/board_write_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="170dp"
-        android:text="홈화면(구직자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
+        android:layout_marginTop="4dp"
+        android:text="매칭글 작성화면" />
 
     <Button
-        android:id="@+id/btn7"
-        android:layout_width="wrap_content"
+        android:id="@+id/mentor_detail_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="232dp"
-        android:text="홈화면(구인자)"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
+        android:layout_marginTop="4dp"
+        android:text="멘토매칭 상세페이지 화면" />
 
     <Button
-        android:id="@+id/btn1"
-        android:layout_width="wrap_content"
+        android:id="@+id/mentee_detail_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="292dp"
-        android:text="공고게시"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
+        android:layout_marginTop="4dp"
+        android:text="멘티매칭 상세페이지 화면" />
 
     <Button
-        android:id="@+id/btn8"
-        android:layout_width="wrap_content"
+        android:id="@+id/resume_write_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="352dp"
-        android:text="마이페이지"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
-
-    <Button
-        android:id="@+id/btn3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="410dp"
-        android:text="공고상세페이지"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
-
-    <Button
-        android:id="@+id/btn4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="470dp"
-        android:text="상호평가목록"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
-
-    <Button
-        android:id="@+id/btn5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="530dp"
-        android:text="상호평가"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
-
-    <Button
-        android:id="@+id/btn9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="530dp"
-        android:text="구인자 정보"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
+        android:layout_marginTop="4dp"
+        android:text="이력서 관리화면" />
 
     <Button
         android:id="@+id/scrap_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="590dp"
-        android:text="scrap"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
+        android:layout_marginTop="4dp"
+        android:text="스크랩 화면" />
 
+    <Button
+        android:id="@+id/user_guide_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="이용안내 화면" />
 
+    <Button
+        android:id="@+id/faq_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="자주하는 질문 화면" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/setting_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="설정 화면" />
+
+</LinearLayout>

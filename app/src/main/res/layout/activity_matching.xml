@@ -72,16 +72,22 @@
             />
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMentorMentee"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        />
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMentorMentee"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            />
+    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomnavi"
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:background="#CDCDCD"
         app:menu="@menu/bottom_menu"
         app:labelVisibilityMode="labeled"
