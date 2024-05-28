@@ -6,8 +6,8 @@ import java.util.List;
 public class JobFilterDTO {
     private List<String> area;
     private List<String> crop;
-    private LocalDate startWorkDate;
-    private LocalDate endWorkDate;
+    private String startWorkDate;
+    private String endWorkDate;
     private Integer payGoe;
     private Integer payLoe;
     private String keyWord;
@@ -15,8 +15,8 @@ public class JobFilterDTO {
     private Double userLatitude;
     private Double userLongitude;
 
-    public JobFilterDTO(List<String> area, List<String> crop, LocalDate startWorkDate,
-                        LocalDate endWorkDate, Integer payGoe, Integer payLoe, String keyWord, String sortType,
+    public JobFilterDTO(List<String> area, List<String> crop, String startWorkDate,
+                        String endWorkDate, Integer payGoe, Integer payLoe, String keyWord, String sortType,
                         Double userLatitude, Double userLongitude) {
         this.area = area;
         this.crop = crop;
@@ -50,19 +50,19 @@ public class JobFilterDTO {
         this.crop = crop;
     }
 
-    public LocalDate getStartWorkDate() {
+    public String getStartWorkDate() {
         return startWorkDate;
     }
 
-    public void setStartWorkDate(LocalDate startWorkDate) {
+    public void setStartWorkDate(String startWorkDate) {
         this.startWorkDate = startWorkDate;
     }
 
-    public LocalDate getEndWorkDate() {
+    public String getEndWorkDate() {
         return endWorkDate;
     }
 
-    public void setEndWorkDate(LocalDate endWorkDate) {
+    public void setEndWorkDate(String endWorkDate) {
         this.endWorkDate = endWorkDate;
     }
 

@@ -13,16 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hero.R;
 import com.example.hero.employer.dto.WorkerInfoDTO;
 import com.example.hero.etc.OnButtonClickListener;
+import com.example.hero.etc.OnButtonClickListenerReviewStatus;
 
 import java.util.List;
 
 
 public class EmployerStatusDetailAdapter extends RecyclerView.Adapter<EmployerStatusDetailAdapter.ViewHolder> {
     private List<WorkerInfoDTO> jobList;
-    private OnButtonClickListener buttonClickListener;
+    private OnButtonClickListenerReviewStatus buttonClickListener;
     private Context context;
 
-    public EmployerStatusDetailAdapter(List<WorkerInfoDTO> jobList, OnButtonClickListener listener) {
+    public EmployerStatusDetailAdapter(List<WorkerInfoDTO> jobList, OnButtonClickListenerReviewStatus listener) {
         this.jobList = jobList;
         this.buttonClickListener = listener;
         this.context = context;
@@ -60,13 +61,13 @@ public class EmployerStatusDetailAdapter extends RecyclerView.Adapter<EmployerSt
             worker_rating = itemView.findViewById(R.id.worker_rating);
         }
 
-        public void bind(final WorkerInfoDTO workerInfoDTO, final OnButtonClickListener listener) {
+        public void bind(final WorkerInfoDTO workerInfoDTO, final OnButtonClickListenerReviewStatus listener) {
             worker_name.setText(workerInfoDTO.getUserName());
             defer_and_approve.setText(workerInfoDTO.getApproval());
 
             resume_check.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onButtonClick(workerInfoDTO.getJobId());
+                    listener.OnButtonClickListenerReviewStatus(workerInfoDTO.getJobId(), workerInfoDTO.getUserId());
                 }
             });
 

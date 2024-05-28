@@ -17,6 +17,7 @@ import java.util.List;
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.OnButtonClickListener;
+import com.example.hero.etc.OnButtonClickListenerReviewStatus;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.review.adatper.ReviewEmployerListAdapter;
@@ -33,23 +34,15 @@ public class ReviewEmployerList extends AppCompatActivity {
     ReviewEmployerListAdapter adapter;
     private List<OwnerReviewInfoDTO> jobList;
     private ApiService apiService;
-    private OnButtonClickListener btnClickListener;
+    private OnButtonClickListenerReviewStatus btnClickListener;
     private Context context;
-    private TokenManager tokenManager = new TokenManager(this);
+    private TokenManager tokenManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review_employer_list);
         context = this;
-
-        //뒤로가기
-        Button btn_Back = findViewById(R.id.btn_back);
-        btn_Back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        tokenManager = new TokenManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,13 +56,23 @@ public class ReviewEmployerList extends AppCompatActivity {
         adapter = new ReviewEmployerListAdapter(jobList, btnClickListener);
         review_employer_list_recyclerView.setAdapter(adapter);
 
-        btnClickListener = jobId -> {
+        btnClickListener = (jobId, targetUserId) -> {
             Intent intent = new Intent(ReviewEmployerList.this, ReviewEmployerPost.class);
             intent.putExtra("jobId", jobId);
+            intent.putExtra("targetUserId", targetUserId);
             startActivity(intent);
         };
 
         reviewEmployerListRequest();
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }//onCreate()
 
@@ -99,15 +102,16 @@ public class ReviewEmployerList extends AppCompatActivity {
 //
 //                    employer_status_progress_recyclerView.setAdapter(adapter1);
 //                    employer_status_deadline_recyclerView.setAdapter(adapter2);
-
+                    Log.e("tag", "상호평가목록(구인자) 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
-                    Log.e("HTTP_ERROR", "Status Code: " + response.code());
+                    Log.e("tag", "상호평가목록(구인자) 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "상호평가목록(구인자) 서버응답 오류" + response.errorBody().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<List<OwnerReviewInfoDTO>> call, Throwable t) {
-                Log.e("NETWORK_ERROR", "Failed to connect to the server", t);
+                Log.e("tag", "상호평가목록(구인자) 서버요청 실패", t);
             }
         });
 

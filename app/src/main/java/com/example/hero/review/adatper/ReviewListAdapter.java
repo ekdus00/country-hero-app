@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hero.R;
 import com.example.hero.employer.dto.EmployInfoDTO;
 import com.example.hero.etc.OnButtonClickListener;
+import com.example.hero.etc.OnButtonClickListenerOwnerStatus;
+import com.example.hero.etc.OnButtonClickListenerReviewStatus;
 import com.example.hero.etc.OnItemClickListener;
 import com.example.hero.review.dto.WorkerReviewInfoDTO;
 
@@ -22,9 +24,9 @@ import java.util.List;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ViewHolder> {
     private List<WorkerReviewInfoDTO> mData;
-    private OnButtonClickListener mListener;
+    private OnButtonClickListenerReviewStatus mListener;
 
-    public ReviewListAdapter(List<WorkerReviewInfoDTO> data, OnButtonClickListener listener) {
+    public ReviewListAdapter(List<WorkerReviewInfoDTO> data, OnButtonClickListenerReviewStatus listener) {
         mData = data;
         mListener = listener;
     }
@@ -49,8 +51,9 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         TextView address_country, address_city, title;
         TextView work_period_start, work_period_end;
         int currentJobId;
+        String targetUserId;
         Button review_post_btn;
-        public ViewHolder(View itemView, OnButtonClickListener listener) {
+        public ViewHolder(View itemView, OnButtonClickListenerReviewStatus listener) {
             super(itemView);
             address_country = itemView.findViewById(R.id.address_country);
             address_city = itemView.findViewById(R.id.address_city);
@@ -64,13 +67,14 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
 
             review_post_btn.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onButtonClick(currentJobId);
+                    listener.OnButtonClickListenerReviewStatus(currentJobId, targetUserId);
                 }
             });
         }
 
-        public void bind(final WorkerReviewInfoDTO jobInfo, final OnButtonClickListener listener) {
-//            currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
+        public void bind(final WorkerReviewInfoDTO jobInfo, final OnButtonClickListenerReviewStatus listener) {
+            currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
+            targetUserId = jobInfo.getTargetUserId();
 
             address_country.setText(jobInfo.getJobName());
             address_city.setText(jobInfo.getCountry());

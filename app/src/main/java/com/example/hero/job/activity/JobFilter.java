@@ -1,5 +1,7 @@
 package com.example.hero.job.activity;
 
+import static android.graphics.Insets.add;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -49,16 +51,30 @@ public class JobFilter extends AppCompatActivity{
     public RadioGroup radioGroupSalary;
     private ArrayList<String> area = new ArrayList<>();
     private ArrayList<String> crop = new ArrayList<>();
-    private TokenManager tokenManager = new TokenManager(this);
+    private TokenManager tokenManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_filter);
+        tokenManager = new TokenManager(this);
 
         btn_Work_Start = findViewById(R.id.filter_start_image);
         btn_Work_End = findViewById(R.id.filter_end_image);
         textView_Work_Start = findViewById(R.id.filter_period_start);
         textView_Work_End = findViewById(R.id.filter_period_end);
+
+        filter_area_region = findViewById(R.id.filter_area_region);
+        filter_area_district = findViewById(R.id.filter_area_district);
+        filter_crop1 = findViewById(R.id.filter_crop1);
+        filter_crop2 = findViewById(R.id.filter_crop2);
+
+        filter_salary_low = findViewById(R.id.filter_salary_low);
+        filter_salary_high = findViewById(R.id.filter_salary_high);
+
+        filter_period_start = findViewById(R.id.filter_period_start);
+        filter_period_end = findViewById(R.id.filter_period_end);
+
+        radioGroupSalary = findViewById(R.id.radioGroupSalary);
         
         loadCountries();
         loadCropForms();
@@ -84,19 +100,6 @@ public class JobFilter extends AppCompatActivity{
                 finish();
             }
         });
-
-        filter_area_region = findViewById(R.id.filter_area_region);
-        filter_area_district = findViewById(R.id.filter_area_district);
-        filter_crop1 = findViewById(R.id.filter_crop1);
-        filter_crop2 = findViewById(R.id.filter_crop2);
-
-        filter_salary_low = findViewById(R.id.filter_salary_low);
-        filter_salary_high = findViewById(R.id.filter_salary_high);
-
-        filter_period_start = findViewById(R.id.filter_period_start);
-        filter_period_end = findViewById(R.id.filter_period_end);
-
-        radioGroupSalary = findViewById(R.id.radioGroupSalary);
 
         //공고필터 적용
         filter_send_btn = findViewById(R.id.filter_send_btn);
@@ -144,23 +147,13 @@ public class JobFilter extends AppCompatActivity{
         //공고필터 정보 전송
         String selectedAreaA = filter_area_region.getSelectedItem().toString();
         String selectedAreaB = filter_area_district.getSelectedItem().toString();
-        area.add(selectedAreaA);
-        area.add(selectedAreaB);
+        area.add(selectedAreaA + " " + selectedAreaB);;
 
         String selectedCropA = filter_crop1.getSelectedItem().toString();
         String selectedCropB = filter_crop2.getSelectedItem().toString();
-        crop.add(selectedCropA);
-        crop.add(selectedCropB);
+        crop.add(selectedCropA + " " + selectedCropB);
 
         Intent intent = new Intent(JobFilter.this, JobList.class);
-
-        // 사용자 아이디, 타입
-//                intent.putExtra("userId", filter_area_region.getSelectedItem().toString());
-//                intent.putExtra("userType", filter_area_district.getSelectedItem().toString());
-
-        //임시
-//                intent.putExtra("userId", "eune");
-//                intent.putExtra("userType", "구인자");
 
         intent.putStringArrayListExtra("area", area);
         intent.putStringArrayListExtra("crop", crop);
@@ -283,7 +276,7 @@ public class JobFilter extends AppCompatActivity{
         DatePickerDialog.OnDateSetListener callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                String formattedDate = String.format(Locale.getDefault(), "%04d.%02d.%02d", year, monthOfYear + 1, dayOfMonth);
+                String formattedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, monthOfYear + 1, dayOfMonth);
                 textView.setText(formattedDate);
             }
         };

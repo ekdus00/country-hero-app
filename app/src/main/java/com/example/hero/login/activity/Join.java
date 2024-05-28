@@ -85,16 +85,16 @@ public class Join extends AppCompatActivity {
 
                     Intent intent = new Intent(Join.this, UserTypeSet.class);
                     intent.putExtra("userId", join_id);  // 실제 사용자 ID를 넘겨줌
-
                     startActivity(intent);
-
+                    Log.e("tag", "회원가입 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
-                    Log.e("join", "회원가입 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("join", "회원가입 서버응답 오류" + response.errorBody().toString());                        }
+                    Log.e("tag", "회원가입 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "회원가입 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("join", "회원가입 서버요청 오류", t);
+                Log.e("tag", "회원가입 서버요청 오류", t);
             }
         });
     }

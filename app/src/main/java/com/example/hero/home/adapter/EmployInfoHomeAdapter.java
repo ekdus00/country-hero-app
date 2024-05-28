@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
 import com.example.hero.home.dto.EmployInfoHomeDTO;
-import com.example.hero.home.dto.ParticipateInfoHomeDTO;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class EmployInfoHomeAdapter extends RecyclerView.Adapter<EmployInfoHomeAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_recruiter_status_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_owner_status_item, parent, false);
         return new ViewHolder(view);
     }
 

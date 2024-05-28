@@ -22,10 +22,12 @@ import com.example.hero.employer.dto.EmployResponseDTO;
 import com.example.hero.employer.dto.WorkerInfoDTO;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.OnButtonClickListener;
+import com.example.hero.etc.OnButtonClickListenerReviewStatus;
 import com.example.hero.etc.OnItemClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.job.dto.JobInfoDTO;
+import com.example.hero.resume.activity.ResumeCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +41,16 @@ public class EmployerStatusDetail extends AppCompatActivity {
     private EmployerStatusDetailAdapter adapter;
     private List<WorkerInfoDTO> workerList = new ArrayList<>();
     private Context context;
-    private OnButtonClickListener buttonClickListener;
+    private OnButtonClickListenerReviewStatus buttonClickListener;
     private ApiService apiService;
     private int employerStatusDetailJobId;
-    private TokenManager tokenManager = new TokenManager(this);
+    private TokenManager tokenManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employer_status_detail);
         context = this;
+        tokenManager = new TokenManager(this);
 
         Button btn_Back = findViewById(R.id.btn_back);
         btn_Back.setOnClickListener(new View.OnClickListener() {
@@ -65,21 +68,19 @@ public class EmployerStatusDetail extends AppCompatActivity {
 
         employer_status_detail_recyclerView = findViewById(R.id.employer_status_detail_recyclerView);
         employer_status_detail_recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         adapter = new EmployerStatusDetailAdapter(workerList, buttonClickListener);
         employer_status_detail_recyclerView.setAdapter(adapter);
 
-        buttonClickListener = jobId -> {
-            //이력서확인 화면 이름으로 바꿔야됨
-            Intent intent = new Intent(EmployerStatusDetail.this, EmployerStatusDetail.class);
+        employerStatusDetailJobId = getIntent().getIntExtra("jobId", 0);
+        employerStatusDetailRequest(employerStatusDetailJobId);
+
+        buttonClickListener = (jobId, userId) -> {
+            //이력서 확인으로 이동
+            Intent intent = new Intent(EmployerStatusDetail.this, ResumeCheck.class);
+            intent.putExtra("userId", userId);
             intent.putExtra("jobId", jobId);
             startActivity(intent);
         };
-
-        employerStatusDetailJobId = getIntent().getIntExtra("jobId", 0);
-//        jobId = String.valueOf(employerStatusDetailJobId);
-        employerStatusDetailRequest(employerStatusDetailJobId);
-
 
     }//onCreate()
 

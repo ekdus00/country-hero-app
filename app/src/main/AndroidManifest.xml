@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <application
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
@@ -46,14 +53,14 @@
         <activity android:name=".review.activity.ReviewEmployerPost"></activity>
         <activity android:name=".review.activity.ReviewEmployerList"></activity>
         <activity android:name=".review.adatper.ReviewListAdapter"></activity>
-        <activity android:name=".home.activity.HomeApplicant"></activity>
-        <activity android:name=".home.activity.HomeRecruiter"></activity>
+        <activity android:name=".home.activity.HomeWorker"></activity>
+        <activity android:name=".home.activity.HomeOwner"></activity>
         <activity android:name=".job.activity.EmployerData"></activity>
-        <activity android:name=".mypage.activity.ModifyApplicant"></activity>
-        <activity android:name=".mypage.activity.ModifyRecruiter"></activity>
-        <activity android:name=".mypage.activity.MyPageApplicant"></activity>
-        <activity android:name=".mypage.activity.MyPageRecruiter"></activity>
-        <activity android:name=".mypage.activity.ResumePost"></activity>
+        <activity android:name=".mypage.activity.ModifyWorker"></activity>
+        <activity android:name=".mypage.activity.ModifyOwner"></activity>
+        <activity android:name=".mypage.activity.MyPageWorker"></activity>
+        <activity android:name=".mypage.activity.MyPageOwner"></activity>
+        <activity android:name=".resume.activity.ResumePost"></activity>
         <activity android:name=".employer.activity.EmployerStatus"></activity>
         <activity android:name=".employer.activity.EmployerStatusDetail"></activity>
         <activity android:name=".worker.activity.WorkerStatus"></activity>
@@ -73,12 +80,5 @@
         </service>
 
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
 </manifest>

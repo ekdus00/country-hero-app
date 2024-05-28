@@ -1,6 +1,7 @@
 package com.example.hero.login.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -40,43 +41,53 @@ import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import android.os.Bundle;
+import android.os.Handler;
+import androidx.appcompat.app.AppCompatActivity;
+
+
 public class RefreshToken extends AppCompatActivity {
     private ApiService apiService;
     private TokenManager tokenManager;
-    private long accessTokenExpirationTime = 600; // 액세스 토큰 만료 시간 (예: 10분)
+    private Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tokenManager = new TokenManager(this);
         apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
-
-        scheduleTokenRefresh(accessTokenExpirationTime - 30);
+        scheduleTokenRefresh();
     }
 
-    public void refreshToken() {
+    private void scheduleTokenRefresh() {
+        long accessRefreshTime = tokenManager.getAccessExpirationTime() - System.currentTimeMillis() - 30000; // 30 seconds before
+        long refreshLogoutTime = tokenManager.getRefreshExpirationTime() - System.currentTimeMillis(); // At expiration
+
+        handler.postDelayed(this::refreshToken, accessRefreshTime);
+        handler.postDelayed(this::logoutUser, refreshLogoutTime);
+    }
+
+    private void refreshToken() {
         String refreshToken = tokenManager.getRefreshToken();
 
-        if (tokenManager.isRefreshTokenExpired() || refreshToken == null) {
-            // 리프레시 토큰이 만료되면 사용자를 로그아웃 처리
-            Log.e("RefreshToken", "리프레시 토큰 만료");
-            handleLogout();
+        if (refreshToken == null || tokenManager.isRefreshTokenExpired()) {
+            logoutUser();  // If the refresh token is expired or not available, log out the user.
             return;
         }
 
         RefreshTokenRequestDTO dto = new RefreshTokenRequestDTO();
         dto.setRefreshToken(refreshToken);
 
-        //토큰재발급 서버요청
+        // Token refresh server request
         Call<Void> call = apiService.refreshToken(dto);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Headers headers = response.headers();
-                    String newAccessToken = headers.get("Authorization");
+                    String newAccessToken = response.headers().get("Authorization");
 
                     tokenManager.saveAccessTokens(newAccessToken);
-                    scheduleTokenRefresh(accessTokenExpirationTime - 30);
                 } else {
                     Log.e("RefreshToken", "Failed to refresh token: " + response.code());
                 }
@@ -87,21 +98,144 @@ public class RefreshToken extends AppCompatActivity {
                 Log.e("RefreshToken", "Error refreshing token", t);
             }
         });
+
     }
 
-    private void scheduleTokenRefresh(long delayInSeconds) {
-        new android.os.Handler().postDelayed(
-                this::refreshToken,
-                TimeUnit.SECONDS.toMillis(delayInSeconds)
-        );
-    }
-
-    private void handleLogout() {
-        // 로그아웃 처리 로직 (예: 로그인 화면으로 이동)
+    private void logoutUser() {
         tokenManager.clearTokens();
+        tokenManager.clearTokens();
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+        finish();
     }
-
 }
+
+
+//public class RefreshToken extends AppCompatActivity {
+//    private ApiService apiService;
+//    private TokenManager tokenManager;
+//    private Handler handler = new Handler();
+//    private final long refreshTokenCycle = 600 - 30; // 10 minutes minus 30 seconds
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        tokenManager = new TokenManager(this);
+//        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+//        startTokenRefreshCycle();
+//    }
+//
+//    private void startTokenRefreshCycle() {
+//        handler.postDelayed(this::refreshToken, refreshTokenCycle * 1000);
+//    }
+//
+//    private void refreshToken() {
+//        if (tokenManager.isRefreshTokenExpired()) {
+//            Log.e("RefreshToken", "리프레시 토큰 만료");
+//            handleLogout();
+//            return;
+//        }
+//
+//        if (tokenManager.isAccessTokenExpired()) {
+//            String refreshToken = tokenManager.getRefreshToken();
+//
+//            RefreshTokenRequestDTO dto = new RefreshTokenRequestDTO();
+//            dto.setRefreshToken(refreshToken);
+//
+//            //토큰재발급 서버요청
+//            Call<Void> call = apiService.refreshToken(dto);
+//            call.enqueue(new Callback<Void>() {
+//                @Override
+//                public void onResponse(Call<Void> call, Response<Void> response) {
+//                    if (response.isSuccessful()) {
+//                        Headers headers = response.headers();
+//                        String newAccessToken = headers.get("Authorization");
+//
+//                        tokenManager.saveAccessTokens(newAccessToken);
+////                        scheduleTokenRefresh(accessTokenExpirationTime - 30);
+//                    } else {
+//                        Log.e("RefreshToken", "Failed to refresh token: " + response.code());
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Void> call, Throwable t) {
+//                    Log.e("RefreshToken", "Error refreshing token", t);
+//                }
+//            });
+//        }
+//    }
+//
+//    private void handleLogout() {
+//        tokenManager.clearTokens();
+//        // Navigate to login screen
+//    }
+//}
+
+
+//public class RefreshToken extends AppCompatActivity {
+//    private ApiService apiService;
+//    private TokenManager tokenManager;
+//
+//    private long accessTokenExpirationTime = 600; // 액세스 토큰 만료 시간 (예: 10분)
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        tokenManager = new TokenManager(this);
+//        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+//
+//        scheduleTokenRefresh(accessTokenExpirationTime - 30);
+//    }
+//
+//    public void refreshToken() {
+//        String refreshToken = tokenManager.getRefreshToken();
+//
+//        if (tokenManager.isRefreshTokenExpired() || refreshToken == null) {
+//            // 리프레시 토큰이 만료되면 사용자를 로그아웃 처리
+//            Log.e("RefreshToken", "리프레시 토큰 만료");
+//            handleLogout();
+//            return;
+//        }
+//
+//        RefreshTokenRequestDTO dto = new RefreshTokenRequestDTO();
+//        dto.setRefreshToken(refreshToken);
+//
+//        //토큰재발급 서버요청
+//        Call<Void> call = apiService.refreshToken(dto);
+//        call.enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                if (response.isSuccessful()) {
+//                    Headers headers = response.headers();
+//                    String newAccessToken = headers.get("Authorization");
+//
+//                    tokenManager.saveAccessTokens(newAccessToken);
+//                    scheduleTokenRefresh(accessTokenExpirationTime - 30);
+//                } else {
+//                    Log.e("RefreshToken", "Failed to refresh token: " + response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                Log.e("RefreshToken", "Error refreshing token", t);
+//            }
+//        });
+//    }
+//
+//    private void scheduleTokenRefresh(long delayInSeconds) {
+//        new android.os.Handler().postDelayed(
+//                this::refreshToken,
+//                TimeUnit.SECONDS.toMillis(delayInSeconds)
+//        );
+//    }
+//
+//    private void handleLogout() {
+//        // 로그아웃 처리 로직 (예: 로그인 화면으로 이동)
+//        tokenManager.clearTokens();
+//    }
+//
+//}
 
 
 //public class RefreshToken extends AppCompatActivity {

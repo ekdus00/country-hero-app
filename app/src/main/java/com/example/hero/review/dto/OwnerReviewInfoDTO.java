@@ -11,6 +11,9 @@ public class OwnerReviewInfoDTO {
     private LocalDate startWorkDate;
     private LocalDate endWorkDate;
     private String workerName;
+    private Integer reviewId;
+    private Integer jobId;
+    private String targetUserId;
 
     public OwnerReviewInfoDTO(String country, String city, String cropForm, String cropType, String jobName, LocalDate startWorkDate, LocalDate endWorkDate, String workerName) {
         this.jobName = jobName;
@@ -21,6 +24,33 @@ public class OwnerReviewInfoDTO {
         this.cropForm = cropForm;
         this.cropType = cropType;
         this.workerName = workerName;
+//        this.reviewId = reviewId;
+//        this.jobId = jobId;
+//        this.targetUserId = targetUserId;
+    }
+
+    public String getTargetUserId() {
+        return targetUserId;
+    }
+
+    public void setTargetUserId(String targetUserId) {
+        this.targetUserId = targetUserId;
+    }
+
+    public Integer getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Integer jobId) {
+        this.jobId = jobId;
+    }
+
+    public Integer getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(Integer reviewId) {
+        this.reviewId = reviewId;
     }
 
     public String getWorkerName() {

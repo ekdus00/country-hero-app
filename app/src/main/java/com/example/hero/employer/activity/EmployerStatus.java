@@ -1,5 +1,7 @@
 package com.example.hero.employer.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,23 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hero.R;
 import com.example.hero.employer.adapter.EmployerStatusAdapterA;
 import com.example.hero.employer.adapter.EmployerStatusAdapterB;
-import com.example.hero.employer.dto.EmployInfoDTO;
 import com.example.hero.employer.dto.EmployResponseDTO;
+import com.example.hero.employer.dto.JobRequestDTO;
 import com.example.hero.etc.ApiService;
+import com.example.hero.etc.OnButtonClickListenerOwnerStatus;
 import com.example.hero.etc.OnItemClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
-import com.example.hero.home.activity.HomeApplicant;
-import com.example.hero.home.adapter.JobInfoHomeAdapter;
-import com.example.hero.home.adapter.ParticipateInfoHomeAdapter;
-import com.example.hero.home.dto.JobInfoHomeDTO;
-import com.example.hero.home.dto.ParticipateInfoHomeDTO;
-import com.example.hero.home.dto.WorkerHomeDTO;
-import com.example.hero.job.activity.JobDetail;
 import com.example.hero.job.activity.JobPost;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,16 +38,19 @@ public class EmployerStatus extends AppCompatActivity {
     private EmployerStatusAdapterB adapter2;
     private Context context;
     private OnItemClickListener itemClickListener;
+    private OnButtonClickListenerOwnerStatus buttonClickListener;
     private ApiService apiService;
-    private TokenManager tokenManager = new TokenManager(this);
+    private TokenManager tokenManager;
+    private int deadlineJobId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employer_status);
         context = this;
+        tokenManager = new TokenManager(this);
 
-        Button employer_status_job_post = (Button) findViewById(R.id.employer_status_job_post);
-
+        //공고작성
+        Button employer_status_job_post = findViewById(R.id.employer_status_job_post);
         employer_status_job_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +65,7 @@ public class EmployerStatus extends AppCompatActivity {
         employer_status_progress_recyclerView.setLayoutManager(new LinearLayoutManager(this));
         employer_status_deadline_recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter1 = new EmployerStatusAdapterA(new ArrayList<>(), itemClickListener);
+        adapter1 = new EmployerStatusAdapterA(new ArrayList<>(), itemClickListener, buttonClickListener);
         adapter2 = new EmployerStatusAdapterB(new ArrayList<>(), itemClickListener);
 
         employer_status_progress_recyclerView.setAdapter(adapter1);
@@ -80,9 +78,27 @@ public class EmployerStatus extends AppCompatActivity {
             intent.putExtra("jobId", jobId);
             startActivity(intent);
         };
-        
-        //공고수정을위한 조회, 수정, 마감
 
+        //공고 수정, 마감 버튼 이벤트 리스너
+        buttonClickListener = (jobId, buttonType) -> {
+            switch (buttonType) {
+                case MODIFY:
+                    // MODIFY 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "Modify button clicked for jobId: " + jobId);
+                    Intent intent = new Intent(EmployerStatus.this, JobEditPost.class);
+                    intent.putExtra("jobId", jobId);
+                    intent.putExtra("buttonType", "modify");
+                    startActivity(intent);
+                    break;
+                case DEADLINE:
+                    // DEADLINE 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "Deadline button clicked for jobId: " + jobId);
+                    deadlineJobId = jobId;
+                    closeJobPost(deadlineJobId);
+                    break;
+            }
+        };
+        
     }//onCreate()
 
 
@@ -109,18 +125,50 @@ public class EmployerStatus extends AppCompatActivity {
 //                    employer_status_progress_recyclerView.setAdapter(adapter1);
 //                    employer_status_deadline_recyclerView.setAdapter(adapter2);
 
+                    Log.e("tag", "나의공고 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
-                    Log.e("HTTP_ERROR", "Status Code: " + response.code());
+                    Log.e("tag", "나의공고 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "나의공고 서버응답 오류" + response.errorBody().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<EmployResponseDTO> call, Throwable t) {
-                Log.e("NETWORK_ERROR", "Failed to connect to the server", t);
+                Log.e("tag", "나의공고 서버요청 실패", t);
             }
         });
 
     }
+
+    private void closeJobPost(int deadlineJobId) {
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        JobRequestDTO dto = new JobRequestDTO();
+        dto.setJobId(deadlineJobId);
+
+        //공고마감 서버요청
+        Call<Void> call = apiService.closeJobPost(dto);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Intent intent = new Intent(EmployerStatus.this, EmployerStatus.class);
+                    startActivity(intent);
+                    Log.e("tag", "공고마감 서버응답 성공" + response.code() + ", " + response.message());
+                } else {
+                    Log.e("tag", "공고마감 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "공고마감 서버응답 오류" + response.errorBody().toString());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("tag", "공고마감 서버요청 실패", t);
+            }
+        });
+
+    }
+
+
 
 
 

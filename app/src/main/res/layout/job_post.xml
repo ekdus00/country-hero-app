@@ -443,14 +443,14 @@
                                     android:layout_marginLeft="7dp"
                                     android:text="주소검색" />
                                 <TextView
-                                    android:text="(우편번호)"
+                                    android:text="14097"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="5dp"
                                     android:id="@+id/address_postcode"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
                                 <TextView
-                                    android:text="(주소)"
+                                    android:text="경기도 안양시 만안구 성결대학로 53"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="5dp"
                                     android:id="@+id/address_main"

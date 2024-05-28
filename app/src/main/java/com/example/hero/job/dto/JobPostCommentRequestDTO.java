@@ -4,11 +4,6 @@ public class JobPostCommentRequestDTO {
     private Integer jobId;
     private String commentContent;
     private Integer commentParent;
-    public JobPostCommentRequestDTO(Integer jobId, String commentContent, Integer commentParent) {
-        this.jobId = jobId;
-        this.commentContent = commentContent;
-        this.commentParent = commentParent;
-    }
 
     public Integer getJobId() {
         return jobId;

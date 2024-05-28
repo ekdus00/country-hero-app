@@ -8,30 +8,35 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
+import com.example.hero.etc.OnItemClickListener;
+import com.example.hero.home.dto.JobInfoHomeDTO;
 import com.example.hero.home.dto.ParticipateInfoHomeDTO;
 
 import java.util.List;
 
 public class ParticipateInfoHomeAdapter extends RecyclerView.Adapter<ParticipateInfoHomeAdapter.ViewHolder> {
     private List<ParticipateInfoHomeDTO> mData;
+    private OnItemClickListener mListener;
 
-    public ParticipateInfoHomeAdapter(List<ParticipateInfoHomeDTO> data) {
+    public ParticipateInfoHomeAdapter(List<ParticipateInfoHomeDTO> data, OnItemClickListener listener) {
         mData = data;
+        mListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_applicant_status_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ParticipateInfoHomeDTO participateInfo = mData.get(position);
-        holder.applicant_status_address_country.setText(participateInfo.getCountry());
-        holder.applicant_status_address_city.setText(participateInfo.getCity());
-        holder.applicant_status_title.setText(participateInfo.getJobName());
-        holder.applicant_status_approval.setText(participateInfo.getApproval());
+        holder.bind(participateInfo, mListener);
+//        holder.applicant_status_address_country.setText(participateInfo.getCountry());
+//        holder.applicant_status_address_city.setText(participateInfo.getCity());
+//        holder.applicant_status_title.setText(participateInfo.getJobName());
+//        holder.applicant_status_approval.setText(participateInfo.getApproval());
     }
 
     @Override
@@ -44,14 +49,33 @@ public class ParticipateInfoHomeAdapter extends RecyclerView.Adapter<Participate
         TextView applicant_status_address_city;
         TextView applicant_status_title;
         TextView applicant_status_approval;
+        int currentJobId;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             applicant_status_address_country = itemView.findViewById(R.id.applicant_status_address_country);
             applicant_status_address_city = itemView.findViewById(R.id.applicant_status_address_city);
             applicant_status_title = itemView.findViewById(R.id.applicant_status_title);
             applicant_status_approval = itemView.findViewById(R.id.applicant_status_approval);
 
+            itemView.setOnClickListener(v -> {
+                if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(currentJobId);
+                }
+            });
         }
+
+        public void bind(final ParticipateInfoHomeDTO participateInfo, final OnItemClickListener listener) {
+            currentJobId = participateInfo.getJobId();  // 현재 jobId 저장
+
+            applicant_status_title.setText(participateInfo.getJobName());
+            applicant_status_address_country.setText(participateInfo.getCountry());
+            applicant_status_address_city.setText(participateInfo.getCity());
+            applicant_status_approval.setText(participateInfo.getApproval());
+
+        }
+
+
+
     }
 }

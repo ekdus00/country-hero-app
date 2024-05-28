@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,23 +20,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.etc.ApiService;
 import com.example.hero.R;
+import com.example.hero.etc.OnButtonClickListener;
 import com.example.hero.etc.OnItemClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
-import com.example.hero.home.activity.HomeApplicant;
-import com.example.hero.home.adapter.JobInfoHomeAdapter;
-import com.example.hero.home.adapter.ParticipateInfoHomeAdapter;
-import com.example.hero.home.dto.JobInfoHomeDTO;
-import com.example.hero.home.dto.WorkerHomeDTO;
+import com.example.hero.etc.UserManager;
+import com.example.hero.home.activity.HomeWorker;
 import com.example.hero.job.adapter.JobListAdapter;
 
 import com.example.hero.job.dto.JobFilterDTO;
 import com.example.hero.job.dto.JobInfoDTO;
+import com.example.hero.job.dto.ParticipateRequestDTO;
+import com.example.hero.login.activity.Login;
+import com.example.hero.matching.activity.MatchingList;
+import com.example.hero.mypage.activity.MyPageOwner;
+import com.example.hero.mypage.activity.MyPageWorker;
 import com.example.hero.worker.activity.WorkerStatus;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +51,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.Manifest;
-import android.widget.Toast;
 
 
-public class JobList extends AppCompatActivity implements OnItemClickListener {
+public class JobList extends AppCompatActivity {
     RecyclerView recyclerView;
     JobListAdapter adapter;
     private List<JobInfoDTO> jobList = new ArrayList<>();
     private ApiService apiService;
     private OnItemClickListener itemClickListener;
+    private OnButtonClickListener buttonClickListener;
     public TextView job_list_keyword, job_list_sum;
     public Spinner job_list_range;
     private FusedLocationProviderClient locationClient;
@@ -61,19 +68,21 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private Context context;
     private TokenManager tokenManager;
+    private UserManager userManager;
     private String sortType;
+    private int jobId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_list);
         context = this;
-        itemClickListener = this;
         tokenManager = new TokenManager(this);
+        userManager = new UserManager(this);
 
-        recyclerView = findViewById(R.id.job_list_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(JobList.this));
-        adapter = new JobListAdapter(jobList, itemClickListener);
-        recyclerView.setAdapter(adapter);
+        job_list_keyword = findViewById(R.id.job_list_keyword);
+        job_list_sum = findViewById(R.id.job_list_sum);
+
+        processIntentData();
 
         itemClickListener = jobId -> {
             Intent intent = new Intent(JobList.this, JobDetail.class);
@@ -81,15 +90,19 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
             startActivity(intent);
         };
 
-        job_list_keyword = findViewById(R.id.job_list_keyword);
-        job_list_sum = findViewById(R.id.job_list_sum);
+        buttonClickListener = jobId -> {
+            participateRequest(jobId);
+        };
+
+        recyclerView = findViewById(R.id.job_list_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(JobList.this));
+        adapter = new JobListAdapter(jobList, itemClickListener, buttonClickListener);
+        recyclerView.setAdapter(adapter);
 
         //사용자 위도, 경도
         locationClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLocation();
-
-        processIntentData();
-
+        
         //검색어 입력
         Button search_btn = findViewById(R.id.search_btn);
         search_btn.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +111,15 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
                 processIntentData();
             }
         });
+
+        Button search_cancel = findViewById(R.id.search_cancel);
+        search_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                job_list_keyword.setText("");
+            }
+        });
+
 
         //정렬검색
         job_list_range = findViewById(R.id.job_list_range);
@@ -122,7 +144,40 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
             }
         });
 
-    }
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_home) {
+                    if (userManager.getUserType().equals("owner")) {
+                        startActivity(new Intent(JobList.this, HomeWorker.class));
+                        return true;
+                    } else {
+                        startActivity(new Intent(JobList.this, HomeWorker.class));
+                        return true;
+                    }
+
+                } else if (id == R.id.nav_search) {
+                    startActivity(new Intent(JobList.this, JobList.class));
+                    return true;
+                } else if (id == R.id.nav_matching) {
+                    startActivity(new Intent(JobList.this, MatchingList.class));
+                    return true;
+                } else if (id == R.id.nav_mypage) {
+                    if (userManager.getUserType().equals("owner")) {
+                        startActivity(new Intent(JobList.this, MyPageOwner.class));
+                        return true;
+                    } else {
+                        startActivity(new Intent(JobList.this, MyPageWorker.class));
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+    }//onCreate()
 
     public void jobListRequest(JobFilterDTO jobFilterDTO) {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
@@ -134,11 +189,13 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
             public void onResponse(Call<List<JobInfoDTO>> call, Response<List<JobInfoDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
+                    jobList.clear();  // 기존 목록을 지우고
                     jobList.addAll(response.body());  // 새 데이터를 추가
                     adapter.notifyDataSetChanged();
 
                     int itemCount = adapter.getItemCount();
                     job_list_sum.setText(itemCount + "개");
+
                     Log.e("JobList", "공고목록 서버요청 성공");
 
                 } else {
@@ -155,49 +212,82 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
 
     private void processIntentData() {
         Intent intent = getIntent();
-//        if (intent != null) {
-//            String userId = intent.getStringExtra("userId");
-//            String userType = intent.getStringExtra("userType");
-            ArrayList<String> area = intent.getStringArrayListExtra("area");
-            ArrayList<String> crop = intent.getStringArrayListExtra("crop");
-            Integer payLoe = getIntegerFromIntent(intent, "payLoe");
-            Integer payGoe = getIntegerFromIntent(intent, "payGoe");
-            LocalDate startWorkDate = getDateFromIntent(intent, "startWorkDate");
-            LocalDate endWorkDate = getDateFromIntent(intent, "endWorkDate");
 
-            String keyWord = job_list_keyword.getText().toString();
-//            String sortType = job_list_range.getSelectedItem().toString();
+        ArrayList<String> area = intent.getStringArrayListExtra("area");
+        ArrayList<String> crop = intent.getStringArrayListExtra("crop");
+        Integer payGoe = getIntegerFromIntent(intent, "payLoe");
+        Integer payLoe = getIntegerFromIntent(intent, "payGoe");
+        LocalDate startWorkDate = getDateFromIntent(intent, "startWorkDate");
+        LocalDate endWorkDate = getDateFromIntent(intent, "endWorkDate");
 
-            if (job_list_range != null) {
-                sortType = job_list_range.getSelectedItem().toString();
-                // selectedItem을 처리하는 로직
-            } else {
-                sortType = "등록일순";
+        String startWorkDateStr = formatDate(startWorkDate);
+        String endWorkDateStr = formatDate(endWorkDate);
+
+        String keyWord = job_list_keyword.getText().toString();
+
+        if (job_list_range != null) {
+            String selectedItem = job_list_range.getSelectedItem().toString();
+            switch (selectedItem) {
+                case "최신순":
+                    sortType = "latest";
+                    break;
+                case "마감임박순":
+                    sortType = "close";
+                    break;
+                case "거리순":
+                    sortType = "distance";
+                    break;
+                default:
+                    break;
             }
+        } else {
+            sortType = "latest";
+        }
 
-            JobFilterDTO jobFilterDTO = new JobFilterDTO();
+        JobFilterDTO jobFilterDTO = new JobFilterDTO();
 
-//            jobFilterDTO.setUserId(userId);
-//            jobFilterDTO.setUserType(userType);
-            jobFilterDTO.setArea(area);
-            jobFilterDTO.setCrop(crop);
-            jobFilterDTO.setStartWorkDate(startWorkDate);
-            jobFilterDTO.setEndWorkDate(endWorkDate);
-            jobFilterDTO.setPayLoe(payLoe);
-            jobFilterDTO.setPayGoe(payGoe);
+        jobFilterDTO.setArea(area);
+        jobFilterDTO.setCrop(crop);
+        jobFilterDTO.setStartWorkDate(startWorkDateStr);
+        jobFilterDTO.setEndWorkDate(endWorkDateStr);
+        jobFilterDTO.setPayLoe(payLoe);
+        jobFilterDTO.setPayGoe(payGoe);
+        jobFilterDTO.setKeyWord(keyWord);
+        jobFilterDTO.setSortType(sortType);
+        jobFilterDTO.setUserLatitude(userLatitude);
+        jobFilterDTO.setUserLongitude(userLongitude);
 
-            jobFilterDTO.setKeyWord(keyWord);
-            jobFilterDTO.setSortType(sortType);
-            jobFilterDTO.setUserLatitude(userLatitude);
-            jobFilterDTO.setUserLongitude(userLongitude);
+        Log.d("JobFilterDTO", "Filter Data: " + jobFilterDTO.toString());
 
-            jobListRequest(jobFilterDTO);
+        jobListRequest(jobFilterDTO);
 
-//            Gson gson = new Gson();
-//            String json = gson.toJson(jobFilterDTO);
-//            RequestBody requestBody = RequestBody.create(json, okhttp3.MediaType.parse("application/json; charset=utf-8"));
-//            JobListSend(requestBody);
-//        }
+    }
+
+    private void participateRequest(int jobId) {
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        ParticipateRequestDTO dto = new ParticipateRequestDTO();
+        dto.setJobId(jobId);
+
+        //공고지원 서버요청
+        Call<Void> call = apiService.JobDetailParticipate(dto);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Intent intent = new Intent(JobList.this, WorkerStatus.class);
+                    startActivity(intent);
+
+                } else {
+                    Log.e("api", "지원하기 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "지원하기 서버응답 오류" + response.errorBody().toString());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("api", "지원하기 서버요청 오류", t);
+            }
+        });
     }
 
     private Integer getIntegerFromIntent(Intent intent, String key) {
@@ -224,6 +314,14 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
         return null;
     }
 
+    private String formatDate(LocalDate date) {
+        if (date == null) {
+            return null;  // 또는 기본값으로 적절한 문자열을 반환할 수 있습니다.
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(formatter);
+    }
+
     private void fetchLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // 권한 요청
@@ -237,14 +335,6 @@ public class JobList extends AppCompatActivity implements OnItemClickListener {
                 userLongitude = location.getLongitude();
             }
         });
-    }
-
-    @Override
-    public void onItemClick(int jobId) {
-        Toast.makeText(this, "Job ID: " + jobId + " clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(JobList.this, JobDetail.class);
-        intent.putExtra("jobId", jobId);
-        startActivity(intent);
     }
 
 

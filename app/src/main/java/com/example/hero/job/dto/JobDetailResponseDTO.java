@@ -30,7 +30,7 @@ public class JobDetailResponseDTO {
     private String cropForm;
     private Double workLatitude; //사용자 위도
     private Double workLongitude; //사용자 경도
-    private byte[] jobImgFile;
+    private String jobImgFile;
     private Integer cropLevel;
 
 
@@ -38,7 +38,7 @@ public class JobDetailResponseDTO {
                                 String startWorkDate, String endWorkDate, String startWorkTime, String endWorkTime,
                                 String workDay, Integer pay, String startRecruitDate, String endRecruitDate,
                                 Integer recruitCount, String cropForm, String cropType, Integer age, String career,
-                                String spec, String jobIntro, String workAddress, byte[] jobImgFile, Double workLatitude,
+                                String spec, String jobIntro, String workAddress, String jobImgFile, Double workLatitude,
                                 Double workLongitude, Integer cropLevel) {
         this.userName = userName;
         this.jobName = jobName;
@@ -258,11 +258,11 @@ public class JobDetailResponseDTO {
         this.workAddressDetail = workAddressDetail;
     }
 
-    public byte[] getJobImgFile() {
+    public String getJobImgFile() {
         return jobImgFile;
     }
 
-    public void setJobImgFile(byte[] jobImgFile) {
+    public void setJobImgFile(String jobImgFile) {
         this.jobImgFile = jobImgFile;
     }
 

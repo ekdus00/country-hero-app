@@ -13,14 +13,14 @@ public class JobPostCreateRequestDTO {
     private String jobName; //공고 명
     private String country; //시/도
     private String city; //시/군/구
-    private LocalDate startWorkDate; //작업 시작일
-    private LocalDate endWorkDate; //작업 마감일
-    private LocalTime startWorkTime; //작업 시작시간
-    private LocalTime endWorkTime; //작업 마감 시간
+    private String startWorkDate; //작업 시작일
+    private String endWorkDate; //작업 마감일
+    private String startWorkTime; //작업 시작시간
+    private String endWorkTime; //작업 마감 시간
     private String workDay; //작업 요일
     private Integer pay; //급여
-    private LocalDate startRecruitDate; //모집 시작일
-    private LocalDate endRecruitDate; //모집 마감일
+    private String startRecruitDate; //모집 시작일
+    private String endRecruitDate; //모집 마감일
     private Integer recruitCount; //모집 인원
     private String cropForm; //작물 형태
     private String cropType; //농작물 품목
@@ -33,8 +33,8 @@ public class JobPostCreateRequestDTO {
     private MultipartBody.Part uploadImgFile; //이미지 파일
 
     public JobPostCreateRequestDTO(String userId, String userType, String jobName, String country, String city,
-                                   LocalDate startWorkDate, LocalDate endWorkDate, LocalTime startWorkTime, LocalTime endWorkTime,
-                                   String workDay, Integer pay, LocalDate startRecruitDate, LocalDate endRecruitDate,
+                                   String startWorkDate, String endWorkDate, String startWorkTime, String endWorkTime,
+                                   String workDay, Integer pay, String startRecruitDate, String endRecruitDate,
                                    Integer recruitCount, String cropForm, String cropType, Integer age, String career,
                                    String spec, String jobIntro, String workAddress, MultipartBody.Part uploadImgFile) {
         this.userId = userId;
@@ -104,35 +104,35 @@ public class JobPostCreateRequestDTO {
         this.city = city;
     }
 
-    public LocalDate getStartWorkDate() {
+    public String getStartWorkDate() {
         return startWorkDate;
     }
 
-    public void setStartWorkDate(LocalDate startWorkDate) {
+    public void setStartWorkDate(String startWorkDate) {
         this.startWorkDate = startWorkDate;
     }
 
-    public LocalDate getEndWorkDate() {
+    public String getEndWorkDate() {
         return endWorkDate;
     }
 
-    public void setEndWorkDate(LocalDate endWorkDate) {
+    public void setEndWorkDate(String endWorkDate) {
         this.endWorkDate = endWorkDate;
     }
 
-    public LocalTime getStartWorkTime() {
+    public String getStartWorkTime() {
         return startWorkTime;
     }
 
-    public void setStartWorkTime(LocalTime startWorkTime) {
+    public void setStartWorkTime(String startWorkTime) {
         this.startWorkTime = startWorkTime;
     }
 
-    public LocalTime getEndWorkTime() {
+    public String getEndWorkTime() {
         return endWorkTime;
     }
 
-    public void setEndWorkTime(LocalTime endWorkTime) {
+    public void setEndWorkTime(String endWorkTime) {
         this.endWorkTime = endWorkTime;
     }
 
@@ -152,19 +152,19 @@ public class JobPostCreateRequestDTO {
         this.pay = pay;
     }
 
-    public LocalDate getStartRecruitDate() {
+    public String getStartRecruitDate() {
         return startRecruitDate;
     }
 
-    public void setStartRecruitDate(LocalDate startRecruitDate) {
+    public void setStartRecruitDate(String startRecruitDate) {
         this.startRecruitDate = startRecruitDate;
     }
 
-    public LocalDate getEndRecruitDate() {
+    public String getEndRecruitDate() {
         return endRecruitDate;
     }
 
-    public void setEndRecruitDate(LocalDate endRecruitDate) {
+    public void setEndRecruitDate(String endRecruitDate) {
         this.endRecruitDate = endRecruitDate;
     }
 

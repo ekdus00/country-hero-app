@@ -10,43 +10,53 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class EmployerDataAdapter extends RecyclerView.Adapter<EmployerDataAdapter.ViewHolder>{
 
-    private ArrayList<String> localDataSet;
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textView = itemView.findViewById(R.id.employer_comment_writer);
-        }
-        public TextView getTextView() {
-            return textView;
-        }
-    }
-    public EmployerDataAdapter (ArrayList<String> dataSet) {
-        localDataSet = dataSet;
-    }
+public class EmployerDataAdapter extends RecyclerView.Adapter<com.example.hero.job.adapter.EmployerDataAdapter.ViewHolder> {
+    private List<String> mData;
 
-    @NonNull
-    @Override
-    public EmployerDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.employer_comment_item, parent, false);
-        EmployerDataAdapter.ViewHolder viewHolder = new EmployerDataAdapter.ViewHolder(view);
-
-        return viewHolder;
+    public EmployerDataAdapter(List<String> data) {
+        mData = data;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EmployerDataAdapter.ViewHolder holder, int position) {
-        String text = localDataSet.get(position);
-        holder.textView.setText(text);
+    public com.example.hero.job.adapter.EmployerDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.employer_comment_item, parent, false);
+        return new com.example.hero.job.adapter.EmployerDataAdapter.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(com.example.hero.job.adapter.EmployerDataAdapter.ViewHolder holder, int position) {
+//        String employerComment = mData.get(position);
+//        holder.bind(participateInfo);
+
     }
 
     @Override
     public int getItemCount() {
-        return localDataSet.size();
+        return mData.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView employer_comment_writer;
+        TextView employer_comment;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            employer_comment_writer = itemView.findViewById(R.id.employer_comment_writer);
+            employer_comment = itemView.findViewById(R.id.employer_comment);
+
+        }
+
+        public void bind(final String employerComment) {
+//            currentJobId = participateInfo.getJobId();  // 현재 jobId 저장
+//
+//            applicant_status_title.setText(participateInfo.getJobName());
+//            applicant_status_address_country.setText(participateInfo.getCountry());
+
+        }
+
+
     }
 }

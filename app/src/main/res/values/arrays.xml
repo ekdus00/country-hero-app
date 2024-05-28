@@ -65,6 +65,15 @@
     </string-array>
 
     <string-array name="join_spinner">
+        <item>1981</item>
+        <item>1982</item>
+        <item>1983</item>
+        <item>1984</item>
+        <item>1985</item>
+        <item>1986</item>
+        <item>1987</item>
+        <item>1988</item>
+        <item>1989</item>
         <item>1990</item>
         <item>1991</item>
         <item>1992</item>
@@ -97,9 +106,9 @@
     </string-array>
 
     <string-array name="job_list_range">
-        <item>등록일순</item>
-        <item>내위치순</item>
-        <item>마감일순</item>
+        <item>최신순</item>
+        <item>거리순</item>
+        <item>마감임박순</item>
     </string-array>
 
 </resources>

@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
+                    android:layout_width="370dp"
                     android:layout_height="300dp">
                     <LinearLayout
                         android:orientation="vertical"
@@ -38,7 +38,7 @@
                             android:id="@+id/worker_status_apply_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
+                            android:padding="3dp"
                             android:background="#F0F0F0"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -68,7 +68,7 @@
                             android:id="@+id/worker_status_approval_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
+                            android:padding="3dp"
                             android:background="#F0F0F0"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -98,7 +98,7 @@
                             android:id="@+id/worker_status_defer_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
+                            android:padding="3dp"
                             android:background="#F0F0F0"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -128,7 +128,7 @@
                             android:id="@+id/worker_status_past_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
+                            android:padding="3dp"
                             android:background="#F0F0F0"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>

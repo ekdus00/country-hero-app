@@ -32,21 +32,14 @@ public class ReviewEmployerPost extends AppCompatActivity {
     private EditText review_post_editText;
     private Context context;
     private ApiService apiService;
-    private TokenManager tokenManager = new TokenManager(this);
-
+    private TokenManager tokenManager;
+    private int reviewJobId;
+    private String reviewTargetId;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review_employer_post);
         context = this;
-
-        //뒤로가기
-        Button btn_Back = findViewById(R.id.btn_back);
-        btn_Back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        tokenManager = new TokenManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,7 +59,10 @@ public class ReviewEmployerPost extends AppCompatActivity {
         score3 = getScoreFromRadioGroup(radioGroupQ3);
         score4 = getScoreFromRadioGroup(radioGroupQ4);
 
-        //상호평가완료 리스너
+        reviewJobId = getIntent().getIntExtra("jobId", 0);
+        reviewTargetId = getIntent().getStringExtra("targetUserId");
+
+        //상호평가 완료
         Button review_post_send = findViewById(R.id.review_employer_post_send);
         review_post_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +71,21 @@ public class ReviewEmployerPost extends AppCompatActivity {
             }
         });
 
-        //구직자차단 리스너
+        //구직자차단
         Button review_employer_post_block = findViewById(R.id.review_employer_post_block);
         review_employer_post_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fetchDataBlock();
+            }
+        });
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -98,10 +103,9 @@ public class ReviewEmployerPost extends AppCompatActivity {
         dto.setReviewo3Score(score3);
         dto.setReviewo4Score(score4);
 
-        //임시
-        dto.setJobId(20);
-        dto.setTargetUserType("구직자");
-        dto.setTargetUserId("id");
+        dto.setJobId(reviewJobId);
+        dto.setTargetUserType("worker");
+        dto.setTargetUserId(reviewTargetId);
 
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
@@ -111,16 +115,18 @@ public class ReviewEmployerPost extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.e("구인자 리뷰 포스트 성공", "Status Code: " + response.code());
-
+                    Intent intent = new Intent(ReviewEmployerPost.this, ReviewEmployerList.class);
+                    startActivity(intent);
+                    Log.e("tag", "상호평가(구인자) 서버요청 성공" + response.code());
                 } else {
-                    Log.e("HTTP_ERROR", "Status Code: " + response.code());
+                    Log.e("tag", "상호평가(구인자) 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "상호평가(구인자) 서버응답 오류" + response.errorBody().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("NETWORK_ERROR", "Failed to connect to the server", t);
+                Log.e("tag", "상호평가(구인자) 서버요청 실패", t);
             }
         });
 
@@ -131,7 +137,7 @@ public class ReviewEmployerPost extends AppCompatActivity {
 
         BlockRequestDTO dto = new BlockRequestDTO();
         dto.setTargetUserType("worker");
-        dto.setTargetUserId("id");
+        dto.setTargetUserId(reviewTargetId);
 
         //구직자차단 서버요청
         Call<Void> call = apiService.ReviewBlock(dto);
@@ -139,9 +145,9 @@ public class ReviewEmployerPost extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-//                    Void ResponseDTO = response.body();
-                    //지원현황으로 이동
-
+                    Intent intent = new Intent(ReviewEmployerPost.this, ReviewEmployerList.class);
+                    startActivity(intent);
+                    Log.e("tag", "구직자차단 서버요청 성공" + response.code());
                 } else {
                     Log.e("api", "구직자차단 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("api", "구직자차단 서버응답 오류" + response.errorBody().toString());

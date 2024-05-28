@@ -1,5 +1,6 @@
 package com.example.hero.etc;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -19,6 +20,9 @@ public class RetrofitClient {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient client = new OkHttpClient.Builder()
+                    .readTimeout(300, TimeUnit.SECONDS)
+                    .writeTimeout(300, TimeUnit.SECONDS)
+                    .connectTimeout(300, TimeUnit.SECONDS)
                     .addInterceptor(loggingInterceptor)
                     .addInterceptor(new AuthInterceptor(tokenManager))
                     .build();

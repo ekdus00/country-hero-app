@@ -34,20 +34,15 @@ public class ReviewPost extends AppCompatActivity {
     private EditText review_post_editText;
     private Context context;
     private ApiService apiService;
-    private TokenManager tokenManager = new TokenManager(this);
+    private TokenManager tokenManager;
+    private int reviewJobId;
+    private String reviewTargetId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review_post);
         context = this;
-
-        Button btn_Back = findViewById(R.id.btn_back);
-        btn_Back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        tokenManager = new TokenManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,11 +60,24 @@ public class ReviewPost extends AppCompatActivity {
         score2 = getScoreFromRadioGroup(radioGroupQ2);
         score3 = getScoreFromRadioGroup(radioGroupQ3);
 
+        reviewJobId = getIntent().getIntExtra("jobId", 0);
+        reviewTargetId = getIntent().getStringExtra("targetUserId");
+
+        //상호평가 완료
         Button review_post_send = findViewById(R.id.review_post_send);
         review_post_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reviewPostRequest();
+            }
+        });
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -85,11 +93,10 @@ public class ReviewPost extends AppCompatActivity {
         dto.setReview1Score(score1);
         dto.setReview2Score(score2);
         dto.setReview3Score(score3);
-        
-        //임시
-        dto.setJobId(12);
-        dto.setTargetUserType("구인자");
-        dto.setTargetUserId("id");
+
+        dto.setJobId(reviewJobId);
+        dto.setTargetUserId(reviewTargetId);
+        dto.setTargetUserType("owner");
 
         //상호평가(구직자) 서버요청
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
@@ -98,16 +105,17 @@ public class ReviewPost extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.e("구직자 리뷰 포스트 성공", "Status Code: " + response.code());
-
+                    Intent intent = new Intent(ReviewPost.this, ReviewList.class);
+                    startActivity(intent);
+                    Log.e("tag", "상호평가(구직자) 서버요청 성공" + response.code());
                 } else {
-                    Log.e("HTTP_ERROR", "Status Code: " + response.code());
+                    Log.e("tag", "상호평가(구직자) 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "상호평가(구직자) 서버응답 오류" + response.errorBody().toString());
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("NETWORK_ERROR", "Failed to connect to the server", t);
+                Log.e("tag", "상호평가(구직자) 서버요청 실패", t);
             }
         });
 

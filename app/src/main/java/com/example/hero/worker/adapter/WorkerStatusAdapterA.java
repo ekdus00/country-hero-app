@@ -32,11 +32,11 @@ public class WorkerStatusAdapterA extends RecyclerView.Adapter<com.example.hero.
         this.buttonClickListener = buttonClickListener;
     }
 
-    public void updateData(List<ParticipateInfoDTO> newData) {
-        mData.clear();
-        mData.addAll(newData);
-        notifyDataSetChanged();
-    }
+//    public void updateData(List<ParticipateInfoDTO> newData) {
+//        mData.clear();
+//        mData.addAll(newData);
+//        notifyDataSetChanged();
+//    }
 
     @Override
     public com.example.hero.worker.adapter.WorkerStatusAdapterA.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -77,47 +77,18 @@ public class WorkerStatusAdapterA extends RecyclerView.Adapter<com.example.hero.
             salary = itemView.findViewById(R.id.salary);
 
             worker_status_cancel = itemView.findViewById(R.id.worker_status_cancel);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onItemClick(currentJobId);
                 }
             });
 
-//            itemView.setOnClickListener(v -> {
-//                if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    listener.onItemClick(currentJobId);
-//                }
-//            });
-
-            worker_status_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            worker_status_cancel.setOnClickListener(v -> {
+                if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     buttonClickListener.onButtonClick(currentJobId);
                 }
             });
-
-//            worker_status_cancel.setOnClickListener(v -> {
-//                int jobId = mData.get(getAdapterPosition()).getJobId();
-//                buttonClickListener.onButtonClick(jobId);
-//            });
-
-//            itemView.setOnClickListener(v -> {
-//                int position = getAdapterPosition();
-//                if (listener != null && position != RecyclerView.NO_POSITION) {
-//                    listener.onItemClick(position);
-//                }
-//            });
-
-
-//            worker_status_cancel.setOnClickListener(v -> {
-//                int position = getAdapterPosition();
-//                if (position != RecyclerView.NO_POSITION) {
-//                    buttonClickListener.onButtonClick(currentJobId);
-//                }
-//            });
-
-
         }
 
         public void bind(final ParticipateInfoDTO participateInfoDTO, final OnItemClickListener listener, final OnButtonClickListener buttonClickListener) {
@@ -129,21 +100,10 @@ public class WorkerStatusAdapterA extends RecyclerView.Adapter<com.example.hero.
             cropType.setText(participateInfoDTO.getCropForm());
             title.setText(participateInfoDTO.getCropType());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart = participateInfoDTO.getStartWorkDate().format(formatter);
-            work_period_start.setText(formattedStart);
-
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart2 = participateInfoDTO.getEndWorkDate().format(formatter2);
-            work_period_end.setText(formattedStart2);
-
-            DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart3 = participateInfoDTO.getStartRecruitDate().format(formatter3);
-            recruitment_period_start.setText(formattedStart3);
-
-            DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart4 = participateInfoDTO.getEndRecruitDate().format(formatter4);
-            recruitment_period_end.setText(formattedStart4);
+            work_period_start.setText(participateInfoDTO.getStartWorkDate());
+            work_period_end.setText(participateInfoDTO.getEndWorkDate());
+            recruitment_period_start.setText(participateInfoDTO.getStartRecruitDate());
+            recruitment_period_end.setText(participateInfoDTO.getEndRecruitDate());
 
             //협의 or 일급
 //            type.setText(participateInfoDTO.getCropType());

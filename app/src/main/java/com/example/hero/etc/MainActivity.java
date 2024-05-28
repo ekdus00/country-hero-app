@@ -1,45 +1,28 @@
 package com.example.hero.etc;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.example.hero.employer.activity.EmployerStatusDetail;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.job.activity.JobPost;
-import com.example.hero.login.activity.Join;
 import com.example.hero.login.activity.Login;
 import com.example.hero.login.activity.RefreshToken;
 import com.example.hero.login.activity.UserTypeSet;
-import com.example.hero.mypage.activity.MyPageApplicant;
-import com.example.hero.mypage.activity.MyPageRecruiter;
+import com.example.hero.mypage.activity.MyPageOwner;
 import com.example.hero.R;
 import com.example.hero.review.activity.ReviewEmployerPost;
 import com.example.hero.review.activity.ReviewPost;
-import com.example.hero.home.activity.HomeApplicant;
-import com.example.hero.home.activity.HomeRecruiter;
+import com.example.hero.home.activity.HomeWorker;
+import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.job.activity.JobDetail;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
     EditText editText;
@@ -66,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         homeOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), HomeRecruiter.class);
+                Intent intent = new Intent(getApplicationContext(), HomeOwner.class);
                 startActivity(intent);
             }
         });
@@ -74,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         homeWorker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), HomeApplicant.class);
+                Intent intent = new Intent(getApplicationContext(), HomeWorker.class);
                 startActivity(intent);
             }
         });
@@ -146,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         my1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MyPageRecruiter.class);
+                Intent intent = new Intent(getApplicationContext(), MyPageOwner.class);
                 startActivity(intent);
             }
         });

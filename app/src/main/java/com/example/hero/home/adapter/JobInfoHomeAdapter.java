@@ -35,20 +35,6 @@ public class JobInfoHomeAdapter extends RecyclerView.Adapter<JobInfoHomeAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         JobInfoHomeDTO jobInfo = mData.get(position);
         holder.bind(jobInfo, mListener); // bind 메소드 사용
-
-//        holder.home_list_title.setText(jobInfo.getJobName());
-//        holder.home_list_address_country.setText(jobInfo.getCountry());
-//        holder.home_list_address_city.setText(jobInfo.getCity());
-//        holder.home_list_item_crop_form.setText(jobInfo.getCropForm());
-//        holder.home_list_item_crop_type.setText(jobInfo.getCropType());
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        String formattedStart = jobInfo.getStartWorkDate().format(formatter);
-//        holder.home_list_work_period_start.setText(formattedStart);
-//
-//        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        String formattedStart2 = jobInfo.getEndWorkDate().format(formatter2);
-//        holder.home_list_work_period_end.setText(formattedStart2);
     }
     @Override
     public int getItemCount() {
@@ -86,18 +72,7 @@ public class JobInfoHomeAdapter extends RecyclerView.Adapter<JobInfoHomeAdapter.
             home_list_address_city.setText(jobInfo.getCity());
             home_list_item_crop_form.setText(jobInfo.getCropForm());
             home_list_item_crop_type.setText(jobInfo.getCropType());
-
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//            String formattedStart = jobInfo.getStartWorkDate().format(formatter);
-//            home_list_work_period_start.setText(formattedStart);
-
             home_list_work_period_start.setText(jobInfo.getStartWorkDate());
-
-
-//            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//            String formattedStart2 = jobInfo.getEndWorkDate().format(formatter2);
-//            home_list_work_period_end.setText(formattedStart2);
-
             home_list_work_period_end.setText(jobInfo.getEndWorkDate());
 
         }

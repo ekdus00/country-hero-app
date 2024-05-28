@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
 import com.example.hero.etc.OnButtonClickListener;
+import com.example.hero.etc.OnButtonClickListenerReviewStatus;
 import com.example.hero.review.dto.OwnerReviewInfoDTO;
 import com.example.hero.review.dto.WorkerReviewInfoDTO;
 
@@ -21,9 +22,9 @@ import java.util.List;
 
 public class ReviewEmployerListAdapter extends RecyclerView.Adapter<ReviewEmployerListAdapter.ViewHolder> {
     private List<OwnerReviewInfoDTO> mData;
-    private OnButtonClickListener mListener;
+    private OnButtonClickListenerReviewStatus mListener;
 
-    public ReviewEmployerListAdapter(List<OwnerReviewInfoDTO> data, OnButtonClickListener listener) {
+    public ReviewEmployerListAdapter(List<OwnerReviewInfoDTO> data, OnButtonClickListenerReviewStatus listener) {
         mData = data;
         mListener = listener;
     }
@@ -49,7 +50,9 @@ public class ReviewEmployerListAdapter extends RecyclerView.Adapter<ReviewEmploy
         TextView work_period_start, work_period_end, review_employer_list_name;
         int currentJobId;
         Button review_post_btn;
-        public ViewHolder(View itemView, OnButtonClickListener listener) {
+        String targetUserId;
+
+        public ViewHolder(View itemView, OnButtonClickListenerReviewStatus listener) {
             super(itemView);
             address_country = itemView.findViewById(R.id.address_country);
             address_city = itemView.findViewById(R.id.address_city);
@@ -65,13 +68,14 @@ public class ReviewEmployerListAdapter extends RecyclerView.Adapter<ReviewEmploy
 
             review_post_btn.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onButtonClick(currentJobId);
+                    listener.OnButtonClickListenerReviewStatus(currentJobId, targetUserId);
                 }
             });
         }
 
-        public void bind(final OwnerReviewInfoDTO jobInfo, final OnButtonClickListener listener) {
-//            currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
+        public void bind(final OwnerReviewInfoDTO jobInfo, final OnButtonClickListenerReviewStatus listener) {
+            currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
+            targetUserId = jobInfo.getTargetUserId();
 
             address_country.setText(jobInfo.getJobName());
             address_city.setText(jobInfo.getCountry());

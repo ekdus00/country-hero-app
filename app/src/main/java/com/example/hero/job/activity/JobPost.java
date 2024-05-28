@@ -1,7 +1,5 @@
 package com.example.hero.job.activity;
 
-//import static com.example.hero.job.activity.JobList.requestQueue;
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +29,7 @@ import com.example.hero.R;
 import com.example.hero.etc.GsonLocalDateAdapter;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.etc.UserManager;
 import com.example.hero.job.dto.JobFilterDTO;
 import com.example.hero.job.dto.JobPostCreateRequestDTO;
 import com.google.gson.Gson;
@@ -59,106 +58,59 @@ import retrofit2.Response;
 
 public class JobPost extends AppCompatActivity {
     private Context context;
-    private TextView textView_Work_Start;
-    private TextView textView_Work_End;
-    public ImageButton btn_Work_Start;
-    public ImageButton btn_Work_End;
-    private TextView textView_Recruit_Start;
-    private TextView textView_Recruit_End;
-    public ImageButton btn_Recruit_Start;
-    public ImageButton btn_Recruit_End;
+    private TextView job_post_title,
+            textView_date_start, textView_date_end, work_salary_value, textView_recruit_start, textView_recruit_end, textView_recruit_number,
+            textView_recruit_age, textView_recruit_introduction, textview_work_prefer, address_detail_editView;
+    public ImageButton btn_Work_Start, btn_Work_End, btn_Recruit_Start, btn_Recruit_End;
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView post_ImageView;
-
     private Button btn_send;
-
-    public TextView job_post_title;
-    public TextView textView_date_start;
-    public TextView textView_date_end;
-    public TextView work_salary_value;
-    public TextView textView_recruit_start;
-    public TextView textView_recruit_end;
-    public TextView textView_recruit_number;
-    public TextView textView_recruit_age;
-    public TextView textView_recruit_introduction;
-    public TextView textview_work_prefer;
-
-    public TextView address_main;
-    public TextView address_postcode;
-
-    public TextView address_detail_editView;
-
-    String selectedSalaryText = "";
-    String selectedPreferText = "";
-
-    private Spinner spinnerProvince;
-    private Spinner spinnerCity;
-    private Spinner working_time_start;
-    private Spinner working_time_end;
-    private Spinner work_crop1;
-    private Spinner work_crop2;
-
-    String workStartTime = "";
-    String workEndTime = "";
-
+    public TextView address_main, address_postcode;
+    private Spinner spinnerProvince, spinnerCity, working_time_start, working_time_end, work_crop1, work_crop2;
     private Uri imageUri;
-    private TokenManager tokenManager = new TokenManager(this);
-
+    private TokenManager tokenManager;
+    private UserManager userManager;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_post);
         context = this;
-
-        Button btn_Back = findViewById(R.id.btn_back);
-        btn_send = findViewById(R.id.job_post_send);
+        tokenManager = new TokenManager(this);
+        userManager = new UserManager(this);
 
         btn_Work_Start = findViewById(R.id.start_work);
         btn_Work_End = findViewById(R.id.end_work);
-
-        textView_Work_Start = findViewById(R.id.textView_date_start);
-        textView_Work_End = findViewById(R.id.textView_date_end);
         btn_Recruit_Start = findViewById(R.id.start_recruit);
         btn_Recruit_End = findViewById(R.id.end_recruit);
-        textView_Recruit_Start = findViewById(R.id.textView_recruit_start);
-        textView_Recruit_End = findViewById(R.id.textView_recruit_end);
-
-        post_ImageView = findViewById(R.id.post_image_imageView);
-
-        spinnerProvince = findViewById(R.id.spinner_province);
-        spinnerCity= findViewById(R.id.spinner_city);
 
         job_post_title = findViewById(R.id.job_post_title);
 
         textView_date_start = findViewById(R.id.textView_date_start);
         textView_date_end = findViewById(R.id.textView_date_end);
-
-        working_time_start = findViewById(R.id.working_time_start);
-        working_time_end = findViewById(R.id.working_time_end);
-
-        work_salary_value = findViewById(R.id.work_salary_value);
-
         textView_recruit_start = findViewById(R.id.textView_recruit_start);
         textView_recruit_end = findViewById(R.id.textView_recruit_end);
 
-        textView_recruit_number = findViewById(R.id.textView_recruit_number);
-        textview_work_prefer = findViewById(R.id.textview_work_prefer);
-
+        working_time_start = findViewById(R.id.working_time_start);
+        working_time_end = findViewById(R.id.working_time_end);
+        spinnerProvince = findViewById(R.id.spinner_province);
+        spinnerCity= findViewById(R.id.spinner_city);
         work_crop1 = findViewById(R.id.work_crop1);
         work_crop2 = findViewById(R.id.work_crop2);
 
+        work_salary_value = findViewById(R.id.work_salary_value);
+        textView_recruit_number = findViewById(R.id.textView_recruit_number);
+        textview_work_prefer = findViewById(R.id.textview_work_prefer);
         textView_recruit_age = findViewById(R.id.textView_recruit_age);
         textView_recruit_introduction = findViewById(R.id.textView_recruit_introduction);
 
         address_detail_editView= findViewById(R.id.address_detail_editView);
 
-        btn_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jobPostSend();
-            }
-        });
+        post_ImageView = findViewById(R.id.post_image_imageView);
+
+        address_postcode = findViewById(R.id.address_postcode);
+        address_main = findViewById(R.id.address_main);
 
         spinnerProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -206,6 +158,17 @@ public class JobPost extends AppCompatActivity {
 //            startActivityForResult(intent, AddressActivity.ADDRESS_REQUEST_CODE);
 //        });
 
+        //공고작성 완료
+        btn_send = findViewById(R.id.job_post_send);
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jobPostSend();
+            }
+        });
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
         btn_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,25 +179,25 @@ public class JobPost extends AppCompatActivity {
         btn_Work_Start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(textView_Work_Start);
+                showDatePickerDialog(textView_date_start);
             }
         });
         btn_Work_End.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(textView_Work_End);
+                showDatePickerDialog(textView_date_end);
             }
         });
         btn_Recruit_Start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(textView_Recruit_Start);
+                showDatePickerDialog(textView_recruit_start);
             }
         });
         btn_Recruit_End.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(textView_Recruit_End);
+                showDatePickerDialog(textView_recruit_end);
             }
         });
 
@@ -249,26 +212,25 @@ public class JobPost extends AppCompatActivity {
         String text_workCity = spinnerCity.getSelectedItem().toString();
 
         //작업기간 데이트피커
-
         String text_dateStart = textView_date_start.getText().toString();
-        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate startWorkDate = LocalDate.parse(text_dateStart, formatter1);
+//        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+//        LocalDate startWorkDate = LocalDate.parse(text_dateStart, formatter1);
 
         String text_dateEnd = textView_date_end.getText().toString();
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate endWorkDate = LocalDate.parse(text_dateEnd, formatter2);
+//        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+//        LocalDate endWorkDate = LocalDate.parse(text_dateEnd, formatter2);
 
         //작업요일 라디오
         String text_workDay = getWorkDay();
 
         //작업시간 스피너
         String text_workTimeStart = working_time_start.getSelectedItem().toString();
-        DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime startWorkTime = LocalTime.parse(text_workTimeStart, formatter3);
+//        DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("HH:mm");
+//        LocalTime startWorkTime = LocalTime.parse(text_workTimeStart, formatter3);
 
         String text_workTimeEnd = working_time_end.getSelectedItem().toString();
-        DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime endWorkTime = LocalTime.parse(text_workTimeEnd, formatter4);
+//        DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("HH:mm");
+//        LocalTime endWorkTime = LocalTime.parse(text_workTimeEnd, formatter4);
 
         //급여 에딧
         String text_salaryValue = work_salary_value.getText().toString();
@@ -276,12 +238,12 @@ public class JobPost extends AppCompatActivity {
 
         //모집기간 데이트피커
         String text_recruitStart = textView_recruit_start.getText().toString();
-        DateTimeFormatter formatter5 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate startRecruitDate = LocalDate.parse(text_recruitStart, formatter5);
+//        DateTimeFormatter formatter5 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+//        LocalDate startRecruitDate = LocalDate.parse(text_recruitStart, formatter5);
 
         String text_recruitEnd = textView_recruit_end.getText().toString();
-        DateTimeFormatter formatter6 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate endRecruitDate = LocalDate.parse(text_recruitEnd, formatter6);
+//        DateTimeFormatter formatter6 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+//        LocalDate endRecruitDate = LocalDate.parse(text_recruitEnd, formatter6);
 
         //모집인원 에딧
         String text_recruitNumber = textView_recruit_number.getText().toString();
@@ -297,6 +259,7 @@ public class JobPost extends AppCompatActivity {
 
         //우대조건 라디오
         String text_preferType = getPrefer();
+        Log.d("getPrefer", "Selected preference: " + text_preferType);
 
         //우대조건 에딧
         String text_preferValue = textview_work_prefer.getText().toString();
@@ -304,7 +267,7 @@ public class JobPost extends AppCompatActivity {
         //주소
         String text_addressPostcode = address_postcode.getText().toString();
         String text_addressMain = address_main.getText().toString();
-        String workAddress = "(" + text_addressPostcode + ") " + text_addressMain;
+        String workAddress = "(" + text_addressPostcode + ")" +text_addressMain;
 
         String text_addressDetail = address_detail_editView.getText().toString();
 
@@ -316,19 +279,22 @@ public class JobPost extends AppCompatActivity {
 
         JobPostCreateRequestDTO jobPostDTO = new JobPostCreateRequestDTO();
 
-        jobPostDTO.setUserId("eune");
-        jobPostDTO.setUserType("구인자");
+        String id = userManager.getUserId();
+        String type = userManager.getUserType();
+
+        jobPostDTO.setUserId(id);
+        jobPostDTO.setUserType(type);
         jobPostDTO.setJobName(text_title);
         jobPostDTO.setCountry(text_workProvince);
         jobPostDTO.setCity(text_workCity);
-        jobPostDTO.setStartWorkDate(startWorkDate);
-        jobPostDTO.setEndWorkDate(endWorkDate);
-        jobPostDTO.setStartWorkTime(startWorkTime);
-        jobPostDTO.setEndWorkTime(endWorkTime);
+        jobPostDTO.setStartWorkDate(text_dateStart);
+        jobPostDTO.setEndWorkDate(text_dateEnd);
+        jobPostDTO.setStartWorkTime(text_workTimeStart);
+        jobPostDTO.setEndWorkTime(text_workTimeEnd);
         jobPostDTO.setWorkDay(text_workDay);
         jobPostDTO.setPay(pay);
-        jobPostDTO.setStartRecruitDate(startRecruitDate);
-        jobPostDTO.setEndRecruitDate(endRecruitDate);
+        jobPostDTO.setStartRecruitDate(text_recruitStart);
+        jobPostDTO.setEndRecruitDate(text_recruitEnd);
         jobPostDTO.setRecruitCount(recruitCount);
         jobPostDTO.setCropForm(text_workCrop1);
         jobPostDTO.setCropType(text_workCrop2);
@@ -338,28 +304,29 @@ public class JobPost extends AppCompatActivity {
         jobPostDTO.setJobIntro(text_introduction);
         jobPostDTO.setWorkAddress(workAddress);
         jobPostDTO.setWorkAddressDetail(text_addressDetail);
-        
-        ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
         MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, JobPost.this);
-
-//                jobPostDTO.setUploadImgFile(image);
+//        jobPostDTO.setUploadImgFile(image);
 
         Gson gson = GsonLocalDateAdapter.getGson();
         String json = gson.toJson(jobPostDTO);
         RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json"));
 
+        Log.d("JobPostDTO", "Current State: " + json);
+
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
         //공고작성 서버요청
         Call<ResponseBody> call = apiService.JobPostSend(requestBody, image);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     Log.e("JobPost", "공고작성 서버응답 성공" + response.code() + ", " + response.message());
 
                 } else {
                     Log.e("JobPost", "공고작성 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("JobPost", "공고작성 서버응답 오류" + response.errorBody().toString());                        }
+                    Log.e("JobPost", "공고작성 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -391,7 +358,7 @@ public class JobPost extends AppCompatActivity {
             }
             outputStream.flush();
         } catch (Exception e) {
-            Log.e("File I/O", "Error processing file", e);
+            Log.e("tag", "이미지 파일 업로드 오류", e);
             return null;
         }
 
@@ -500,8 +467,13 @@ public class JobPost extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                String formattedDate = String.format(Locale.getDefault(), "%04d.%02d.%02d", year, monthOfYear + 1, dayOfMonth);
-                textView.setText(formattedDate);
+                String formattedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, monthOfYear + 1, dayOfMonth);
+//                textView.setText(formattedDate);
+                if (textView != null) {
+                    textView.setText(formattedDate);
+                } else {
+                    Log.e("DatePicker", "TextView is null");
+                }
             }
         };
 
@@ -603,28 +575,16 @@ public class JobPost extends AppCompatActivity {
         return selectedWorkDayString.toString();
     }
 
-    public String getSalary(){
-        RadioGroup work_salary_radioGroup = findViewById(R.id.work_salary_radioGroup);
-
-        int checkedRadioButtonId = work_salary_radioGroup.getCheckedRadioButtonId();
-
-        if (checkedRadioButtonId == R.id.work_salary1) {
-            selectedSalaryText = "일급";
-        } else if (checkedRadioButtonId == R.id.work_salary2) {
-            selectedSalaryText = "협의";
-        }
-        return selectedSalaryText;
-    }
-
     public String getPrefer(){
         RadioGroup work_prefer_radioGroup = findViewById(R.id.work_prefer_radioGroup);
 
         int checkedRadioButtonId = work_prefer_radioGroup.getCheckedRadioButtonId();
+        String selectedPreferText = "need";
 
         if (checkedRadioButtonId == R.id.work_salary1) {
-            selectedPreferText = "필요";
+            selectedPreferText = "need";
         } else if (checkedRadioButtonId == R.id.work_salary2) {
-            selectedPreferText = "무관";
+            selectedPreferText = "needless";
         }
         return selectedPreferText;
     }

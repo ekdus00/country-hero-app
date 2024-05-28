@@ -90,7 +90,7 @@
                     android:layout_height="match_parent">
                     <RadioButton
                         android:layout_marginRight="43dp"
-                        android:text="급여"
+                        android:text="일급"
                         android:layout_weight="1"
                         android:id="@+id/radio_salary"
                         android:layout_width="100dp"

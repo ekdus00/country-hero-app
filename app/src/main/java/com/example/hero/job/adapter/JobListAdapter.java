@@ -127,6 +127,7 @@
 
 package com.example.hero.job.adapter;
 import com.example.hero.R;
+import com.example.hero.etc.OnButtonClickListener;
 import com.example.hero.etc.OnItemClickListener;
 import com.example.hero.job.dto.JobInfoDTO;
 
@@ -134,6 +135,7 @@ import com.example.hero.job.dto.JobInfoDTO;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -147,23 +149,25 @@ import java.util.List;
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobViewHolder>{
         public List<JobInfoDTO> jobList;
         private OnItemClickListener listener;
+        private OnButtonClickListener buttonClickListener;
 
-        public JobListAdapter(List<JobInfoDTO> jobList, OnItemClickListener listener) {
+    public JobListAdapter(List<JobInfoDTO> jobList, OnItemClickListener listener, OnButtonClickListener buttonClickListener) {
             this.jobList = jobList;
             this.listener = listener;
-        }
+            this.buttonClickListener = buttonClickListener;
+    }
 
         @NonNull
         @Override
         public JobViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_list_item, parent, false);
-            return new JobViewHolder(view, listener);
+            return new JobViewHolder(view, listener, buttonClickListener);
         }
 
         @Override
         public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
             JobInfoDTO job = jobList.get(position);
-            holder.bind(job, listener);
+            holder.bind(job, listener, buttonClickListener);
         }
 
         public static class JobViewHolder extends RecyclerView.ViewHolder {
@@ -179,8 +183,41 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobViewH
             TextView job_list_type;
             TextView job_list_salary;
             int currentJobId;
+            Button job_list_participate;
 
-            public void bind(JobInfoDTO job, OnItemClickListener listener) {
+            public JobViewHolder(View itemView, OnItemClickListener listener, OnButtonClickListener buttonClickListener) {
+                super(itemView);
+                job_list_address_country = itemView.findViewById(R.id.job_list_address_country);
+                job_list_address_city = itemView.findViewById(R.id.job_list_address_city);
+                job_list_item_crop_form = itemView.findViewById(R.id.job_list_item_crop_form);
+                job_list_item_crop_type = itemView.findViewById(R.id.job_list_item_crop_type);
+
+                job_list_title = itemView.findViewById(R.id.job_list_title);
+
+                job_list_work_period_start = itemView.findViewById(R.id.job_list_work_period_start);
+                job_list_work_period_end = itemView.findViewById(R.id.job_list_work_period_end);
+
+                job_list_recruitment_period_start = itemView.findViewById(R.id.job_list_recruitment_period_start);
+                job_list_recruitment_period_end = itemView.findViewById(R.id.job_list_recruitment_period_end);
+
+                job_list_type = itemView.findViewById(R.id.job_list_type);
+                job_list_salary = itemView.findViewById(R.id.job_list_salary);
+                job_list_participate = itemView.findViewById(R.id.job_list_participate);
+
+                itemView.setOnClickListener(v -> {
+                    if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(currentJobId);
+                    }
+                });
+
+                job_list_participate.setOnClickListener(v -> {
+                    if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        buttonClickListener.onButtonClick(currentJobId);
+                    }
+                });
+            }
+
+            public void bind(final JobInfoDTO job, final OnItemClickListener listener, final OnButtonClickListener buttonClickListener) {
                 currentJobId = job.getId();  // 현재 jobId 저장
 
                 job_list_title.setText(job.getJobName());
@@ -201,50 +238,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobViewH
                 job_list_type.setText("일급");
                 job_list_salary.setText(String.valueOf(job.getPay()));
 
-
-            }
-
-            public JobViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
-                super(itemView);
-                job_list_address_country = itemView.findViewById(R.id.job_list_address_country);
-                job_list_address_city = itemView.findViewById(R.id.job_list_address_city);
-                job_list_item_crop_form = itemView.findViewById(R.id.job_list_item_crop_form);
-                job_list_item_crop_type = itemView.findViewById(R.id.job_list_item_crop_type);
-
-                job_list_title = itemView.findViewById(R.id.job_list_title);
-
-                job_list_work_period_start = itemView.findViewById(R.id.job_list_work_period_start);
-                job_list_work_period_end = itemView.findViewById(R.id.job_list_work_period_end);
-
-                job_list_recruitment_period_start = itemView.findViewById(R.id.job_list_recruitment_period_start);
-                job_list_recruitment_period_end = itemView.findViewById(R.id.job_list_recruitment_period_end);
-
-                job_list_type = itemView.findViewById(R.id.job_list_type);
-                job_list_salary = itemView.findViewById(R.id.job_list_salary);
-
-
-                itemView.setOnClickListener(v -> {
-                    if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(currentJobId);
-                    }
-                });
-
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onItemClick(currentJobId);
-                    }
-                });
-
-//                itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        int position = getAdapterPosition();
-//                        if (position != RecyclerView.NO_POSITION && listener != null) {
-//                            listener.onItemClick(position);
-//                        }
-//                    }
-//                });
             }
 
 
