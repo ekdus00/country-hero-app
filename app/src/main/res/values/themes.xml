@@ -5,6 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="AppTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
     <style name="Theme.Hero" parent="Base.Theme.Hero">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
