@@ -3,6 +3,7 @@ package com.example.hero.clip.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.example.hero.clip.dto.ClipDTO;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.mypage.activity.MyPageApplicant;
 
 import java.util.List;
 
@@ -45,7 +47,8 @@ public class ClipActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent intent = new Intent(ClipActivity.this, MyPageApplicant.class);
+                startActivity(intent);
             }
         });
         loadClipList();
