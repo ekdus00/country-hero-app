@@ -1,5 +1,6 @@
 package com.example.hero.login.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,11 +8,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
+import com.example.hero.etc.FcmTokenManager;
 import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.etc.UserManager;
@@ -25,12 +30,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.example.hero.login.dto.NaverLoginResultDTO;
+import com.navercorp.nid.NaverIdLoginSDK;
+import com.navercorp.nid.oauth.OAuthLoginCallback;
+import com.navercorp.nid.oauth.NidOAuthBehavior;
+import com.navercorp.nid.oauth.NidOAuthLogin;
+import com.navercorp.nid.oauth.view.NidOAuthLoginButton;
+import com.navercorp.nid.profile.NidProfileCallback;
+import com.navercorp.nid.profile.data.NidProfileMap;
+import com.navercorp.nid.profile.data.NidProfileResponse;
+
 public class Login extends AppCompatActivity {
-    private Context context;
-    private Button login_sendBtn, login_joinBtn, login_logout;
+    private NaverIdLoginSDK naverIdLoginSDK;
+    private FcmTokenManager fcmTokenManager;
+    private ApiService apiService;
+    private Button login_sendBtn, login_joinBtn, login_logout, buttonOAuthLoginImg;
     private EditText login_id_editText, login_pw_editText;
     private TokenManager tokenManager;
     private UserManager userManager;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +106,77 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        //네이버 로그인
+//        naverIdLoginSDK.initialize(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.naver_client_name));
+//        NidOAuthLoginButton buttonOAuthLoginImg = findViewById(R.id.buttonOAuthLoginImg);
+//        buttonOAuthLoginImg.setOAuthLogin(new OAuthLoginCallback() {
+//            @Override
+//            public void onSuccess() {
+//                // 로그인 성공시
+//                // 액세스 토큰 가져오기
+//                String accessToken = NaverIdLoginSDK.INSTANCE.getAccessToken();
+//                tokenManager.saveAccessTokens(accessToken);
+////                textView.setText(accessToken);
+//                buttonOAuthLoginImg.setVisibility(View.GONE);
+////                String ac = naverIdLoginSDK.getAccessToken();
+////                binding.tvRefreshToken.text = NaverIdLoginSDK.getRefreshToken()
+////                binding.tvExpires.text = NaverIdLoginSDK.getExpiresAt().toString()
+////                binding.tvType.text = NaverIdLoginSDK.getTokenType()
+////                binding.tvState.text = NaverIdLoginSDK.getState().toString()
+//            }
+//
+//            @Override
+//            public void onFailure(int httpStatus, @NonNull String message) {
+//                // 통신 오류
+//                Log.e("네아로", "onFailure: httpStatus - " + httpStatus + " / message - " + message);
+//            }
+//
+//            @Override
+//            public void onError(int errorCode, @NonNull String message) {
+//                // 네이버 로그인 중 오류 발생
+//                Log.e("네아로", "onError: errorCode - " + errorCode + " / message - " + message);
+//            }
+//        });
+
+
     }//onCreate()
+
+    public void requestNaverLogin(String code, String fcmToken) {
+        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+        fcmToken = fcmTokenManager.getFCMToken();
+        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback(code, fcmToken);
+        call.enqueue(new Callback<NaverLoginResultDTO>() {
+            @Override
+            public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // 로그인 성공 처리
+                    NaverLoginResultDTO loginResult = response.body();
+                    // JWT 토큰을 저장하고 사용자 홈으로 이동
+                } else {
+                    // 로그인 실패 처리
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NaverLoginResultDTO> call, Throwable t) {
+                // 네트워크 문제나 서버 오류 처리
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void loginRequest() {
         String join_id = login_id_editText.getText().toString();

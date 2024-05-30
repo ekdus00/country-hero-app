@@ -26,18 +26,23 @@ import com.example.hero.login.dto.FindUserIdRequestDTO;
 import com.example.hero.login.dto.JoinRequestDTO;
 import com.example.hero.login.dto.LoginRequestDTO;
 import com.example.hero.login.dto.LoginResultDTO;
+import com.example.hero.login.dto.NaverLoginResultDTO;
 import com.example.hero.login.dto.RefreshTokenRequestDTO;
 import com.example.hero.login.dto.ResetUserPwRequestDTO;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingListInfoDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
+import com.example.hero.mypage.dto.BusinessDataDTO;
+import com.example.hero.mypage.dto.BusinessResponseDTO;
 import com.example.hero.mypage.dto.OwnerProfileDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoResponseDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
 import com.example.hero.mypage.dto.WorkerProfileDTO;
 import com.example.hero.mypage.dto.WorkerUserInfoResponseDTO;
+import com.example.hero.resume.dto.ResumeEditResponseDTO;
 import com.example.hero.resume.dto.ResumeResponseDTO;
+import com.example.hero.resume.dto.ResumeUpdateRequestDTO;
 import com.example.hero.resume.dto.WorkerStateRequestDTO;
 import com.example.hero.review.dto.BlockRequestDTO;
 import com.example.hero.review.dto.OwnerReviewInfoDTO;
@@ -64,6 +69,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 public interface ApiService {
@@ -112,12 +118,12 @@ public interface ApiService {
             @Body JobPostCommentRequestDTO requestDTO
     );
 
-    //공고댓글 수정조회
-    @GET("/api/comment/job/{selectedJobId}/{selectedCommentId}")
-    Call<JobPostCommentEditResponseDTO> getJobPostComment(
-            @Path("selectedJobId") int selectedJobId,
-            @Path("selectedCommentId") int selectedCommentId
-    );
+//    //공고댓글 수정조회
+//    @GET("/api/comment/job/{selectedJobId}/{selectedCommentId}")
+//    Call<JobPostCommentEditResponseDTO> getJobPostComment(
+//            @Path("selectedJobId") int selectedJobId,
+//            @Path("selectedCommentId") int selectedCommentId
+//    );
 
     //공고댓글 수정
     @PUT("/api/comment/job")
@@ -221,6 +227,10 @@ public interface ApiService {
     @PUT("/api/user/userInfo/owner")
     Call<Void> updateOwnerInfo(@Body OwnerUserInfoUpdateRequestDTO requestDTO);
 
+    //사업자 등록 번호 인증
+    @POST("api/nts-businessman/v1/status")
+    Call<BusinessResponseDTO> checkBusinessStatus(@Body RequestBody data);
+
     //회원정보수정(구직자) 조회
     @GET("/api/user/userInfo/owner")
     Call<OwnerUserInfoResponseDTO> getOwnerInfo();
@@ -235,11 +245,11 @@ public interface ApiService {
     //이력서 수정
     @Multipart
     @PUT("/api/resume")
-    Call<ResponseBody> updateResume(@Part("request") RequestBody requestDTO, @Part MultipartBody.Part uploadImgFile);
+    Call<Void> updateResume(@Part("request") ResumeUpdateRequestDTO requestDTO, @Part MultipartBody.Part uploadImgFile);
 
     //이력서 수정 시 조회
     @GET("/api/resume")
-    Call<ResponseBody> getResume();
+    Call<ResumeEditResponseDTO> getResume();
 
     //구인자의 이력서 확인
     @GET("/api/resume/{selectedWorker}")
@@ -257,8 +267,8 @@ public interface ApiService {
 
 
     //네이버로그인
-//    @GET("/naver/callback")
-//    Call<?> naverLoginCallback(@Query("code") String code, @Header("FCM-Token") String fcmToken);
+    @GET("/naver/callback")
+    Call<NaverLoginResultDTO> naverLoginCallback(@Query("code")String code, @Header("FCM-Token") String fcmToken);
 
     //일반 회원가입
     @POST("/join")
@@ -308,6 +318,15 @@ public interface ApiService {
     //작물조회
     @GET("/api/crop/{selectedCropForm}/cropType")
     Call<List<String>> getCropTypes(@Path("selectedCropForm") String cropForm);
+
+
+    //푸시알림 승인
+    @POST("/api/fcm/approve")
+    Call<Void> approveFCM(@Header("Authorization") String authorization, @Header("FCM-Token") String fcmToken);
+
+    //푸시알리 거절
+    @HTTP(method = "DELETE", path = "/api/fcm/refuse", hasBody = false)
+    Call<Void> refuseFCM(@Header("Authorization") String authorization, @Header("FCM-Token") String fcmToken);
 
 
 

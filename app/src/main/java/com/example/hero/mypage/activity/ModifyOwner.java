@@ -1,47 +1,80 @@
 package com.example.hero.mypage.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EdgeEffect;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.airbnb.lottie.L;
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
+import com.example.hero.etc.RetrofitClientBusiness;
+import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.login.activity.Login;
+import com.example.hero.mypage.dto.BusinessDataDTO;
+import com.example.hero.mypage.dto.BusinessResponseDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoResponseDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Collections;
+import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class ModifyOwner extends AppCompatActivity {
-    private TextView modify_name, modify_farmName, modify_birth, modify_email, modify_gender;
-    private Button modify_send;
+    private TextView modify_name, modify_birth, modify_email, modify_gender;
+    private Button modify_send, modify_farmNum_btn;
     private ApiService apiService;
     private TokenManager tokenManager;
-
+    private EditText modify_farmName, modify_farmNum;
+    Context context;
+    private String business_auth;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modify_owner);
         tokenManager = new TokenManager(this);
+        context = this;
 
         modify_name = findViewById(R.id.modify_name);
         modify_gender = findViewById(R.id.modify_gender);
-        modify_farmName = findViewById(R.id.modify_farmName);
         modify_birth = findViewById(R.id.modify_birth);
         modify_email = findViewById(R.id.modify_email);
 
+        modify_farmName = findViewById(R.id.modify_farmName);
+
+        modify_farmNum = findViewById(R.id.modify_farmNum);
+
         getModifyOwner();
+
+        //사업자 번호 인증
+        modify_farmNum_btn = findViewById(R.id.modify_farmNum_btn);
+        modify_farmNum_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BusinessNumAuth();
+            }
+        });
 
         //뒤로가기
         Button btn_Back = findViewById(R.id.btn_back);
@@ -54,7 +87,6 @@ public class ModifyOwner extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         TextView textView = toolbar.findViewById(R.id.toolbar_title);
         textView.setText("회원 정보 수정");
 
@@ -63,11 +95,52 @@ public class ModifyOwner extends AppCompatActivity {
         modify_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modifyOwnerRequest();
+                if (Objects.equals(business_auth, "auth")) {
+                    modifyOwnerRequest();
+                } else {
+                    Toast.makeText(context, "사업자 등록번호 인증이 되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }//onCreate()
+
+    public void BusinessNumAuth() {
+        apiService = RetrofitClientBusiness.getClient(context).create(ApiService.class);
+
+        String farm_number = modify_farmNum.getText().toString();
+        RequestBody data = RequestBody.create(farm_number, MediaType.parse("application/json"));
+
+        Call<BusinessResponseDTO> call = apiService.checkBusinessStatus(data);
+        call.enqueue(new Callback<BusinessResponseDTO>() {
+            @Override
+            public void onResponse(Call<BusinessResponseDTO> call, Response<BusinessResponseDTO> response) {
+                if (response.isSuccessful()) {
+                    BusinessResponseDTO businessData1 = response.body();
+                    BusinessDataDTO businessData2 = businessData1.getData().get(0);
+                    String statusCode = businessData2.getBusinessStatusCode();
+
+                    if (Objects.equals(statusCode, "01")) {
+                        business_auth = "auth";
+                    } else {
+                        business_auth = "unableAuth";
+                    }
+
+                    Log.e("api", "회원정보수정(구인자) 수정 서버응답 성공" + response.code() + ", " + response.message());
+
+                } else {
+                    Log.e("api", "회원정보수정(구인자) 수정 서버응답 오류코드" + response.code() + ", " + response.message());
+//                    Log.e("api", "회원정보수정(구인자) 수정 서버응답 오류" + response.errorBody().toString());
+                }
+            }
+            @Override
+            public void onFailure(Call<BusinessResponseDTO> call, Throwable t) {
+                Log.e("api", "회원정보수정(구인자) 수정 서버요청 오류", t);
+            }
+        });
+
+
+    }
 
     public void modifyOwnerRequest() {
         String text_farm_name = modify_farmName.getText().toString();

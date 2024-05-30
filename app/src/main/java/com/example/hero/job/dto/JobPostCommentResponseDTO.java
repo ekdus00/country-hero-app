@@ -19,6 +19,11 @@ public class JobPostCommentResponseDTO {
         this.updatedCommentDatetime = updatedCommentDateTime;
     }
 
+    // 부모 댓글 여부를 확인하는 메서드
+    public boolean isParent() {
+        return (this.childCommentList == null || this.childCommentList.isEmpty());
+    }
+
     public String getCommentContent() {
         return commentContent;
     }

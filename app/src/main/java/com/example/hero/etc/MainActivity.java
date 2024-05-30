@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
 
         Button homeOwner = (Button) findViewById(R.id.homeOwner);
         Button homeWorker = (Button) findViewById(R.id.homeWorker);

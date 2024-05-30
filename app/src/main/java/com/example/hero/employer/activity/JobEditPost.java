@@ -24,7 +24,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.collection.CircularArray;
 
-import com.bumptech.glide.Glide;
 import com.example.hero.employer.dto.JobPostEditResponseDTO;
 import com.example.hero.employer.dto.JobRequestDTO;
 import com.example.hero.employer.dto.JopPostUpdateRequestDTO;
@@ -278,12 +277,12 @@ public class JobEditPost extends AppCompatActivity {
                     textView_recruit_number.setText(String.valueOf(dto.getRecruitCount()));
                     textView_recruit_age.setText(String.valueOf(dto.getAge()));
 
-                    String imageUrl = "http://3.37.68.5:8080/" + dto.getUploadImgFileName();
-                    Glide.with(JobEditPost.this)
-                            .load(imageUrl)
-                            .placeholder(R.drawable.start_app) // 로딩 중 표시할 이미지
-                            .error(R.drawable.start_app)         // 오류 발생 시 표시할 이미지
-                            .into(post_ImageView);
+//                    String imageUrl = "http://3.37.68.5:8080/" + dto.getUploadImgFileName();
+//                    Glide.with(JobEditPost.this)
+//                            .load(imageUrl)
+//                            .placeholder(R.drawable.start_app) // 로딩 중 표시할 이미지
+//                            .error(R.drawable.start_app)         // 오류 발생 시 표시할 이미지
+//                            .into(post_ImageView);
 
                     Log.e("tag", "공고수정 조회 서버응답 성공" + response.code() + ", " + response.message());
                 } else {

@@ -7,6 +7,14 @@ android {
     namespace 'com.example.hero'
     compileSdk 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
+//    viewBinding {
+//        enabled = true
+//    }
+
     defaultConfig {
         applicationId "com.example.hero"
         minSdk 33
@@ -53,36 +61,17 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-location:17.1.0'
 
+    //네이버지도
     implementation 'com.naver.maps:map-sdk:3.18.0'
 
+    //파이어베이스
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-//    implementation platform('com.google.firebase:firebase-bom:29.2.0')
-
     implementation("com.google.firebase:firebase-analytics")
-
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
-
-
-//    implementation 'com.naver.nid:naveridlogin-android-sdk:5.9.1'
-//
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.21'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
-    implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
-    implementation 'androidx.browser:browser:1.4.0'
-    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
-    implementation 'androidx.core:core-ktx:1.3.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
-    implementation 'com.squareup.moshi:moshi-kotlin:1.11.0'
-    implementation 'com.airbnb.android:lottie:3.1.0'
-
-    implementation 'com.navercorp.nid:oauth:5.1.0'
-//    implementation 'com.naver.nid:naveridlogin-android-sdk:5.1.0'
-
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'com.navercorp.nid:oauth:5.9.1' // jdk 11
 
 
 

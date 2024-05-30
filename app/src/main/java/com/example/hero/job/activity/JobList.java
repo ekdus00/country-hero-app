@@ -32,7 +32,6 @@ import com.example.hero.job.dto.JobFilterDTO;
 import com.example.hero.job.dto.JobInfoDTO;
 import com.example.hero.job.dto.ParticipateRequestDTO;
 import com.example.hero.login.activity.Login;
-import com.example.hero.matching.activity.MatchingList;
 import com.example.hero.mypage.activity.MyPageOwner;
 import com.example.hero.mypage.activity.MyPageWorker;
 import com.example.hero.worker.activity.WorkerStatus;
@@ -162,7 +161,7 @@ public class JobList extends AppCompatActivity {
                     startActivity(new Intent(JobList.this, JobList.class));
                     return true;
                 } else if (id == R.id.nav_matching) {
-                    startActivity(new Intent(JobList.this, MatchingList.class));
+                    startActivity(new Intent(JobList.this, Login.class));
                     return true;
                 } else if (id == R.id.nav_mypage) {
                     if (userManager.getUserType().equals("owner")) {

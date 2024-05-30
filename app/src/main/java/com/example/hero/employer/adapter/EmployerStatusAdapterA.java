@@ -82,13 +82,13 @@ public class EmployerStatusAdapterA extends RecyclerView.Adapter<com.example.her
 
             employer_status_modify.setOnClickListener(v -> {
                 if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    buttonClickListener.onButtonClickWorkerStatus(currentJobId, OnButtonClickListenerOwnerStatus.ButtonType.MODIFY);
+                    buttonClickListener.onButtonClickOwnerStatus(currentJobId, OnButtonClickListenerOwnerStatus.ButtonType.MODIFY);
                 }
             });
 
             employer_status_deadline.setOnClickListener(v -> {
                 if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    buttonClickListener.onButtonClickWorkerStatus(currentJobId, OnButtonClickListenerOwnerStatus.ButtonType.DEADLINE);
+                    buttonClickListener.onButtonClickOwnerStatus(currentJobId, OnButtonClickListenerOwnerStatus.ButtonType.DEADLINE);
                 }
             });
 

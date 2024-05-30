@@ -1,10 +1,14 @@
 package com.example.hero.job.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -14,18 +18,25 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hero.employer.activity.EmployerStatus;
+import com.example.hero.employer.activity.JobEditPost;
 import com.example.hero.etc.ApiService;
 import com.example.hero.R;
+import com.example.hero.etc.OnButtonClickListener;
+import com.example.hero.etc.OnCommentClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.job.adapter.JobCommentAdapter;
+import com.example.hero.job.dto.JobPostCommentDeleteRequestDTO;
 import com.example.hero.job.dto.JobPostCommentRequestDTO;
 import com.example.hero.job.dto.JobPostCommentResponseDTO;
 import com.example.hero.job.dto.JobDetailResponseDTO;
+import com.example.hero.job.dto.JobPostCommentUpdateRequestDTO;
 import com.example.hero.job.dto.ParticipateRequestDTO;
 import com.naver.maps.map.OnMapReadyCallback;
 
@@ -76,6 +87,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
     private double latitude = 37.5670135; // 초기 위도 값을 0으로 설정
     private double longitude = 126.9783740;
     private RatingBar job_detail_cropLevel;
+    private OnCommentClickListener buttonClickListener;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +130,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
 
         jobId = getIntent().getIntExtra("jobId", 0);
         jobDetailRequest();
+        commentRequest();
 
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         if (mapFragment == null) {
@@ -154,37 +167,205 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
-//        commentRequest();
+        buttonClickListener = (commentId, buttonType) -> {
+            switch (buttonType) {
+                case CHILD:
+                    // MODIFY 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "CHILD" + commentId);
+                    onChildComment(commentId);
+                    break;
+                case EDIT:
+                    // DEADLINE 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "EDIT" + commentId);
+                    onEditComment(commentId);
+                    break;
+                case DELETE:
+                    // DEADLINE 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "DELETE" + commentId);
+                    commentDelete(commentId);
+                    break;
+            }
+        };
 
-//        //댓글작성
-//        job_comment_send.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                commentCreate();
-//            }
-//        });
-//
-//        //댓글수정
-//        job_comment_editBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                commentUpdate();
-//            }
-//        });
-//
-//
-//        //댓글삭제
-//        job_comment_deleteBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                commentDelete();
-//            }
-//        });
+
 
 
 
 
     } //oncreate()
+
+    public void onChildComment(int commentId) {
+        final EditText editText = new EditText(this);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("대댓글 작성하기");
+        builder.setView(editText);
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String updatedComment = editText.getText().toString();
+                commentCreateChild(commentId, updatedComment);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    public void onEditComment(int commentId) {
+        final EditText editText = new EditText(this);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("댓글 수정하기");
+        builder.setView(editText);
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String updatedComment = editText.getText().toString();
+                commentUpdate(commentId, updatedComment);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    private void commentRequest() {
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //공고댓글 목록조회 요청
+        Call<List<JobPostCommentResponseDTO>> call2 = apiService.getJobPostCommentList(jobId);
+        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<JobPostCommentResponseDTO> comments = response.body();
+                    adapter = new JobCommentAdapter(comments);
+                    job_comment_recyclerView.setAdapter(adapter);
+                } else {
+                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+            }
+            @Override
+            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
+                Log.e("api", "공고상세 댓글 서버요청 오류", t);
+            }
+        });
+    }
+
+    private void commentCreate() {
+        String content = job_comment_editBtn.getText().toString();
+
+        JobPostCommentRequestDTO dto = new JobPostCommentRequestDTO();
+
+        dto.setJobId(jobId);
+        dto.setCommentContent(content);
+
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //공고댓글 작성 요청
+        Call<Void> call2 = apiService.createJobPostComment(dto);
+        call2.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+
+                } else {
+                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("api", "공고상세 댓글 서버요청 오류", t);
+            }
+        });
+    }
+
+    private void commentCreateChild(int parentId, String content) {
+        JobPostCommentRequestDTO dto = new JobPostCommentRequestDTO();
+
+        dto.setCommentParent(parentId);
+        dto.setJobId(jobId);
+        dto.setCommentContent(content);
+
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //공고 자식댓글 작성 요청
+        Call<Void> call2 = apiService.createJobPostComment(dto);
+        call2.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+
+                } else {
+                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("api", "공고상세 댓글 서버요청 오류", t);
+            }
+        });
+    }
+
+    private void commentUpdate(int commentId, String content) {
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        JobPostCommentUpdateRequestDTO dto = new JobPostCommentUpdateRequestDTO();
+
+        dto.setCommentId(commentId);
+        dto.setJobId(jobId);
+        dto.setCommentContent(content);
+
+        //공고댓글 수정 요청
+        Call<List<JobPostCommentResponseDTO>> call2 = apiService.updateJobPostComment(dto);
+        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<JobPostCommentResponseDTO> comments = response.body();
+                    adapter = new JobCommentAdapter(comments);
+                    job_comment_recyclerView.setAdapter(adapter);
+                } else {
+                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+            }
+            @Override
+            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
+                Log.e("api", "공고상세 댓글 서버요청 오류", t);
+            }
+        });
+    }
+
+    private void commentDelete(int commentId) {
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        JobPostCommentDeleteRequestDTO dto = new JobPostCommentDeleteRequestDTO();
+
+        dto.setCommentId(commentId);
+        dto.setJobId(jobId);
+
+        //공고댓글 삭제 요청
+        Call<List<JobPostCommentResponseDTO>> call2 = apiService.deleteJobPostComment(dto);
+        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<JobPostCommentResponseDTO> comments = response.body();
+                    adapter = new JobCommentAdapter(comments);
+                    job_comment_recyclerView.setAdapter(adapter);
+                } else {
+                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+            }
+            @Override
+            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
+                Log.e("api", "공고상세 댓글 서버요청 오류", t);
+            }
+        });
+    }
 
     private void jobDetailRequest() {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
@@ -285,105 +466,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
-    private void commentRequest() {
-        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
-        //공고댓글 목록조회 요청
-        Call<List<JobPostCommentResponseDTO>> call2 = apiService.getJobPostCommentList(jobId);
-        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
-            @Override
-            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
-                if (response.isSuccessful()) {
-                    List<JobPostCommentResponseDTO> comments = response.body();
-                    adapter = new JobCommentAdapter(comments);
-                    job_comment_recyclerView.setAdapter(adapter);
-                } else {
-                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
-            }
-            @Override
-            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
-                Log.e("api", "공고상세 댓글 서버요청 오류", t);
-            }
-        });
-    }
-
-    private void commentCreate() {
-        String content = job_comment_editBtn.getText().toString();
-
-        JobPostCommentRequestDTO dto = new JobPostCommentRequestDTO();
-
-        dto.setJobId(jobId);
-        dto.setCommentContent(content);
-
-        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-
-        //공고댓글 작성 요청
-        Call<Void> call2 = apiService.createJobPostComment(dto);
-        call2.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-//                    Void comments = response.body();
-//                    adapter = new JobCommentAdapter(comments);
-//                    job_comment_recyclerView.setAdapter(adapter);
-
-                } else {
-                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("api", "공고상세 댓글 서버요청 오류", t);
-            }
-        });
-    }
-
-    private void commentUpdate() {
-        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-
-        //공고댓글 수정 요청
-        Call<List<JobPostCommentResponseDTO>> call2 = apiService.getJobPostCommentList(jobId);
-        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
-            @Override
-            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
-                if (response.isSuccessful()) {
-                    List<JobPostCommentResponseDTO> comments = response.body();
-                    adapter = new JobCommentAdapter(comments);
-                    job_comment_recyclerView.setAdapter(adapter);
-                } else {
-                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
-            }
-            @Override
-            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
-                Log.e("api", "공고상세 댓글 서버요청 오류", t);
-            }
-        });
-    }
-
-    private void commentDelete() {
-        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-
-        //공고댓글 삭제 요청
-        Call<List<JobPostCommentResponseDTO>> call2 = apiService.getJobPostCommentList(jobId);
-        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
-            @Override
-            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
-                if (response.isSuccessful()) {
-                    List<JobPostCommentResponseDTO> comments = response.body();
-                    adapter = new JobCommentAdapter(comments);
-                    job_comment_recyclerView.setAdapter(adapter);
-                } else {
-                    Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
-            }
-            @Override
-            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
-                Log.e("api", "공고상세 댓글 서버요청 오류", t);
-            }
-        });
-    }
 
 
 

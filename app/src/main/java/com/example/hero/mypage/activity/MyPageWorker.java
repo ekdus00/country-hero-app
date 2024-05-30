@@ -19,7 +19,6 @@ import com.example.hero.etc.TokenManager;
 import com.example.hero.home.activity.HomeWorker;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.login.activity.Login;
-import com.example.hero.matching.activity.MatchingList;
 import com.example.hero.mypage.dto.WorkerProfileDTO;
 import com.example.hero.resume.activity.ResumePost;
 import com.example.hero.review.activity.ReviewList;
@@ -135,7 +134,7 @@ public class MyPageWorker extends AppCompatActivity {
                     startActivity(new Intent(MyPageWorker.this, JobList.class));
                     return true;
                 } else if (id == R.id.nav_matching) {
-                    startActivity(new Intent(MyPageWorker.this, MatchingList.class));
+                    startActivity(new Intent(MyPageWorker.this, Login.class));
                     return true;
                 } else if (id == R.id.nav_mypage) {
                     startActivity(new Intent(MyPageWorker.this, MyPageWorker.class));

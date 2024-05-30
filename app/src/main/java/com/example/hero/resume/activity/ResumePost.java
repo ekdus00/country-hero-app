@@ -1,34 +1,104 @@
 package com.example.hero.resume.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
+import com.example.hero.etc.ApiService;
+import com.example.hero.etc.RetrofitClient;
+import com.example.hero.etc.TokenManager;
+import com.example.hero.job.activity.JobPost;
+import com.example.hero.mypage.activity.ModifyOwner;
+import com.example.hero.mypage.activity.MyPageOwner;
+import com.example.hero.mypage.activity.MyPageWorker;
+import com.example.hero.mypage.dto.OwnerUserInfoResponseDTO;
+import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
+import com.example.hero.resume.adapter.CareerAdapter;
+import com.example.hero.resume.dto.ResumeEditResponseDTO;
+import com.example.hero.resume.dto.ResumeUpdateRequestDTO;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ResumePost extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
-    private ImageView resume_ImageView;
-
+    private ImageView resume_image_imageView;
+    private EditText resume_career_edit, resume_info;
+    private TextView resume_review_result, resume_name;
+    private TokenManager tokenManager;
+    private ApiService apiService;
+    private Uri imageUri;
+    private CareerAdapter adapter;
+    private Button resume_career_btn;
+    private RecyclerView resume_career_recyclerView;
+    private List<String> resumePostList2;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resume_post);
+        tokenManager = new TokenManager(this);
 
+        resume_info = findViewById(R.id.resume_info);
+        resume_image_imageView = findViewById(R.id.resume_image_imageView);
+        resume_review_result = findViewById(R.id.resume_review_result);
+        resume_name = findViewById(R.id.resume_name);
+
+        resume_career_edit = findViewById(R.id.resume_career_edit);
+        resume_career_btn = findViewById(R.id.resume_career_btn);
+        resume_career_recyclerView = findViewById(R.id.resume_career_recyclerView);
+
+        resumePostList2 = new ArrayList<>();
+        adapter = new CareerAdapter(resumePostList2);
+        resume_career_recyclerView.setAdapter(adapter);
+        resume_career_recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        resume_career_btn.setOnClickListener(v -> {
+            String text = resume_career_edit.getText().toString();
+            if (!text.isEmpty()) {
+                resumePostList2.add(text);
+                adapter.notifyDataSetChanged();
+                resume_career_edit.setText("");
+            }
+        });
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView textView = toolbar.findViewById(R.id.toolbar_title);
+        textView.setText("이력서 관리");
+
+        resumeGet();
+
+        //뒤로가기
         Button btn_Back = findViewById(R.id.btn_back);
-        resume_ImageView = findViewById(R.id.resume_image_imageView);
-
         btn_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,12 +106,118 @@ public class ResumePost extends AppCompatActivity {
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    }//onCreate()
 
-        TextView textView = toolbar.findViewById(R.id.toolbar_title);
-        textView.setText("이력서 관리");
+    public void resumePost() {
+        String text_resume_info = resume_info.getText().toString();
 
+        MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, ResumePost.this);
+
+        ResumeUpdateRequestDTO dto = new ResumeUpdateRequestDTO();
+        dto.setEtcCareer(resumePostList2);
+        dto.setUserIntro(text_resume_info);
+
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //이력서관리 수정 서버요청
+        Call<Void> call = apiService.updateResume(dto, image);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Intent intent = new Intent(ResumePost.this, MyPageWorker.class);
+                    startActivity(intent);
+
+                    Log.e("api", "이력서관리 수정 서버응답 성공" + response.code() + ", " + response.message());
+                } else {
+                    Log.e("api", "이력서관리 수정 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "회원정보수정(구인자) 수정 서버응답 오류" + response.errorBody().toString());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("api", "이력서관리 수정 서버요청 오류", t);
+            }
+        });
+
+    }
+
+    public void resumeGet() {
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //이력서관리 조회 서버요청
+        Call<ResumeEditResponseDTO> call = apiService.getResume();
+        call.enqueue(new Callback<ResumeEditResponseDTO>() {
+            @Override
+            public void onResponse(Call<ResumeEditResponseDTO> call, Response<ResumeEditResponseDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ResumeEditResponseDTO dto = response.body();
+                    resume_name.setText(dto.getUserName());
+                    resume_review_result.setText(String.valueOf(dto.getTotalReviewScore()));
+                    resume_info.setText(dto.getUserIntro());
+
+                    List<String> resumePostList = dto.getEtcCareer();
+                    adapter = new CareerAdapter(resumePostList);
+                    resume_career_recyclerView.setAdapter(adapter);
+
+                    String imageData = dto.getUploadImgFileName();
+                    if (imageData != null && imageData.length() > 0) {
+                        // Base64 문자열을 바이트 배열로 디코드
+                        byte[] decodedString = Base64.decode(imageData, Base64.DEFAULT);
+                        // 디코드된 바이트 배열을 Bitmap으로 변환
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        // Bitmap을 ImageView에 설정
+                        resume_image_imageView.setImageBitmap(bitmap);
+                    } else {
+                        // 이미지가 없을 경우 기본 이미지 설정
+                        resume_image_imageView.setImageResource(R.drawable.mypage);
+                    }
+
+                    Log.e("api", "이력서관리 조회 서버응답 성공" + response.code() + ", " + response.message());
+
+                } else {
+                    Log.e("api", "이력서관리 조회 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("api", "이력서관리 조회 서버응답 오류" + response.errorBody().toString());                        }
+            }
+            @Override
+            public void onFailure(Call<ResumeEditResponseDTO> call, Throwable t) {
+                Log.e("api", "이력서관리 조회 서버요청 오류", t);
+            }
+        });
+
+    }
+
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri, Context context) {
+        File cacheDir = context.getCacheDir();
+        File tempFile = new File(cacheDir, "upload.jpg");
+        Log.d("File Check", "File exist before stream: " + tempFile.exists());
+
+        try {
+            if (!tempFile.exists() && tempFile.createNewFile()) {
+                Log.d("File Creation", "File created successfully.");
+            }
+        } catch (IOException e) {
+            Log.e("File Creation", "Error creating file", e);
+            return null;
+        }
+
+        try (InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
+             OutputStream outputStream = new FileOutputStream(tempFile)) {
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buf)) > 0) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.flush();
+        } catch (Exception e) {
+            Log.e("tag", "이미지 파일 업로드 오류", e);
+            return null;
+        }
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), tempFile);
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData(partName, tempFile.getName(), requestFile);
+//        tempFile.delete();
+        return filePart;
     }
 
     public void onSelectImageClick (View view){
@@ -52,10 +228,10 @@ public class ResumePost extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            Uri selectedImageUri = data.getData();
+            imageUri = data.getData();
             try {
-                Bitmap bitmap = resizeImage(selectedImageUri, 200, 200);
-                resume_ImageView.setImageBitmap(bitmap);
+                Bitmap bitmap = resizeImage(imageUri, 200, 200);
+                resume_image_imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
