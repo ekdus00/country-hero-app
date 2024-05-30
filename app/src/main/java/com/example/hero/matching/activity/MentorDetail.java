@@ -20,6 +20,7 @@ import com.example.hero.matching.adapter.MatchingCommentAdapter;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
+import com.example.hero.mypage.activity.MyPageApplicant;
 
 import java.io.IOException;
 import java.util.List;
@@ -169,8 +170,17 @@ public class MentorDetail extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() { // 뒤로가기 버튼(linear layout)에 클릭 이벤트를 달아줌
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent intent = new Intent(MentorDetail.this, MatchingList.class);
+                startActivity(intent);
             } // 클릭하면 뒤로가기 동작이 실행됨
+        });
+
+        name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentorDetail.this, MyPageApplicant.class);
+                startActivity(intent);
+            }
         });
     }
 }
