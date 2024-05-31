@@ -20,6 +20,7 @@ import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.job.activity.EmployerData;
 import com.example.hero.matching.adapter.MatchingCommentAdapter;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
@@ -33,6 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// 구인자
 public class MenteeDetail extends AppCompatActivity {
 
     LinearLayout backBtn; // 뒤로가기 버튼
@@ -50,6 +52,8 @@ public class MenteeDetail extends AppCompatActivity {
     RecyclerView recyclerView;
     MatchingCommentAdapter commentAdapter;
     ScrollView scrollView;
+
+    ImageButton goMatchingPostBtn;
     int commentParent = -1;
 
     private final TokenManager tokenManager = new TokenManager(this);
@@ -73,6 +77,14 @@ public class MenteeDetail extends AppCompatActivity {
         eduDate = findViewById(R.id.txt_edu_date);
         eduContent = findViewById(R.id.txt_edu_content);
 
+        goMatchingPostBtn = findViewById(R.id.edit_btn);
+        goMatchingPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenteeDetail.this, MatchingPost.class);
+                startActivity(intent);
+            }
+        });
 
         imageView = findViewById(R.id.image_view);
 
@@ -191,7 +203,7 @@ public class MenteeDetail extends AppCompatActivity {
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenteeDetail.this, MyPageRecruiter.class);
+                Intent intent = new Intent(MenteeDetail.this, EmployerData.class);
                 startActivity(intent);
             }
         });

@@ -21,6 +21,7 @@ import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
 import com.example.hero.mypage.activity.MyPageApplicant;
+import com.example.hero.resume.activity.ResumeCheck;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +50,8 @@ public class MentorDetail extends AppCompatActivity {
     RecyclerView recyclerView;
     MatchingCommentAdapter commentAdapter;
     ScrollView scrollView;
+
+    ImageButton goMatchingPostBtn;
     int commentParent = -1;
 
     private final TokenManager tokenManager = new TokenManager(this);
@@ -76,6 +79,15 @@ public class MentorDetail extends AppCompatActivity {
         scrollView = findViewById(R.id.scroll_view);
 
         recyclerView = findViewById(R.id.recycler_view);
+
+        goMatchingPostBtn = findViewById(R.id.edit_btn);
+        goMatchingPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MentorDetail.this, MatchingPost.class);
+                startActivity(intent);
+            }
+        });
 
         comment = findViewById(R.id.txt_comment);
         submitCommentBtn = findViewById(R.id.submit_comment_btn);
@@ -178,7 +190,7 @@ public class MentorDetail extends AppCompatActivity {
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MentorDetail.this, MyPageApplicant.class);
+                Intent intent = new Intent(MentorDetail.this, ResumeCheck.class);
                 startActivity(intent);
             }
         });
