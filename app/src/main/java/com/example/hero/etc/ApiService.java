@@ -26,6 +26,8 @@ import com.example.hero.matching.dto.MatchingListInfoDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
+import com.example.hero.resume.dto.ResumeResponseDTO;
+import com.example.hero.resume.dto.WorkerStateRequestDTO;
 import com.example.hero.review.dto.BlockRequestDTO;
 import com.example.hero.review.dto.OwnerReviewInfoDTO;
 import com.example.hero.review.dto.OwnerReviewUpdateRequestDTO;
@@ -157,6 +159,8 @@ public interface ApiService {
 //
 
 
+
+
     //구인자 상호평가완료/목록
     @PUT("/api/review/owner/complete")
     Call<Void> updateOwnerReview(@Body OwnerReviewUpdateRequestDTO requestDTO);
@@ -187,6 +191,17 @@ public interface ApiService {
 
 
 
+    //구인자의 이력서 확인
+    @GET("/api/resume/{selectedWorker}")
+    Call<ResumeResponseDTO> checkResume(@Path("selectedUserId") String selectedUserId);
+
+    //일자리 승인
+    @PUT("/api/resume/approve")
+    Call<ResponseBody> updateApprove(@Body WorkerStateRequestDTO requestDTO);
+
+    //일자리 보류
+    @PUT("/api/resume/defer")
+    Call<ResponseBody> updateDefer(@Body WorkerStateRequestDTO requestDTO);
 
     //네이버로그인
 //    @GET("/naver/callback")
