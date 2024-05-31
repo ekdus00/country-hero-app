@@ -13,9 +13,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientBusiness {
     private Context context;
     private static Retrofit retrofit = null;
+//    private static final String BASE_URL = "https://api.odcloud.kr/api/nts-businessman/v1/status/";
+    private static final String BASE_URL = "https://api.odcloud.kr/";
     public static Retrofit getClient(Context context) {
-        String service_key = context.getString(R.string.business_auth_key);
-        String BASE_URL = "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=" + service_key;
+//        String service_key = context.getString(R.string.business_auth_key);
+//        String BASE_URL = "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=" + service_key;
 
         if (retrofit == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

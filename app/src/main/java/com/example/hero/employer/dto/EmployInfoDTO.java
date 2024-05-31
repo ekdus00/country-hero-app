@@ -9,14 +9,14 @@ public class EmployInfoDTO {
     private String city;
     private String cropForm;
     private String cropType;
-    private LocalDate startWorkDate;
-    private LocalDate endWorkDate;
-    private LocalDate startRecruitDate; //모집 시작일
-    private LocalDate endRecruitDate; //모집 마감일
+    private String startWorkDate;
+    private String endWorkDate;
+    private String startRecruitDate; //모집 시작일
+    private String endRecruitDate; //모집 마감일
     private String state;
     private Long participateCount;
 
-    public EmployInfoDTO(Integer jobId, String jobName, LocalDate startWorkDate, LocalDate endWorkDate, LocalDate startRecruitDate, LocalDate endRecruitDate, String country, String city, String cropForm, String cropType, String state, Long participateCount) {
+    public EmployInfoDTO(Integer jobId, String jobName, String startWorkDate, String endWorkDate, String startRecruitDate, String endRecruitDate, String country, String city, String cropForm, String cropType, String state, Long participateCount) {
         this.jobId = jobId;
         this.jobName = jobName;
         this.startWorkDate = startWorkDate;
@@ -47,35 +47,35 @@ public class EmployInfoDTO {
         this.state = state;
     }
 
-    public LocalDate getEndRecruitDate() {
+    public String getEndRecruitDate() {
         return endRecruitDate;
     }
 
-    public void setEndRecruitDate(LocalDate endRecruitDate) {
+    public void setEndRecruitDate(String endRecruitDate) {
         this.endRecruitDate = endRecruitDate;
     }
 
-    public LocalDate getStartRecruitDate() {
+    public String getStartRecruitDate() {
         return startRecruitDate;
     }
 
-    public void setStartRecruitDate(LocalDate startRecruitDate) {
+    public void setStartRecruitDate(String startRecruitDate) {
         this.startRecruitDate = startRecruitDate;
     }
 
-    public LocalDate getEndWorkDate() {
+    public String getEndWorkDate() {
         return endWorkDate;
     }
 
-    public void setEndWorkDate(LocalDate endWorkDate) {
+    public void setEndWorkDate(String endWorkDate) {
         this.endWorkDate = endWorkDate;
     }
 
-    public LocalDate getStartWorkDate() {
+    public String getStartWorkDate() {
         return startWorkDate;
     }
 
-    public void setStartWorkDate(LocalDate startWorkDate) {
+    public void setStartWorkDate(String startWorkDate) {
         this.startWorkDate = startWorkDate;
     }
 

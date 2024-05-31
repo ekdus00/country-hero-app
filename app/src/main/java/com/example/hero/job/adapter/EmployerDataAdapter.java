@@ -9,14 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
+import com.example.hero.job.dto.ReviewContentInfoDTO;
 
 import java.util.List;
 
 
 public class EmployerDataAdapter extends RecyclerView.Adapter<com.example.hero.job.adapter.EmployerDataAdapter.ViewHolder> {
-    private List<String> mData;
+    private List<ReviewContentInfoDTO> mData;
 
-    public EmployerDataAdapter(List<String> data) {
+    public EmployerDataAdapter(List<ReviewContentInfoDTO> data) {
         mData = data;
     }
 
@@ -28,8 +29,8 @@ public class EmployerDataAdapter extends RecyclerView.Adapter<com.example.hero.j
 
     @Override
     public void onBindViewHolder(com.example.hero.job.adapter.EmployerDataAdapter.ViewHolder holder, int position) {
-//        String employerComment = mData.get(position);
-//        holder.bind(participateInfo);
+        ReviewContentInfoDTO dto = mData.get(position);
+        holder.bind(dto);
 
     }
 
@@ -49,11 +50,11 @@ public class EmployerDataAdapter extends RecyclerView.Adapter<com.example.hero.j
 
         }
 
-        public void bind(final String employerComment) {
+        public void bind(final ReviewContentInfoDTO dto) {
 //            currentJobId = participateInfo.getJobId();  // 현재 jobId 저장
-//
-//            applicant_status_title.setText(participateInfo.getJobName());
-//            applicant_status_address_country.setText(participateInfo.getCountry());
+
+            employer_comment_writer.setText(dto.getUserId());
+            employer_comment.setText(dto.getReviewContent());
 
         }
 

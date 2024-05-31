@@ -34,6 +34,7 @@ import com.example.hero.matching.dto.MatchingListInfoDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
 import com.example.hero.mypage.dto.BusinessDataDTO;
+import com.example.hero.mypage.dto.BusinessNumberRequest;
 import com.example.hero.mypage.dto.BusinessResponseDTO;
 import com.example.hero.mypage.dto.OwnerProfileDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoResponseDTO;
@@ -229,7 +230,7 @@ public interface ApiService {
 
     //사업자 등록 번호 인증
     @POST("api/nts-businessman/v1/status")
-    Call<BusinessResponseDTO> checkBusinessStatus(@Body RequestBody data);
+    Call<BusinessResponseDTO> checkBusinessStatus(@Query("serviceKey") String serviceKey, @Body BusinessNumberRequest data);
 
     //회원정보수정(구직자) 조회
     @GET("/api/user/userInfo/owner")
@@ -320,6 +321,8 @@ public interface ApiService {
     Call<List<String>> getCropTypes(@Path("selectedCropForm") String cropForm);
 
 
+
+
     //푸시알림 승인
     @POST("/api/fcm/approve")
     Call<Void> approveFCM(@Header("Authorization") String authorization, @Header("FCM-Token") String fcmToken);
@@ -327,6 +330,8 @@ public interface ApiService {
     //푸시알리 거절
     @HTTP(method = "DELETE", path = "/api/fcm/refuse", hasBody = false)
     Call<Void> refuseFCM(@Header("Authorization") String authorization, @Header("FCM-Token") String fcmToken);
+
+
 
 
 

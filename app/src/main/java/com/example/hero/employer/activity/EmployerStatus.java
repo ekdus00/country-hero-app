@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hero.R;
 import com.example.hero.employer.adapter.EmployerStatusAdapterA;
 import com.example.hero.employer.adapter.EmployerStatusAdapterB;
+import com.example.hero.employer.dto.EmployInfoDTO;
 import com.example.hero.employer.dto.EmployResponseDTO;
 import com.example.hero.employer.dto.JobRequestDTO;
 import com.example.hero.etc.ApiService;
@@ -24,8 +25,11 @@ import com.example.hero.etc.OnItemClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.job.activity.JobPost;
+import com.example.hero.job.adapter.JobListAdapter;
+import com.example.hero.job.dto.JobInfoDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,36 +46,12 @@ public class EmployerStatus extends AppCompatActivity {
     private ApiService apiService;
     private TokenManager tokenManager;
     private int deadlineJobId;
-
+    private List<EmployInfoDTO> list = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employer_status);
         context = this;
         tokenManager = new TokenManager(this);
-
-        //공고작성
-        Button employer_status_job_post = findViewById(R.id.employer_status_job_post);
-        employer_status_job_post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JobPost.class);
-                startActivity(intent);
-            }
-        });
-
-        employer_status_progress_recyclerView = findViewById(R.id.employer_status_progress_recyclerView);
-        employer_status_deadline_recyclerView = findViewById(R.id.employer_status_deadline_recyclerView);
-
-        employer_status_progress_recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        employer_status_deadline_recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter1 = new EmployerStatusAdapterA(new ArrayList<>(), itemClickListener, buttonClickListener);
-        adapter2 = new EmployerStatusAdapterB(new ArrayList<>(), itemClickListener);
-
-        employer_status_progress_recyclerView.setAdapter(adapter1);
-        employer_status_deadline_recyclerView.setAdapter(adapter2);
-
-        employerStatusRequest();
 
         itemClickListener = jobId -> {
             Intent intent = new Intent(EmployerStatus.this, EmployerStatusDetail.class);
@@ -98,7 +78,33 @@ public class EmployerStatus extends AppCompatActivity {
                     break;
             }
         };
-        
+
+        //공고작성
+        Button employer_status_job_post = findViewById(R.id.employer_status_job_post);
+        employer_status_job_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), JobPost.class);
+                startActivity(intent);
+            }
+        });
+
+        employer_status_progress_recyclerView = findViewById(R.id.employer_status_progress_recyclerView);
+        employer_status_deadline_recyclerView = findViewById(R.id.employer_status_deadline_recyclerView);
+
+        employer_status_progress_recyclerView.setLayoutManager(new LinearLayoutManager(EmployerStatus.this));
+        employer_status_deadline_recyclerView.setLayoutManager(new LinearLayoutManager(EmployerStatus.this));
+
+        adapter1 = new EmployerStatusAdapterA(new ArrayList<>(), itemClickListener, buttonClickListener);
+        adapter2 = new EmployerStatusAdapterB(new ArrayList<>(), itemClickListener);
+
+        employer_status_progress_recyclerView.setAdapter(adapter1);
+        employer_status_deadline_recyclerView.setAdapter(adapter2);
+
+        employerStatusRequest();
+
+
+
     }//onCreate()
 
 

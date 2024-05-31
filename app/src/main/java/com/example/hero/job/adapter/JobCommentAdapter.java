@@ -18,12 +18,14 @@ import com.example.hero.job.dto.JobPostCommentResponseDTO;
 import java.util.List;
 
 
-public class JobCommentAdapter extends RecyclerView.Adapter {
+public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.ViewHolder> {
     private List<JobPostCommentResponseDTO> commentsList;
     private OnCommentClickListener buttonClickListener;
 
-    public JobCommentAdapter(List<JobPostCommentResponseDTO> commentsList) {
+    public JobCommentAdapter(List<JobPostCommentResponseDTO> commentsList, OnCommentClickListener buttonClickListener) {
         this.commentsList = commentsList;
+        this.buttonClickListener = buttonClickListener;
+
     }
 
     @Override
@@ -33,26 +35,31 @@ public class JobCommentAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (viewType == 0) {  // 부모 댓글
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_item, parent, false);
-            return new JobCommentAdapter.ParentCommentViewHolder(view, buttonClickListener);
-        } else {  // 자식 댓글
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_child_item, parent, false);
-            return new JobCommentAdapter.ChildCommentViewHolder(view);
-        }
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_item, parent, false);
+        return new JobCommentAdapter.ViewHolder(view, buttonClickListener);
+
+//        if (viewType == 0) {  // 부모 댓글
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_item, parent, false);
+//            return new JobCommentAdapter.ParentCommentViewHolder(view, buttonClickListener);
+//        } else {  // 자식 댓글
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_child_item, parent, false);
+//            return new JobCommentAdapter.ChildCommentViewHolder(view);
+//        }
     }
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        JobPostCommentResponseDTO comment = commentsList.get(position);
-        if (getItemViewType(position) == 0) {
-            ((JobCommentAdapter.ParentCommentViewHolder) holder).bind(comment);
-        } else {
-            ((JobCommentAdapter.ChildCommentViewHolder) holder).bind(comment);
-        }
+    public void onBindViewHolder(@NonNull JobCommentAdapter.ViewHolder holder, int position) {
+        JobPostCommentResponseDTO dto = commentsList.get(position);
+        holder.bind(dto, buttonClickListener);
+
+//        if (getItemViewType(position) == 0) {
+//            ((JobCommentAdapter.ParentCommentViewHolder) holder).bind(comment, buttonClickListener);
+//        } else {
+//            ((JobCommentAdapter.ChildCommentViewHolder) holder).bind(comment);
+//        }
     }
 
     @Override
@@ -60,13 +67,13 @@ public class JobCommentAdapter extends RecyclerView.Adapter {
         return commentsList.size();
     }
 
-    public static class ParentCommentViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewContent, textViewAuthor, textViewDate;
         RecyclerView childRecyclerView;
         int commentId;
         Button job_comment_childBtn, job_comment_editBtn, job_comment_deleteBtn;
 
-        public ParentCommentViewHolder(View itemView, OnCommentClickListener buttonClickListener) {
+        public ViewHolder(View itemView, OnCommentClickListener buttonClickListener) {
             super(itemView);
             textViewContent = itemView.findViewById(R.id.job_comment_content);
             textViewAuthor = itemView.findViewById(R.id.job_comment_userName);
@@ -96,7 +103,7 @@ public class JobCommentAdapter extends RecyclerView.Adapter {
 
         }
 
-        public void bind(JobPostCommentResponseDTO dto) {
+        public void bind(JobPostCommentResponseDTO dto, OnCommentClickListener buttonClickListener) {
             commentId = dto.getCommentId();  // 현재 Id 저장
 
             textViewContent.setText(dto.getCommentContent());
@@ -104,9 +111,12 @@ public class JobCommentAdapter extends RecyclerView.Adapter {
 
             //자식댓글
             if (dto.getChildCommentList() != null && !dto.getChildCommentList().isEmpty()) {
-                JobCommentAdapter childAdapter = new JobCommentAdapter(dto.getChildCommentList());
+//                JobCommentAdapter childAdapter = new JobCommentAdapter(dto.getChildCommentList(), buttonClickListener);
+
+                JobChildCommentAdapter childAdapter = new JobChildCommentAdapter(dto.getChildCommentList());
                 childRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
                 childRecyclerView.setAdapter(childAdapter);
+
             } else {
                 childRecyclerView.setVisibility(View.GONE);  // 자식 댓글이 없을 경우 RecyclerView 숨김 처리
             }
@@ -114,23 +124,23 @@ public class JobCommentAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public static class ChildCommentViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewContent, textViewAuthor, textViewDate;
-        int commentId;
-
-        public ChildCommentViewHolder(View itemView) {
-            super(itemView);
-            textViewContent = itemView.findViewById(R.id.job_comment_content);
-            textViewAuthor = itemView.findViewById(R.id.job_comment_userName);
-        }
-
-        public void bind(JobPostCommentResponseDTO dto) {
-            commentId = dto.getCommentId();  // 현재 Id 저장
-
-            textViewContent.setText(dto.getCommentContent());
-            textViewAuthor.setText(dto.getUserName());
-        }
-    }
+//    public static class ChildCommentViewHolder extends RecyclerView.ViewHolder {
+//        TextView textViewContent, textViewAuthor, textViewDate;
+//        int commentId;
+//
+//        public ChildCommentViewHolder(View itemView) {
+//            super(itemView);
+//            textViewContent = itemView.findViewById(R.id.job_comment_content);
+//            textViewAuthor = itemView.findViewById(R.id.job_comment_userName);
+//        }
+//
+//        public void bind(JobPostCommentResponseDTO dto) {
+//            commentId = dto.getCommentId();  // 현재 Id 저장
+//
+//            textViewContent.setText(dto.getCommentContent());
+//            textViewAuthor.setText(dto.getUserName());
+//        }
+//    }
 
 
 

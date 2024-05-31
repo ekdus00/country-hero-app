@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hero.employer.activity.EmployerStatus;
 import com.example.hero.etc.AddressActivity;
 import com.example.hero.etc.ApiService;
 import com.example.hero.R;
@@ -30,6 +31,7 @@ import com.example.hero.etc.GsonLocalDateAdapter;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.etc.UserManager;
+import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.job.dto.JobFilterDTO;
 import com.example.hero.job.dto.JobPostCreateRequestDTO;
 import com.google.gson.Gson;
@@ -321,8 +323,8 @@ public class JobPost extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    startActivity(new Intent(JobPost.this, EmployerStatus.class));
                     Log.e("JobPost", "공고작성 서버응답 성공" + response.code() + ", " + response.message());
-
                 } else {
                     Log.e("JobPost", "공고작성 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("JobPost", "공고작성 서버응답 오류" + response.errorBody().toString());

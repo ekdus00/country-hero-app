@@ -24,6 +24,7 @@ import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.login.activity.Login;
 import com.example.hero.mypage.dto.BusinessDataDTO;
+import com.example.hero.mypage.dto.BusinessNumberRequest;
 import com.example.hero.mypage.dto.BusinessResponseDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoResponseDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
@@ -31,7 +32,9 @@ import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -109,9 +112,13 @@ public class ModifyOwner extends AppCompatActivity {
         apiService = RetrofitClientBusiness.getClient(context).create(ApiService.class);
 
         String farm_number = modify_farmNum.getText().toString();
-        RequestBody data = RequestBody.create(farm_number, MediaType.parse("application/json"));
 
-        Call<BusinessResponseDTO> call = apiService.checkBusinessStatus(data);
+        List<String> businessNumbers = Arrays.asList(farm_number);  // 여기에 실제 사업자 번호 입력
+        BusinessNumberRequest request = new BusinessNumberRequest(businessNumbers);
+
+        String service_key = context.getString(R.string.business_auth_key);
+
+        Call<BusinessResponseDTO> call = apiService.checkBusinessStatus(service_key, request);
         call.enqueue(new Callback<BusinessResponseDTO>() {
             @Override
             public void onResponse(Call<BusinessResponseDTO> call, Response<BusinessResponseDTO> response) {
@@ -122,8 +129,10 @@ public class ModifyOwner extends AppCompatActivity {
 
                     if (Objects.equals(statusCode, "01")) {
                         business_auth = "auth";
+                        Toast.makeText(context, "사업자 등록번호 인증에 성공했습니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         business_auth = "unableAuth";
+                        Toast.makeText(context, "사업자 등록번호 인증에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     }
 
                     Log.e("api", "회원정보수정(구인자) 수정 서버응답 성공" + response.code() + ", " + response.message());

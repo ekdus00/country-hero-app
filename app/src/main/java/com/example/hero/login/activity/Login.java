@@ -107,36 +107,36 @@ public class Login extends AppCompatActivity {
         });
 
         //네이버 로그인
-//        naverIdLoginSDK.initialize(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.naver_client_name));
-//        NidOAuthLoginButton buttonOAuthLoginImg = findViewById(R.id.buttonOAuthLoginImg);
-//        buttonOAuthLoginImg.setOAuthLogin(new OAuthLoginCallback() {
-//            @Override
-//            public void onSuccess() {
-//                // 로그인 성공시
-//                // 액세스 토큰 가져오기
-//                String accessToken = NaverIdLoginSDK.INSTANCE.getAccessToken();
-//                tokenManager.saveAccessTokens(accessToken);
-////                textView.setText(accessToken);
-//                buttonOAuthLoginImg.setVisibility(View.GONE);
-////                String ac = naverIdLoginSDK.getAccessToken();
-////                binding.tvRefreshToken.text = NaverIdLoginSDK.getRefreshToken()
-////                binding.tvExpires.text = NaverIdLoginSDK.getExpiresAt().toString()
-////                binding.tvType.text = NaverIdLoginSDK.getTokenType()
-////                binding.tvState.text = NaverIdLoginSDK.getState().toString()
-//            }
-//
-//            @Override
-//            public void onFailure(int httpStatus, @NonNull String message) {
-//                // 통신 오류
-//                Log.e("네아로", "onFailure: httpStatus - " + httpStatus + " / message - " + message);
-//            }
-//
-//            @Override
-//            public void onError(int errorCode, @NonNull String message) {
-//                // 네이버 로그인 중 오류 발생
-//                Log.e("네아로", "onError: errorCode - " + errorCode + " / message - " + message);
-//            }
-//        });
+        naverIdLoginSDK.initialize(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.naver_client_name));
+        NidOAuthLoginButton buttonOAuthLoginImg = findViewById(R.id.buttonOAuthLoginImg);
+        buttonOAuthLoginImg.setOAuthLogin(new OAuthLoginCallback() {
+            @Override
+            public void onSuccess() {
+                // 로그인 성공시
+                // 액세스 토큰 가져오기
+                String accessToken = NaverIdLoginSDK.INSTANCE.getAccessToken();
+                tokenManager.saveAccessTokens(accessToken);
+//                textView.setText(accessToken);
+                buttonOAuthLoginImg.setVisibility(View.GONE);
+//                String ac = naverIdLoginSDK.getAccessToken();
+//                binding.tvRefreshToken.text = NaverIdLoginSDK.getRefreshToken()
+//                binding.tvExpires.text = NaverIdLoginSDK.getExpiresAt().toString()
+//                binding.tvType.text = NaverIdLoginSDK.getTokenType()
+//                binding.tvState.text = NaverIdLoginSDK.getState().toString()
+            }
+
+            @Override
+            public void onFailure(int httpStatus, @NonNull String message) {
+                // 통신 오류
+                Log.e("네아로", "onFailure: httpStatus - " + httpStatus + " / message - " + message);
+            }
+
+            @Override
+            public void onError(int errorCode, @NonNull String message) {
+                // 네이버 로그인 중 오류 발생
+                Log.e("네아로", "onError: errorCode - " + errorCode + " / message - " + message);
+            }
+        });
 
 
     }//onCreate()

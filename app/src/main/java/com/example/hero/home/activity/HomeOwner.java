@@ -59,6 +59,12 @@ public class HomeOwner extends AppCompatActivity {
         context = this;
         tokenManager = new TokenManager(this);
 
+        itemClickListener = jobId -> {
+            Intent intent = new Intent(HomeOwner.this, JobDetail.class);
+            intent.putExtra("jobId", jobId);
+            startActivity(intent);
+        };
+
         recyclerView1 = findViewById(R.id.home_job_list_recyclerView);
         recyclerView2 = findViewById(R.id.home_recruiter_recyclerView);
 
@@ -72,6 +78,7 @@ public class HomeOwner extends AppCompatActivity {
 
         homeRecruiterRequest();
 
+        //공고목록
         Button home_recruiter_title3_btn = findViewById(R.id.home_recruiter_title3_btn);
         home_recruiter_title3_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +88,7 @@ public class HomeOwner extends AppCompatActivity {
             }
         });
 
+        //게시한 공고목록
         Button home_recruiter_title1_btn = findViewById(R.id.home_recruiter_title1_btn);
         home_recruiter_title1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,12 +97,6 @@ public class HomeOwner extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        itemClickListener = jobId -> {
-            Intent intent = new Intent(HomeOwner.this, JobDetail.class);
-            intent.putExtra("jobId", jobId);
-            startActivity(intent);
-        };
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -136,7 +138,7 @@ public class HomeOwner extends AppCompatActivity {
                     List<EmployInfoHomeDTO> list2 = ownerHomeDTO.getEmpolyInfoHomeDTOList();
 
                     adapter1 = new JobInfoHomeAdapter(list1, itemClickListener);
-                    adapter2 = new EmployInfoHomeAdapter(list2);
+                    adapter2 = new EmployInfoHomeAdapter(list2, itemClickListener);
 
                     recyclerView1.setAdapter(adapter1);
                     recyclerView2.setAdapter(adapter2);

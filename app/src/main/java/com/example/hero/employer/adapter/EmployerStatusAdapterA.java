@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
@@ -17,7 +18,7 @@ import com.example.hero.etc.OnItemClickListener;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class EmployerStatusAdapterA extends RecyclerView.Adapter<com.example.hero.employer.adapter.EmployerStatusAdapterA.ViewHolder> {
+public class EmployerStatusAdapterA extends RecyclerView.Adapter<EmployerStatusAdapterA.ViewHolder> {
     private List<EmployInfoDTO> mData;
     private OnItemClickListener mListener;
     private OnButtonClickListenerOwnerStatus buttonClickListener;
@@ -33,21 +34,38 @@ public class EmployerStatusAdapterA extends RecyclerView.Adapter<com.example.her
         mData.addAll(newData);
         notifyDataSetChanged();
     }
-
+    @NonNull
     @Override
-    public com.example.hero.employer.adapter.EmployerStatusAdapterA.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.employer_status_progress_item, parent, false);
-        return new com.example.hero.employer.adapter.EmployerStatusAdapterA.ViewHolder(view, mListener, buttonClickListener);
+        return new ViewHolder(view, mListener, buttonClickListener);
     }
 
     @Override
-    public void onBindViewHolder(com.example.hero.employer.adapter.EmployerStatusAdapterA.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EmployInfoDTO jobInfo = mData.get(position);
         holder.bind(jobInfo, mListener, buttonClickListener); // bind 메소드 사용
-    }
-    @Override
-    public int getItemCount() {
-        return mData.size();
+
+//        holder.itemView.setOnClickListener(v -> {
+//            int pos = holder.getAdapterPosition();
+//            if (mListener != null && pos != RecyclerView.NO_POSITION) {
+//                mListener.onItemClick(jobInfo.getJobId());
+//            }
+//        });
+//
+//        holder.employer_status_modify.setOnClickListener(v -> {
+//            int pos = holder.getAdapterPosition();
+//            if (buttonClickListener != null && pos != RecyclerView.NO_POSITION) {
+//                buttonClickListener.onButtonClickOwnerStatus(jobInfo.getJobId(), OnButtonClickListenerOwnerStatus.ButtonType.MODIFY);
+//            }
+//        });
+//
+//        holder.employer_status_deadline.setOnClickListener(v -> {
+//            int pos = holder.getAdapterPosition();
+//            if (buttonClickListener != null && pos != RecyclerView.NO_POSITION) {
+//                buttonClickListener.onButtonClickOwnerStatus(jobInfo.getJobId(), OnButtonClickListenerOwnerStatus.ButtonType.DEADLINE);
+//            }
+//        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -104,25 +122,19 @@ public class EmployerStatusAdapterA extends RecyclerView.Adapter<com.example.her
             cropType.setText(jobInfo.getCropForm());
             title.setText(jobInfo.getCropType());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart = jobInfo.getStartWorkDate().format(formatter);
-            work_period_start.setText(formattedStart);
-
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart2 = jobInfo.getEndWorkDate().format(formatter2);
-            work_period_end.setText(formattedStart2);
-
-            DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart3 = jobInfo.getStartRecruitDate().format(formatter3);
-            recruitment_period_start.setText(formattedStart3);
-
-            DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart4 = jobInfo.getEndRecruitDate().format(formatter4);
-            recruitment_period_end.setText(formattedStart4);
+            work_period_start.setText(jobInfo.getStartWorkDate());
+            work_period_end.setText(jobInfo.getEndWorkDate());
+            recruitment_period_start.setText(jobInfo.getStartRecruitDate());
+            recruitment_period_end.setText(jobInfo.getEndRecruitDate());
 
             participateCount.setText(String.valueOf(jobInfo.getParticipateCount()));
 
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mData.size();
     }
 
 }

@@ -8,14 +8,14 @@ public class OwnerReviewResultDTO {
     private Double item2ReviewAvg;
     private Double item3ReviewAvg;
 
-    private List<String> reviewContents;
+    private List<ReviewContentInfoDTO> reviewContentInfoList;
 
-    public List<String> getReviewContents() {
-        return reviewContents;
+    public List<ReviewContentInfoDTO> getReviewContents() {
+        return reviewContentInfoList;
     }
 
-    public void setReviewContents(List<String> reviewContents) {
-        this.reviewContents = reviewContents;
+    public void setReviewContents(List<ReviewContentInfoDTO> reviewContents) {
+        this.reviewContentInfoList = reviewContents;
     }
 
     public Double getItem3ReviewAvg() {

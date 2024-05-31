@@ -28,6 +28,7 @@ import com.example.hero.job.dto.JobDetailResponseDTO;
 import com.example.hero.job.dto.OwnerInfoDTO;
 import com.example.hero.job.dto.OwnerInfoResponseDTO;
 import com.example.hero.job.dto.OwnerReviewResultDTO;
+import com.example.hero.job.dto.ReviewContentInfoDTO;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,16 +105,27 @@ public class EmployerData extends AppCompatActivity {
                     employer_email.setText(date1.getMail());
 
                     double rating1 = date2.getTotalReviewAvg();
-                    double rating2 = date2.getItem1ReviewAvg();
-                    double rating3 = date2.getItem2ReviewAvg();
-                    double rating4 = date2.getItem3ReviewAvg();
+                    employer_review_result.setText(String.format("%.1f", rating1));
+
+                    if (date2.getItem1ReviewAvg() != null) {
+                        double rating2 = date2.getItem1ReviewAvg();
+                        employer_review_detail1.setText(String.format("%.1f", rating2));
+                    } else if (date2.getItem2ReviewAvg() != null){
+                        double rating3 = date2.getItem2ReviewAvg();
+                        employer_review_detail2.setText(String.format("%.1f", rating3));
+                    } else if (date2.getItem3ReviewAvg() != null){
+                        double rating4 = date2.getItem3ReviewAvg();
+                        employer_review_detail3.setText(String.format("%.1f", rating4));
+                    } else {
+                        Log.e("EmployerData", "상호평가 총점 null");
+                    }
 
                     employer_review_result.setText(String.format("%.1f", rating1));
-                    employer_review_detail1.setText(String.format("%.1f", rating2));
-                    employer_review_detail2.setText(String.format("%.1f", rating3));
-                    employer_review_detail3.setText(String.format("%.1f", rating4));
+//                    employer_review_detail1.setText(String.format("%.1f", rating2));
+//                    employer_review_detail2.setText(String.format("%.1f", rating3));
+//                    employer_review_detail3.setText(String.format("%.1f", rating4));
 
-                    List<String> EmployerDateComment = date2.getReviewContents();
+                    List<ReviewContentInfoDTO> EmployerDateComment = date2.getReviewContents();
                     adapter1 = new EmployerDataAdapter(EmployerDateComment);
                     employer_comment_recyclerView.setAdapter(adapter1);
 

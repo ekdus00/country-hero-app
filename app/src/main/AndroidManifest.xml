@@ -70,7 +70,9 @@
         <activity android:name=".login.activity.Login"></activity>
         <activity android:name=".login.activity.UserTypeSet"></activity>
         <activity android:name=".login.activity.RefreshToken"></activity>
-<!--        <activity-->
+        <activity android:name=".employer.activity.JobEditPost"></activity>
+
+        <!--        <activity-->
 <!--            android:name=".login.activity.Login"-->
 <!--            android:exported="true"></activity>-->
 

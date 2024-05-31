@@ -482,19 +482,19 @@
 
                         <androidx.core.widget.NestedScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="200dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="200dp"
                                 android:orientation="vertical">
 
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/job_comment_recyclerView"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="200dp"
                                     android:background="#F0F0F0"
-                                    android:padding="16dp" />
+                                    android:padding="5dp" />
                             </LinearLayout>
                         </androidx.core.widget.NestedScrollView>
 

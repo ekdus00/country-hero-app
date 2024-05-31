@@ -55,7 +55,7 @@
                             android:id="@+id/employer_status_progress_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
+                            android:padding="5dp"
                             android:background="#F0F0F0"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -85,7 +85,7 @@
                             android:id="@+id/employer_status_deadline_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
+                            android:padding="5dp"
                             android:background="#F0F0F0"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>

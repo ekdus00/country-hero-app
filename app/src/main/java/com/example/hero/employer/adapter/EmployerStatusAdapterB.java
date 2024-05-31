@@ -34,7 +34,7 @@ public class EmployerStatusAdapterB extends RecyclerView.Adapter<com.example.her
 
     @Override
     public com.example.hero.employer.adapter.EmployerStatusAdapterB.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.employer_status_detail_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.employer_status_deadline_item, parent, false);
         return new com.example.hero.employer.adapter.EmployerStatusAdapterB.ViewHolder(view, mListener);
     }
 
@@ -84,21 +84,10 @@ public class EmployerStatusAdapterB extends RecyclerView.Adapter<com.example.her
             cropType.setText(jobInfo.getCropForm());
             title.setText(jobInfo.getCropType());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart = jobInfo.getStartWorkDate().format(formatter);
-            work_period_start.setText(formattedStart);
-
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart2 = jobInfo.getEndWorkDate().format(formatter2);
-            work_period_end.setText(formattedStart2);
-
-            DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart3 = jobInfo.getStartRecruitDate().format(formatter3);
-            recruitment_period_start.setText(formattedStart3);
-
-            DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart4 = jobInfo.getEndRecruitDate().format(formatter4);
-            recruitment_period_end.setText(formattedStart4);
+            work_period_start.setText(jobInfo.getStartWorkDate());
+            work_period_end.setText(jobInfo.getEndWorkDate());
+            recruitment_period_start.setText(jobInfo.getStartRecruitDate());
+            recruitment_period_end.setText(jobInfo.getEndRecruitDate());
 
             participateCount.setText(String.valueOf(jobInfo.getParticipateCount()));
 

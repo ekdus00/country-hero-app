@@ -7,12 +7,12 @@ public class JobPostCommentResponseDTO {
 
     private String commentContent;
     private String userName;
-    private LocalDateTime updatedCommentDatetime;
+    private String updatedCommentDatetime;
     private Integer commentId;
     private List<JobPostCommentResponseDTO> childCommentList;
 
     // 댓글 조회 항목
-    public JobPostCommentResponseDTO(Integer commentId, String commentContent, String userName, LocalDateTime updatedCommentDateTime) {
+    public JobPostCommentResponseDTO(Integer commentId, String commentContent, String userName, String updatedCommentDateTime) {
         this.commentId = commentId;
         this.commentContent = commentContent;
         this.userName = userName;
@@ -40,11 +40,11 @@ public class JobPostCommentResponseDTO {
         this.userName = userName;
     }
 
-    public LocalDateTime getUpdatedCommentDatetime() {
+    public String getUpdatedCommentDatetime() {
         return updatedCommentDatetime;
     }
 
-    public void setUpdatedCommentDatetime(LocalDateTime updatedCommentDatetime) {
+    public void setUpdatedCommentDatetime(String updatedCommentDatetime) {
         this.updatedCommentDatetime = updatedCommentDatetime;
     }
 

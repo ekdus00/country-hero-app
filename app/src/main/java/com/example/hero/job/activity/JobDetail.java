@@ -31,7 +31,9 @@ import com.example.hero.etc.OnButtonClickListener;
 import com.example.hero.etc.OnCommentClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.job.adapter.JobCommentAdapter;
+import com.example.hero.job.dto.JobInfoDTO;
 import com.example.hero.job.dto.JobPostCommentDeleteRequestDTO;
 import com.example.hero.job.dto.JobPostCommentRequestDTO;
 import com.example.hero.job.dto.JobPostCommentResponseDTO;
@@ -40,6 +42,7 @@ import com.example.hero.job.dto.JobPostCommentUpdateRequestDTO;
 import com.example.hero.job.dto.ParticipateRequestDTO;
 import com.naver.maps.map.OnMapReadyCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -74,7 +77,6 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
     public TextView job_detail_preference;
     public TextView job_detail_content;
     private NaverMap naverMap;
-    JobCommentAdapter adapter;
     public EditText job_comment_content;
     public Button job_comment_send;
     public Button job_comment_editBtn;
@@ -87,13 +89,39 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
     private double latitude = 37.5670135; // 초기 위도 값을 0으로 설정
     private double longitude = 126.9783740;
     private RatingBar job_detail_cropLevel;
+    JobCommentAdapter adapter;
     private OnCommentClickListener buttonClickListener;
+    private List<JobPostCommentResponseDTO> commentList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_detail);
         context = this;
         tokenManager = new TokenManager(this);
+
+        jobId = getIntent().getIntExtra("jobId", 0);
+        jobDetailRequest();
+        commentRequest();
+
+        buttonClickListener = (commentId, buttonType) -> {
+            switch (buttonType) {
+                case CHILD:
+                    // MODIFY 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "CHILD" + commentId);
+                    onChildComment(commentId);
+                    break;
+                case EDIT:
+                    // DEADLINE 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "EDIT" + commentId);
+                    onEditComment(commentId);
+                    break;
+                case DELETE:
+                    // DEADLINE 버튼 클릭 이벤트 처리
+                    Log.d(TAG, "DELETE" + commentId);
+                    commentDelete(commentId);
+                    break;
+            }
+        };
 
         //공고상세정보
         job_detail_title = findViewById(R.id.job_detail_title);
@@ -127,10 +155,8 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
 
         job_comment_recyclerView = findViewById(R.id.job_comment_recyclerView);
         job_comment_recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        jobId = getIntent().getIntExtra("jobId", 0);
-        jobDetailRequest();
-        commentRequest();
+        adapter = new JobCommentAdapter(commentList, buttonClickListener);
+        job_comment_recyclerView.setAdapter(adapter);
 
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         if (mapFragment == null) {
@@ -167,29 +193,13 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
-        buttonClickListener = (commentId, buttonType) -> {
-            switch (buttonType) {
-                case CHILD:
-                    // MODIFY 버튼 클릭 이벤트 처리
-                    Log.d(TAG, "CHILD" + commentId);
-                    onChildComment(commentId);
-                    break;
-                case EDIT:
-                    // DEADLINE 버튼 클릭 이벤트 처리
-                    Log.d(TAG, "EDIT" + commentId);
-                    onEditComment(commentId);
-                    break;
-                case DELETE:
-                    // DEADLINE 버튼 클릭 이벤트 처리
-                    Log.d(TAG, "DELETE" + commentId);
-                    commentDelete(commentId);
-                    break;
+        //공고댓글 작성 리스너
+        job_comment_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commentCreate();
             }
-        };
-
-
-
-
+        });
 
 
     } //oncreate()
@@ -242,7 +252,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
                     List<JobPostCommentResponseDTO> comments = response.body();
-                    adapter = new JobCommentAdapter(comments);
+                    adapter = new JobCommentAdapter(comments, buttonClickListener);
                     job_comment_recyclerView.setAdapter(adapter);
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
@@ -256,10 +266,9 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void commentCreate() {
-        String content = job_comment_editBtn.getText().toString();
+        String content = job_comment_content.getText().toString();
 
         JobPostCommentRequestDTO dto = new JobPostCommentRequestDTO();
-
         dto.setJobId(jobId);
         dto.setCommentContent(content);
 
@@ -271,6 +280,11 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    Intent intent = new Intent(JobDetail.this, JobDetail.class);
+                    intent.putExtra("jobId", jobId);
+                    startActivity(intent);
+//                    startActivity(new Intent(JobDetail.this, JobDetail.class));
+                    Log.e("api", "공고상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
 
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
@@ -326,7 +340,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
                     List<JobPostCommentResponseDTO> comments = response.body();
-                    adapter = new JobCommentAdapter(comments);
+                    adapter = new JobCommentAdapter(comments, buttonClickListener);
                     job_comment_recyclerView.setAdapter(adapter);
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
@@ -354,7 +368,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
                     List<JobPostCommentResponseDTO> comments = response.body();
-                    adapter = new JobCommentAdapter(comments);
+                    adapter = new JobCommentAdapter(comments, buttonClickListener);
                     job_comment_recyclerView.setAdapter(adapter);
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());

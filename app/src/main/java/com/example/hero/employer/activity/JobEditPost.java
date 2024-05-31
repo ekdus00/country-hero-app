@@ -307,26 +307,15 @@ public class JobEditPost extends AppCompatActivity {
         String text_workCity = spinnerCity.getSelectedItem().toString();
 
         //작업기간 데이트피커
-
         String text_dateStart = textView_date_start.getText().toString();
-        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate startWorkDate = LocalDate.parse(text_dateStart, formatter1);
-
         String text_dateEnd = textView_date_end.getText().toString();
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate endWorkDate = LocalDate.parse(text_dateEnd, formatter2);
 
         //작업요일 라디오
         String text_workDay = getWorkDay();
 
         //작업시간 스피너
         String text_workTimeStart = working_time_start.getSelectedItem().toString();
-        DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime startWorkTime = LocalTime.parse(text_workTimeStart, formatter3);
-
         String text_workTimeEnd = working_time_end.getSelectedItem().toString();
-        DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime endWorkTime = LocalTime.parse(text_workTimeEnd, formatter4);
 
         //급여 에딧
         String text_salaryValue = work_salary_value.getText().toString();
@@ -334,12 +323,7 @@ public class JobEditPost extends AppCompatActivity {
 
         //모집기간 데이트피커
         String text_recruitStart = textView_recruit_start.getText().toString();
-        DateTimeFormatter formatter5 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate startRecruitDate = LocalDate.parse(text_recruitStart, formatter5);
-
         String text_recruitEnd = textView_recruit_end.getText().toString();
-        DateTimeFormatter formatter6 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate endRecruitDate = LocalDate.parse(text_recruitEnd, formatter6);
 
         //모집인원 에딧
         String text_recruitNumber = textView_recruit_number.getText().toString();
@@ -378,14 +362,14 @@ public class JobEditPost extends AppCompatActivity {
         dto.setJobName(text_title);
         dto.setCountry(text_workProvince);
         dto.setCity(text_workCity);
-        dto.setStartWorkDate(startWorkDate);
-        dto.setEndWorkDate(endWorkDate);
-        dto.setStartWorkTime(startWorkTime);
-        dto.setEndWorkTime(endWorkTime);
+        dto.setStartWorkDate(text_dateStart);
+        dto.setEndWorkDate(text_dateEnd);
+        dto.setStartWorkTime(text_workTimeStart);
+        dto.setEndWorkTime(text_workTimeEnd);
         dto.setWorkDay(text_workDay);
         dto.setPay(pay);
-        dto.setStartRecruitDate(startRecruitDate);
-        dto.setEndRecruitDate(endRecruitDate);
+        dto.setStartRecruitDate(text_recruitStart);
+        dto.setEndRecruitDate(text_recruitEnd);
         dto.setRecruitCount(recruitCount);
         dto.setCropForm(text_workCrop1);
         dto.setCropType(text_workCrop2);
