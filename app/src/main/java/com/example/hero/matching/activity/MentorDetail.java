@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -16,14 +20,13 @@ import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.job.activity.EmployerData;
 import com.example.hero.matching.adapter.MatchingCommentAdapter;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
-import com.example.hero.mypage.activity.MyPageApplicant;
 import com.example.hero.resume.activity.ResumeCheck;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,14 +40,11 @@ public class MentorDetail extends AppCompatActivity {
 
     TextView title;
     TextView name;
-    TextView createdDate;
-    TextView userName;
-    TextView grade;
     TextView area;
-    TextView career;
     TextView eduDate;
     TextView eduContent;
 
+    ImageView imageView;
     TextView comment;
     ImageButton submitCommentBtn;
     RecyclerView recyclerView;
@@ -62,23 +62,18 @@ public class MentorDetail extends AppCompatActivity {
         setContentView(R.layout.activity_mentor_detail);
 
         Intent intent = getIntent();
-        if (intent.getStringExtra("matchingId") == null) {
+
+        if(intent.getStringExtra("matchingId") == null) {
             matchingId = -1;
         } else {
             matchingId = Integer.parseInt(intent.getStringExtra("matchingId"));
         }
+
         title = findViewById(R.id.title_text);
         name = findViewById(R.id.txt_name);
-        createdDate = findViewById(R.id.txt_created_date);
-        userName = findViewById(R.id.txt_user_name);
-        grade = findViewById(R.id.txt_grade);
         area = findViewById(R.id.txt_area);
-        career = findViewById(R.id.txt_career);
         eduDate = findViewById(R.id.txt_edu_date);
         eduContent = findViewById(R.id.txt_edu_content);
-        scrollView = findViewById(R.id.scroll_view);
-
-        recyclerView = findViewById(R.id.recycler_view);
 
         goMatchingPostBtn = findViewById(R.id.edit_btn);
         goMatchingPostBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +83,12 @@ public class MentorDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        imageView = findViewById(R.id.image_view);
+
+        scrollView = findViewById(R.id.scroll_view);
+
+        recyclerView = findViewById(R.id.recycler_view);
 
         comment = findViewById(R.id.txt_comment);
         submitCommentBtn = findViewById(R.id.submit_comment_btn);
@@ -145,8 +146,8 @@ public class MentorDetail extends AppCompatActivity {
 
         if (matchingId != -1) {
             ApiService apiServiceDetail = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-            Call<MatchingDetailResponseDTO> detailCall = apiServiceDetail.getMatchingDetail(matchingId);
-            detailCall.enqueue(new Callback<MatchingDetailResponseDTO>() {
+            Call<MatchingDetailResponseDTO> callDetail = apiServiceDetail.getMatchingDetail(matchingId);
+            callDetail.enqueue(new Callback<MatchingDetailResponseDTO>() {
                 @Override
                 public void onResponse(Call<MatchingDetailResponseDTO> call, Response<MatchingDetailResponseDTO> response) {
                     if (response.isSuccessful()) {
@@ -155,27 +156,37 @@ public class MentorDetail extends AppCompatActivity {
 
                         title.setText(matchingDetailResponseDTO.getMatchingName());
                         name.setText(matchingDetailResponseDTO.getUserName());
-                        userName.setText(matchingDetailResponseDTO.getUserName());
-                        area.setText(matchingDetailResponseDTO.getCountry()+ " " +matchingDetailResponseDTO.getCity());
-                        eduDate.setText(matchingDetailResponseDTO.getStartEduDate()+"~"+matchingDetailResponseDTO.getEndEduDate());
+                        area.setText(matchingDetailResponseDTO.getCountry() + " " +matchingDetailResponseDTO.getCity());
+                        eduDate.setText(matchingDetailResponseDTO.getStartEduDate() + "~" + matchingDetailResponseDTO.getEndEduDate());
                         eduContent.setText(matchingDetailResponseDTO.getEduContent());
 
+                        String imageData = matchingDetailResponseDTO.getMatchingImgFile();
 
-                        Log.d("MENTOR_DETAIL_PAGE", matchingDetailResponseDTO.toString());
-                    } else {
-                        try {
-                            Log.e("MENTOR_DETAIL_PAGE", "Response error: " + response.errorBody().string());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        if (imageData != null && imageData.length() > 0) {
+                            // Base64 문자열을 바이트 배열로 디코드
+                            byte[] decodedString = Base64.decode(imageData, Base64.DEFAULT);
+                            // 디코드된 바이트 배열을 Bitmap으로 변환
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            // Bitmap을 ImageView에 설정
+                            imageView.setImageBitmap(bitmap);
+                        } else {
+                            // 이미지가 없을 경우 기본 이미지 설정
+                            imageView.setImageResource(R.drawable.start_app);
                         }
+
+
+                        Log.d("MENTEE_DETAIL_PAGE", matchingDetailResponseDTO.toString());
+                    } else {
+                        Log.e("MENTEE_DETAIL_PAGE", "Response error: " + response.errorBody());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<MatchingDetailResponseDTO> call, Throwable t) {
-                    Log.e("MENTOR_DETAIL_PAGE", "MENTEE_DETAIL_PAGE 에러 발생", t);
+                    Log.e("MENTEE_DETAIL_PAGE", "MENTEE_DETAIL_PAGE 에러 발생", t);
                 }
             });
+
         }
 
         backBtn = findViewById(R.id.back_btn); // 뒤로가기 버튼의 객체(linear layout)를 id로 찾아서 받아옴
@@ -190,7 +201,7 @@ public class MentorDetail extends AppCompatActivity {
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MentorDetail.this, ResumeCheck.class);
+                Intent intent = new Intent(MentorDetail.this, EmployerData.class);
                 startActivity(intent);
             }
         });

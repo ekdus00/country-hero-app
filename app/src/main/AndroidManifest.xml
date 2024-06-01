@@ -42,10 +42,10 @@
             android:name=".resume.activity.ResumePost"
             android:exported="false" />
         <activity
-            android:name=".matching.activity.MenteeDetail"
+            android:name=".matching.activity.MentorDetail"
             android:exported="false" />
         <activity
-            android:name=".matching.activity.MentorDetail"
+            android:name=".matching.activity.MenteeDetail"
             android:exported="false" />
         <activity
             android:name=".matching.activity.MatchingPost"

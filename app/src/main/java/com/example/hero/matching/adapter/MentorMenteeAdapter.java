@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
-import com.example.hero.matching.activity.MenteeDetail;
 import com.example.hero.matching.activity.MentorDetail;
+import com.example.hero.matching.activity.MenteeDetail;
 import com.example.hero.matching.dto.MatchingListInfoDTO;
 
 import java.util.List;
@@ -81,11 +81,11 @@ public class MentorMenteeAdapter extends RecyclerView.Adapter<MentorMenteeAdapte
                 @Override
                 public void onClick(View view) {
                     if (txtStatus.getText().toString().equals("mentor")) {
-                        Intent intent = new Intent(itemView.getContext(), MentorDetail.class);
+                        Intent intent = new Intent(itemView.getContext(), MenteeDetail.class);
                         intent.putExtra("matchingId", matchingId.getText().toString());
                         itemView.getContext().startActivity(intent);
                     } else {
-                        Intent intent = new Intent(itemView.getContext(), MenteeDetail.class);
+                        Intent intent = new Intent(itemView.getContext(), MentorDetail.class);
                         intent.putExtra("matchingId", matchingId.getText().toString());
                         itemView.getContext().startActivity(intent);
                     }
