@@ -84,4 +84,11 @@
         android:text="마이페이지(구인자)">
     </Button>
 
+    <Button
+        android:id="@+id/matching"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="매칭 목록">
+    </Button>
+
 </LinearLayout>
