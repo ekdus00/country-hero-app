@@ -23,8 +23,10 @@ import com.example.hero.login.dto.LoginResultDTO;
 import com.example.hero.login.dto.RefreshTokenRequestDTO;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingListInfoDTO;
+import com.example.hero.matching.dto.MatchingPostCommentDeleteRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
+import com.example.hero.matching.dto.MatchingPostCommentUpdateRequestDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
 import com.example.hero.resume.dto.ResumeResponseDTO;
 import com.example.hero.resume.dto.WorkerStateRequestDTO;
@@ -264,4 +266,10 @@ public interface ApiService {
     @GET("/api/comment/matching/{selectedMatchingId}/commentList")
     Call<List<MatchingPostCommentResponseDTO>> getMatchingCommentList(@Path("selectedMatchingId") int selectedMatchingId);
 
+
+    @PUT("/api/comment/matching")
+    Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentUpdate( @Body MatchingPostCommentUpdateRequestDTO matchingPostCommentUpdateRequestDTO);
+
+    @DELETE("/api/comment/matching")
+    Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentDelete(@Body MatchingPostCommentDeleteRequestDTO matchingPostCommentDeleteRequestDTO);
 }
