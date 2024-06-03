@@ -20,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,6 +35,7 @@ import com.example.hero.etc.UserManager;
 import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.job.dto.JobFilterDTO;
 import com.example.hero.job.dto.JobPostCreateRequestDTO;
+import com.example.hero.login.activity.FindID;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -323,9 +325,11 @@ public class JobPost extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    Toast.makeText(JobPost.this, "공고작성에 성공했습니다..", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(JobPost.this, EmployerStatus.class));
                     Log.e("JobPost", "공고작성 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
+                    Toast.makeText(JobPost.this, "공고작성에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("JobPost", "공고작성 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("JobPost", "공고작성 서버응답 오류" + response.errorBody().toString());
                 }

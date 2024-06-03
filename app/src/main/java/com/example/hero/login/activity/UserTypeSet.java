@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -49,6 +50,8 @@ public class UserTypeSet extends AppCompatActivity {
 
         user_type_owner = findViewById(R.id.user_type_owner);
         user_type_worker = findViewById(R.id.user_type_worker);
+        
+        //구인자 선택
         user_type_owner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,11 +59,22 @@ public class UserTypeSet extends AppCompatActivity {
                 userTypeRequest();
             }
         });
+        
+        //구직자 선택
         user_type_worker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 user_type_result = "worker";
                 userTypeRequest();
+            }
+        });
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -89,16 +103,18 @@ public class UserTypeSet extends AppCompatActivity {
                     startActivity(intent);
                     finish();
 
-                    Log.e("api", "추가정보입력 서버응답 성공" + response.code() + ", " + response.message());
+                    Log.e("tag", "추가정보입력 서버응답 성공" + response.code() + ", " + response.message());
                     
                 } else {
-                    Log.e("HTTP_ERROR", "Status Code: " + response.code());
+                    Toast.makeText(context, "추가정보입력에 실패했습니다", Toast.LENGTH_SHORT).show();
+                    Log.e("tag", "추가정보입력 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "추가정보입력 서버응답 오류" + response.errorBody().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("NETWORK_ERROR", "Failed to connect to the server", t);
+                Log.e("tag", "추가정보입력 서버요청 오류", t);
             }
         });
 

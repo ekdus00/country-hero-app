@@ -67,7 +67,6 @@ public class WorkerStatus extends AppCompatActivity{
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         TextView textView = toolbar.findViewById(R.id.toolbar_title);
         textView.setText("지원현황");
 

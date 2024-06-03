@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,11 +48,21 @@ public class Join extends AppCompatActivity {
         join_email_editText = findViewById(R.id.join_email_editText);
         join_name_editText = findViewById(R.id.join_name_editText);
 
+        //회원가입 완료
         join_sendBtn= findViewById(R.id.join_sendBtn);
         join_sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 joinRequest();
+            }
+        });
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -88,6 +99,7 @@ public class Join extends AppCompatActivity {
                     startActivity(intent);
                     Log.e("tag", "회원가입 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
+                    Toast.makeText(Join.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("tag", "회원가입 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("tag", "회원가입 서버응답 오류" + response.errorBody().toString());
                 }

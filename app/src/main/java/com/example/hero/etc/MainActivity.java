@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.job.activity.JobPost;
 import com.example.hero.login.activity.Login;
-import com.example.hero.login.activity.RefreshToken;
 import com.example.hero.login.activity.UserTypeSet;
 import com.example.hero.mypage.activity.MyPageOwner;
 import com.example.hero.R;

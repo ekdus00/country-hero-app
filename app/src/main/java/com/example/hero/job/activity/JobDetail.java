@@ -370,6 +370,8 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                     List<JobPostCommentResponseDTO> comments = response.body();
                     adapter = new JobCommentAdapter(comments, buttonClickListener);
                     job_comment_recyclerView.setAdapter(adapter);
+
+
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }

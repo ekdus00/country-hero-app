@@ -41,19 +41,19 @@ import com.navercorp.nid.profile.data.NidProfileMap;
 import com.navercorp.nid.profile.data.NidProfileResponse;
 
 public class Login extends AppCompatActivity {
-    private NaverIdLoginSDK naverIdLoginSDK;
+//    private NaverIdLoginSDK naverIdLoginSDK;
     private FcmTokenManager fcmTokenManager;
     private ApiService apiService;
     private Button login_sendBtn, login_joinBtn, login_logout, buttonOAuthLoginImg;
     private EditText login_id_editText, login_pw_editText;
     private TokenManager tokenManager;
     private UserManager userManager;
-    Context context;
+//    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
-        context = this;
+//        context = this;
         tokenManager = new TokenManager(this);
         userManager = new UserManager(this);
 
@@ -107,7 +107,8 @@ public class Login extends AppCompatActivity {
         });
 
         //네이버 로그인
-        naverIdLoginSDK.initialize(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.naver_client_name));
+        NaverIdLoginSDK.INSTANCE.initialize(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.naver_client_name));
+
         NidOAuthLoginButton buttonOAuthLoginImg = findViewById(R.id.buttonOAuthLoginImg);
         buttonOAuthLoginImg.setOAuthLogin(new OAuthLoginCallback() {
             @Override
@@ -123,6 +124,7 @@ public class Login extends AppCompatActivity {
 //                binding.tvExpires.text = NaverIdLoginSDK.getExpiresAt().toString()
 //                binding.tvType.text = NaverIdLoginSDK.getTokenType()
 //                binding.tvState.text = NaverIdLoginSDK.getState().toString()
+                requestNaverLogin();
             }
 
             @Override
@@ -141,10 +143,10 @@ public class Login extends AppCompatActivity {
 
     }//onCreate()
 
-    public void requestNaverLogin(String code, String fcmToken) {
+    public void requestNaverLogin() {
         apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
-        fcmToken = fcmTokenManager.getFCMToken();
-        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback(code, fcmToken);
+        String fcmToken = fcmTokenManager.getFCMToken();
+        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback(fcmToken);
         call.enqueue(new Callback<NaverLoginResultDTO>() {
             @Override
             public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
@@ -163,20 +165,6 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private void loginRequest() {
         String join_id = login_id_editText.getText().toString();
@@ -239,6 +227,7 @@ public class Login extends AppCompatActivity {
 
                     Log.e("login", "로그인 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
+                    Toast.makeText(Login.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("login", "로그인 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("login", "로그인 서버응답 오류" + response.errorBody().toString());                        }
             }

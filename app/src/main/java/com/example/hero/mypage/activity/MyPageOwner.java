@@ -18,6 +18,7 @@ import com.example.hero.etc.TokenManager;
 import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.login.activity.Login;
+import com.example.hero.matching.activity.MatchingList;
 import com.example.hero.mypage.dto.OwnerProfileDTO;
 import com.example.hero.review.activity.ReviewEmployerList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -105,7 +106,7 @@ public class MyPageOwner extends AppCompatActivity {
                     startActivity(new Intent(MyPageOwner.this, JobList.class));
                     return true;
                 } else if (id == R.id.nav_matching) {
-                    startActivity(new Intent(MyPageOwner.this, Login.class));
+                    startActivity(new Intent(MyPageOwner.this, MatchingList.class));
                     return true;
                 } else if (id == R.id.nav_mypage) {
                     startActivity(new Intent(MyPageOwner.this, MyPageOwner.class));

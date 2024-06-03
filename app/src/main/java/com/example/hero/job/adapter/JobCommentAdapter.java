@@ -96,8 +96,18 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
             });
 
             job_comment_deleteBtn.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+
                 if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.DELETE);
+
+//                    JobPostCommentResponseDTO modifiedComment = commentsList.get(position);
+//                    modifiedComment.setCommentContent("삭제된 댓글입니다");
+//                    commentsList.set(position, modifiedComment);
+//
+//                    textViewContent.setText("삭제된 댓글입니다");
+//                    notifyItemChanged(position);
+
                 }
             });
 
@@ -116,6 +126,7 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
                 JobChildCommentAdapter childAdapter = new JobChildCommentAdapter(dto.getChildCommentList());
                 childRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
                 childRecyclerView.setAdapter(childAdapter);
+                childRecyclerView.setVisibility(View.VISIBLE); // 자식 댓글이 있을 때 보이게 처리
 
             } else {
                 childRecyclerView.setVisibility(View.GONE);  // 자식 댓글이 없을 경우 RecyclerView 숨김 처리
@@ -123,24 +134,6 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
 
         }
     }
-
-//    public static class ChildCommentViewHolder extends RecyclerView.ViewHolder {
-//        TextView textViewContent, textViewAuthor, textViewDate;
-//        int commentId;
-//
-//        public ChildCommentViewHolder(View itemView) {
-//            super(itemView);
-//            textViewContent = itemView.findViewById(R.id.job_comment_content);
-//            textViewAuthor = itemView.findViewById(R.id.job_comment_userName);
-//        }
-//
-//        public void bind(JobPostCommentResponseDTO dto) {
-//            commentId = dto.getCommentId();  // 현재 Id 저장
-//
-//            textViewContent.setText(dto.getCommentContent());
-//            textViewAuthor.setText(dto.getUserName());
-//        }
-//    }
 
 
 

@@ -1,6 +1,7 @@
 package com.example.hero.login.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,11 +37,21 @@ public class ResetPW extends AppCompatActivity {
         reset_id_editText = findViewById(R.id.reset_id_editText);
         reset_new_pw_editText = findViewById(R.id.reset_new_pw_editText);
 
+        //비밀번호 재설정 완료
         sendBtn= findViewById(R.id.sendBtn);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 findIDRequest();
+            }
+        });
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -62,9 +74,12 @@ public class ResetPW extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-
+                    Toast.makeText(context, "비밀번호 재설정에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ResetPW.this, Login.class);
+                    startActivity(intent);
                     Log.e("tag", "비밀번호 재설정 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
+                    Toast.makeText(ResetPW.this, "비밀번호 재설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("tag", "비밀번호 재설정 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("tag", "비밀번호 재설정 서버응답 오류" + response.errorBody().toString());                        }
             }

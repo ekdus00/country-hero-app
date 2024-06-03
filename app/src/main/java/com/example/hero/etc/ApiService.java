@@ -31,8 +31,11 @@ import com.example.hero.login.dto.RefreshTokenRequestDTO;
 import com.example.hero.login.dto.ResetUserPwRequestDTO;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingListInfoDTO;
+import com.example.hero.matching.dto.MatchingPostCommentDeleteRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
+import com.example.hero.matching.dto.MatchingPostCommentUpdateRequestDTO;
+import com.example.hero.matching.dto.MentorRecommendationResponseDTO;
 import com.example.hero.mypage.dto.BusinessDataDTO;
 import com.example.hero.mypage.dto.BusinessNumberRequest;
 import com.example.hero.mypage.dto.BusinessResponseDTO;
@@ -269,7 +272,7 @@ public interface ApiService {
 
     //네이버로그인
     @GET("/naver/callback")
-    Call<NaverLoginResultDTO> naverLoginCallback(@Query("code")String code, @Header("FCM-Token") String fcmToken);
+    Call<NaverLoginResultDTO> naverLoginCallback(@Header("FCM-Token") String fcmToken);
 
     //일반 회원가입
     @POST("/join")
@@ -323,15 +326,6 @@ public interface ApiService {
 
 
 
-    //푸시알림 승인
-    @POST("/api/fcm/approve")
-    Call<Void> approveFCM(@Header("Authorization") String authorization, @Header("FCM-Token") String fcmToken);
-
-    //푸시알리 거절
-    @HTTP(method = "DELETE", path = "/api/fcm/refuse", hasBody = false)
-    Call<Void> refuseFCM(@Header("Authorization") String authorization, @Header("FCM-Token") String fcmToken);
-
-
 
 
 
@@ -343,7 +337,9 @@ public interface ApiService {
 
     @Multipart
     @POST("/api/matching/matchingPost")
-    Call<Void> matchingPost(@Part("request") RequestBody requestBody, @Part MultipartBody.Part uploadImg);
+    Call<Void> matchingPost(@Part("request") RequestBody requestBody,
+                            @Part MultipartBody.Part uploadImg);
+
 
     @GET("/api/matching/matchingDetail/{matchingId}")
     Call<MatchingDetailResponseDTO> getMatchingDetail(@Path("matchingId") int matchingId);
@@ -357,5 +353,38 @@ public interface ApiService {
     @GET("/api/comment/matching/{selectedMatchingId}/commentList")
     Call<List<MatchingPostCommentResponseDTO>> getMatchingCommentList(@Path("selectedMatchingId") int selectedMatchingId);
 
+    @PUT("/api/comment/matching")
+    Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentUpdate( @Body MatchingPostCommentUpdateRequestDTO matchingPostCommentUpdateRequestDTO);
+
+    @DELETE("/api/comment/matching")
+    Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentDelete(@Body MatchingPostCommentDeleteRequestDTO matchingPostCommentDeleteRequestDTO);
+
+
+
+
+
+
+
+
+
+    //멘토 추천 리스트 조회
+    @GET("/api/matching/mentorRecommendation")
+    Call<List<MentorRecommendationResponseDTO>> getMatchingRecom();
+
+    //멘토 추천 리스트 선택 글 조회
+    @GET("/api/matching/{selectedMentorId}/mentorMatchingPostList")
+    Call<List<MatchingListInfoDTO>> getMatchingRecomList(@Path("selectedMentorId") String selectedMentorId);
+
+    //회원탈퇴
+    @DELETE("/api/user/withdrawal")
+    Call<Void> withdrawalUser();
+
+    //푸시알림 승인
+    @POST("/api/fcm/approve")
+    Call<Void> approveFCM(@Header("FCM-Token") String fcmToken);
+
+    //푸시알리 거절
+    @DELETE("/api/fcm/refuse")
+    Call<Void> refuseFCM(@Header("FCM-Token") String fcmToken);
 
 }

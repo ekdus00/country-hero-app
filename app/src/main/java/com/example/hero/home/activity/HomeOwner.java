@@ -29,6 +29,7 @@ import com.example.hero.home.dto.OwnerHomeDTO;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.R;
 import com.example.hero.login.activity.Login;
+import com.example.hero.matching.activity.MatchingList;
 import com.example.hero.mypage.activity.MyPageOwner;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -110,7 +111,7 @@ public class HomeOwner extends AppCompatActivity {
                     startActivity(new Intent(HomeOwner.this, JobList.class));
                     return true;
                 } else if (id == R.id.nav_matching) {
-                    startActivity(new Intent(HomeOwner.this, Login.class));
+                    startActivity(new Intent(HomeOwner.this, MatchingList.class));
                     return true;
                 } else if (id == R.id.nav_mypage) {
                     startActivity(new Intent(HomeOwner.this, MyPageOwner.class));

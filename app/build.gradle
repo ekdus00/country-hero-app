@@ -73,6 +73,9 @@ dependencies {
 
     implementation 'com.navercorp.nid:oauth:5.9.1' // jdk 11
 
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'me.relex:circleindicator:2.1.6'
+
 
 
 

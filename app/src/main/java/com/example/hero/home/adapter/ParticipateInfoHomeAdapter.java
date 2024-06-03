@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
 import com.example.hero.etc.OnItemClickListener;
-import com.example.hero.home.dto.JobInfoHomeDTO;
 import com.example.hero.home.dto.ParticipateInfoHomeDTO;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class ParticipateInfoHomeAdapter extends RecyclerView.Adapter<Participate
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_applicant_status_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_worker_status_item, parent, false);
         return new ViewHolder(view, mListener);
     }
 

@@ -24,6 +24,7 @@ import com.example.hero.job.activity.JobList;
 import com.example.hero.R;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.login.activity.Login;
+import com.example.hero.matching.activity.MatchingList;
 import com.example.hero.mypage.activity.MyPageWorker;
 import com.example.hero.worker.activity.WorkerStatus;
 import com.example.hero.home.dto.WorkerHomeDTO;
@@ -97,7 +98,7 @@ public class HomeWorker extends AppCompatActivity {
                     startActivity(new Intent(HomeWorker.this, JobList.class));
                     return true;
                 } else if (id == R.id.nav_matching) {
-                    startActivity(new Intent(HomeWorker.this, Login.class));
+                    startActivity(new Intent(HomeWorker.this, MatchingList.class));
                     return true;
                 } else if (id == R.id.nav_mypage) {
                     startActivity(new Intent(HomeWorker.this, MyPageWorker.class));

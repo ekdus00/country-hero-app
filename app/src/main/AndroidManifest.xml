@@ -66,11 +66,36 @@
         <activity android:name=".worker.activity.WorkerStatus"></activity>
         <activity android:name=".etc.AddressActivity"></activity>
         <activity android:name=".login.activity.Join"></activity>
-        <activity android:name=".login.activity.NaverLogin"></activity>
         <activity android:name=".login.activity.Login"></activity>
         <activity android:name=".login.activity.UserTypeSet"></activity>
-        <activity android:name=".login.activity.RefreshToken"></activity>
+        <activity android:name=".etc.RefreshToken"></activity>
         <activity android:name=".employer.activity.JobEditPost"></activity>
+        <activity
+            android:name=".guide.UserGuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FAQ.FAQActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.SettingActivity"
+            android:exported="false"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/Theme.Hero" />
+        <activity
+            android:name=".clip.activity.ClipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".matching.activity.MentorDetail"
+            android:exported="false" />
+        <activity
+            android:name=".matching.activity.MenteeDetail"
+            android:exported="false" />
+        <activity
+            android:name=".matching.activity.MatchingPost"
+            android:exported="false" />
+        <activity
+            android:name=".matching.activity.MatchingList"
+            android:exported="false" />
 
         <!--        <activity-->
 <!--            android:name=".login.activity.Login"-->
