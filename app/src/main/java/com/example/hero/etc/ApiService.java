@@ -27,6 +27,7 @@ import com.example.hero.matching.dto.MatchingPostCommentDeleteRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCommentUpdateRequestDTO;
+import com.example.hero.matching.dto.MentorRecommendationResponseDTO;
 import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
 import com.example.hero.resume.dto.ResumeResponseDTO;
 import com.example.hero.resume.dto.WorkerStateRequestDTO;
@@ -272,4 +273,25 @@ public interface ApiService {
 
     @DELETE("/api/comment/matching")
     Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentDelete(@Body MatchingPostCommentDeleteRequestDTO matchingPostCommentDeleteRequestDTO);
+
+
+    //멘토 추천 리스트 조회
+    @GET("/api/matching/mentorRecommendation")
+    Call<List<MentorRecommendationResponseDTO>> getMatchingRecom();
+
+    //멘토 추천 리스트 선택 글 조회
+    @GET("/api/matching/{selectedMentorId}/mentorMatchingPostList")
+    Call<List<MatchingListInfoDTO>> getMatchingRecomList(@Path("selectedMentorId") String selectedMentorId);
+
+    //회원탈퇴
+    @DELETE("/api/user/withdrawal")
+    Call<Void> withdrawalUser();
+
+    //푸시알림 승인
+    @POST("/api/fcm/approve")
+    Call<Void> approveFCM(@Header("FCM-Token") String fcmToken);
+
+    //푸시알리 거절
+    @DELETE("/api/fcm/refuse")
+    Call<Void> refuseFCM(@Header("FCM-Token") String fcmToken);
 }

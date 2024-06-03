@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +15,15 @@ import android.widget.TextView;
 
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
+import com.example.hero.etc.OnItemClickListenerMatching;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.Token;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.matching.adapter.MatchingRecommendAdapter;
+import com.example.hero.matching.adapter.MatchingRecommendListAdapter;
 import com.example.hero.matching.adapter.MentorMenteeAdapter;
 import com.example.hero.matching.dto.MatchingListInfoDTO;
+import com.example.hero.matching.dto.MentorRecommendationResponseDTO;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -30,6 +35,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MatchingList extends AppCompatActivity {
+
+    private OnItemClickListenerMatching itemClickListener;
+    private String selectId;
 
     MentorMenteeAdapter mentorMenteeAdapter;
     RecyclerView recyclerViewMentorMentee;
@@ -51,6 +59,11 @@ public class MatchingList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matching_list);
+
+        itemClickListener = userId -> {
+            selectId = userId;
+            matchingRecomList(userId);
+        };
 
         ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
         Call<List<MatchingListInfoDTO>> call = apiService.getMatchingList();
@@ -197,5 +210,72 @@ public class MatchingList extends AppCompatActivity {
 
             }
         });
+        matchingRecom();
     }
+
+    public void matchingRecom() {
+        ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //멘토추천 서버요청
+        Call<List<MentorRecommendationResponseDTO>> call = apiService.getMatchingRecom();
+        call.enqueue(new Callback<List<MentorRecommendationResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<MentorRecommendationResponseDTO>> call, Response<List<MentorRecommendationResponseDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    List<MentorRecommendationResponseDTO> slides = response.body();
+
+                    ViewPager2 viewPager = findViewById(R.id.pager);
+                    MatchingRecommendAdapter adapter = new MatchingRecommendAdapter(slides, itemClickListener);
+                    viewPager.setAdapter(adapter);
+
+                    Log.e("tag", "멘토추천 서버요청 성공");
+
+                } else {
+                    Log.e("tag", "멘토추천 서버응답 실패" + response.code() + ", " + response.message());
+                    Log.e("tag", "멘토추천 서버응답 실패" + response.errorBody());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<MentorRecommendationResponseDTO>> call, Throwable t) {
+                Log.e("tag", "멘토추천 서버요청 실패", t);
+            }
+        });
+    }
+
+    public void matchingRecomList(String selectId) {
+        ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //멘토추천 리스트 서버요청
+        Call<List<MatchingListInfoDTO>> call = apiService.getMatchingRecomList(selectId);
+        call.enqueue(new Callback<List<MatchingListInfoDTO>>() {
+            @Override
+            public void onResponse(Call<List<MatchingListInfoDTO>> call, Response<List<MatchingListInfoDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    List<MatchingListInfoDTO> slides = response.body();
+
+                    ViewPager2 viewPager = findViewById(R.id.pager2);
+                    MatchingRecommendListAdapter adapter = new MatchingRecommendListAdapter(slides);
+                    viewPager.setAdapter(adapter);
+
+                    Log.e("tag", "멘토추천 리스트 서버요청 성공");
+
+                } else {
+                    Log.e("tag", "멘토추천 리스트 서버응답 실패" + response.code() + ", " + response.message());
+                    Log.e("tag", "멘토추천 리스트 서버응답 실패" + response.errorBody());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<MatchingListInfoDTO>> call, Throwable t) {
+                Log.e("tag", "멘토추천 리스트 서버요청 실패", t);
+            }
+        });
+    }
+
+
+
+
+
+
 }
