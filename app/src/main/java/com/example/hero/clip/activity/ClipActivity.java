@@ -31,12 +31,13 @@ public class ClipActivity extends AppCompatActivity {
     ClipAdapter clipAdapter;
     RecyclerView recyclerView;
 
-    private final TokenManager tokenManager = new TokenManager(this);
+    private TokenManager tokenManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clip);
+        tokenManager = new TokenManager(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         ClipAdapter.OffsetItemDecoration itemDecoration = new ClipAdapter.OffsetItemDecoration(20);

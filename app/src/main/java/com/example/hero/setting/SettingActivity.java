@@ -1,5 +1,7 @@
 package com.example.hero.setting;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +38,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         tokenManager = new TokenManager(this);
+        fcmTokenManager = new FcmTokenManager(this);
 
         backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +80,7 @@ public class SettingActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(SettingActivity.this, Login.class);
                             startActivity(intent);
+                            finish();
 
                             Log.e("tag", "회원탈퇴 서버요청 성공");
 
@@ -99,6 +103,7 @@ public class SettingActivity extends AppCompatActivity {
             if (isChecked) {
                 ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
                 String fcmToken = fcmTokenManager.getFCMToken();
+                Log.v(TAG, "fcm토큰: " + fcmToken);
 
                 //푸시승인 서버요청
                 Call<Void> call = apiService.approveFCM(fcmToken);

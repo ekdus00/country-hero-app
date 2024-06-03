@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".setting.activity.SettingActivity">
+    tools:context=".setting.SettingActivity">
 
     <LinearLayout
         android:id="@+id/header"
@@ -80,7 +80,7 @@
                 android:id="@+id/switch_btn_push"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:gravity="center"
                 android:thumb="@drawable/shape_switch_thumb"
                 app:switchMinWidth="0dp"
@@ -104,7 +104,7 @@
                 android:id="@+id/switch_btn_push_night"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:gravity="center"
                 android:thumb="@drawable/shape_switch_thumb"
                 app:switchMinWidth="0dp"

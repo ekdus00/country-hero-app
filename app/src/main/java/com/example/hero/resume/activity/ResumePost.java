@@ -58,7 +58,7 @@ public class ResumePost extends AppCompatActivity {
     private ApiService apiService;
     private Uri imageUri;
     private CareerAdapter adapter;
-    private Button resume_career_btn;
+    private Button resume_career_btn, resume_send;
     private RecyclerView resume_career_recyclerView;
     private List<String> resumePostList2;
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +96,15 @@ public class ResumePost extends AppCompatActivity {
         textView.setText("이력서 관리");
 
         resumeGet();
+
+        //이력서 수정 완료
+        Button resume_send = findViewById(R.id.resume_send);
+        resume_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resumePost();
+            }
+        });
 
         //뒤로가기
         Button btn_Back = findViewById(R.id.btn_back);
@@ -159,19 +168,38 @@ public class ResumePost extends AppCompatActivity {
                     List<String> resumePostList = dto.getEtcCareer();
                     adapter = new CareerAdapter(resumePostList);
                     resume_career_recyclerView.setAdapter(adapter);
-
                     String imageData = dto.getUploadImgFileName();
+
+
                     if (imageData != null && imageData.length() > 0) {
-                        // Base64 문자열을 바이트 배열로 디코드
-                        byte[] decodedString = Base64.decode(imageData, Base64.DEFAULT);
-                        // 디코드된 바이트 배열을 Bitmap으로 변환
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        // Bitmap을 ImageView에 설정
-                        resume_image_imageView.setImageBitmap(bitmap);
+                        try {
+                            // Base64 문자열을 바이트 배열로 디코드
+                            byte[] decodedString = Base64.decode(imageData, Base64.DEFAULT);
+                            // 디코드된 바이트 배열을 Bitmap으로 변환
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            // Bitmap을 ImageView에 설정
+                            resume_image_imageView.setImageBitmap(bitmap);
+                        } catch (IllegalArgumentException e) {
+                            e.printStackTrace();
+                            // Base64 디코딩 실패 시 기본 이미지 설정
+                            resume_image_imageView.setImageResource(R.drawable.mypage);
+                        }
                     } else {
-                        // 이미지가 없을 경우 기본 이미지 설정
+                        // Base64 문자열이 없을 경우 기본 이미지 설정
                         resume_image_imageView.setImageResource(R.drawable.mypage);
                     }
+
+//                    if (imageData != null && imageData.length() > 0) {
+//                        // Base64 문자열을 바이트 배열로 디코드
+//                        byte[] decodedString = Base64.decode(imageData, Base64.DEFAULT);
+//                        // 디코드된 바이트 배열을 Bitmap으로 변환
+//                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//                        // Bitmap을 ImageView에 설정
+//                        resume_image_imageView.setImageBitmap(bitmap);
+//                    } else {
+//                        // 이미지가 없을 경우 기본 이미지 설정
+//                        resume_image_imageView.setImageResource(R.drawable.mypage);
+//                    }
 
                     Log.e("api", "이력서관리 조회 서버응답 성공" + response.code() + ", " + response.message());
 

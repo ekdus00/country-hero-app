@@ -42,6 +42,9 @@ public class ReviewEmployerListAdapter extends RecyclerView.Adapter<ReviewEmploy
     }
     @Override
     public int getItemCount() {
+        if (mData == null) {
+            return 0;
+        }
         return mData.size();
     }
 

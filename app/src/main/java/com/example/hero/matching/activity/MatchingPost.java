@@ -31,8 +31,12 @@ import com.example.hero.etc.LocalDateAdapter;
 import com.example.hero.etc.LocalTimeAdapter;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.etc.UserManager;
+import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCreateRequestDTO;
+import com.example.hero.matching.dto.MatchingPostEditResponseDTO;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -88,13 +92,23 @@ public class MatchingPost extends AppCompatActivity {
 
     Spinner city_spinner, regional_spinner;
 
+    int matchingId;
+
     private TokenManager tokenManager;
+    private UserManager userManager;
+
+    private ApiService apiService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matching_post);
         tokenManager = new TokenManager(this);
+        userManager = new UserManager(this);
+
+        Intent intent = getIntent();
+        boolean isEdit = intent.getBooleanExtra("isEdit", false);
+        matchingId = intent.getIntExtra("matchingId", -1);
 
         title = findViewById(R.id.title);
         snsUrl = findViewById(R.id.sns_url);
@@ -111,7 +125,7 @@ public class MatchingPost extends AppCompatActivity {
             }
         });
 
-        ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
         Call<List<String>> call = apiService.getCountries();
         call.enqueue(new Callback<List<String>>() {
             @Override
@@ -139,7 +153,7 @@ public class MatchingPost extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                             if (i == 0) return;
-                            ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+                            apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
                             Call<List<String>> call = apiService.getCitiesByCountry(regional_spinner.getSelectedItem().toString());
                             call.enqueue(
                                     new Callback<List<String>>() {
@@ -211,52 +225,7 @@ public class MatchingPost extends AppCompatActivity {
 
 
         postMatchingBtn = findViewById(R.id.post_matching);
-        postMatchingBtn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View view) {
 
-                MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, MatchingPost.this);
-
-//                jobPostDTO.setUploadImgFile(image);
-
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                        .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
-                        .create();
-
-
-                String json = gson.toJson(new MatchingPostCreateRequestDTO("tester100", "구인자", regional_spinner.getSelectedItem().toString(), city_spinner.getSelectedItem().toString(),
-                        title.getText().toString(), selectedRadioItem, startDateStr, endDateStr, eduContent.getText().toString(), snsUrl.getText().toString()));
-                RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json"));
-
-                ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-                Call<Void> call = apiService.matchingPost(requestBody, image);
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-
-                        } else {
-                            try {
-                                assert response.errorBody() != null;
-                                Log.e("API_CALL", "Response error: " + response.errorBody().string());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Log.e("BOARDWRITE", "스크랩 에러 발생", t);
-                    }
-                });
-
-
-                onBackPressed();
-            }
-        });
 
         //클릭시 기간 선택창
         findViewById(R.id.data_picker).setOnClickListener(v -> {
@@ -268,6 +237,142 @@ public class MatchingPost extends AppCompatActivity {
         regional_spinner = findViewById(R.id.regional_spinner);
         txt_startdate = findViewById(R.id.txt_startdate);
         txt_enddate = findViewById(R.id.txt_enddate);
+
+
+        if (isEdit && matchingId != -1) {
+            apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+            Call<MatchingPostEditResponseDTO> call1 = apiService.getMatchingPostEditInfo(matchingId);
+            call1.enqueue(new Callback<MatchingPostEditResponseDTO>() {
+                @Override
+                public void onResponse(Call<MatchingPostEditResponseDTO> call, Response<MatchingPostEditResponseDTO> response) {
+                    if (response.isSuccessful()) {
+                        MatchingPostEditResponseDTO dto = response.body();
+                        title.setText(dto.getMatchingName());
+
+                        int i = 0;
+                        for (i = 0; i < regionals.length; i++) {
+                            if (regionals[i].equals(dto.getCountry())) {
+                                break;
+                            }
+                        }
+
+                        regional_spinner.setSelection(i);
+
+                        for (i = 0; i < citys.length; i++) {
+                            if (citys[i].equals(dto.getCity())) {
+                                break;
+                            }
+                        }
+
+                        city_spinner.setSelection(i);
+
+                        txt_startdate.setText(dto.getStartEduDate());
+                        txt_enddate.setText(dto.getEndEduDate());
+
+                        snsUrl.setText(dto.getSnsUrl());
+
+                        imageUri = Uri.parse(dto.getUploadImgFileName());
+                        try {
+                            Bitmap bitmap = resizeImage(imageUri, 200, 200);
+                            selectImage.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        postMatchingBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, MatchingPost.this);
+                                Gson gson = new GsonBuilder()
+                                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                                        .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
+                                        .create();
+
+
+                                String json = gson.toJson(new MatchingPostCreateRequestDTO(userManager.getUserId(), userManager.getUserType(), regional_spinner.getSelectedItem().toString(), city_spinner.getSelectedItem().toString(),
+                                        title.getText().toString(), selectedRadioItem, startDateStr, endDateStr, eduContent.getText().toString(), snsUrl.getText().toString()));
+                                RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json"));
+
+                                apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+                                Call<MatchingDetailResponseDTO> call = apiService.matchingPostEdit(requestBody, image);
+                                call.enqueue(new Callback<MatchingDetailResponseDTO>() {
+                                    @Override
+                                    public void onResponse(Call<MatchingDetailResponseDTO> call, Response<MatchingDetailResponseDTO> response) {
+                                        if (response.isSuccessful()) {
+
+                                        } else {
+                                            try {
+                                                assert response.errorBody() != null;
+                                                Log.e("API_CALL", "Response error: " + response.errorBody().string());
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<MatchingDetailResponseDTO> call, Throwable t) {
+                                        Log.e("BOARDWRITE", "스크랩 에러 발생", t);
+                                    }
+                                });
+
+
+                                onBackPressed();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MatchingPostEditResponseDTO> call, Throwable t) {
+
+                }
+            });
+        } else {
+            postMatchingBtn.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(View view) {
+
+                    MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, MatchingPost.this);
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                            .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
+                            .create();
+
+
+                    String json = gson.toJson(new MatchingPostCreateRequestDTO(userManager.getUserId(), userManager.getUserType(), regional_spinner.getSelectedItem().toString(), city_spinner.getSelectedItem().toString(),
+                            title.getText().toString(), selectedRadioItem, startDateStr, endDateStr, eduContent.getText().toString(), snsUrl.getText().toString()));
+                    RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json"));
+
+                    apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+                    Call<Void> call = apiService.matchingPost(requestBody, image);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+
+                            } else {
+                                try {
+                                    assert response.errorBody() != null;
+                                    Log.e("API_CALL", "Response error: " + response.errorBody().string());
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("BOARDWRITE", "스크랩 에러 발생", t);
+                        }
+                    });
+
+
+                    onBackPressed();
+                }
+            });
+        }
     }
 
     //기간 선택창 띄우는 함수

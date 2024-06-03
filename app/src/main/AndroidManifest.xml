@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
@@ -65,10 +67,13 @@
         <activity android:name=".employer.activity.EmployerStatusDetail"></activity>
         <activity android:name=".worker.activity.WorkerStatus"></activity>
         <activity android:name=".etc.AddressActivity"></activity>
+        <activity android:name=".etc.RefreshToken"></activity>
         <activity android:name=".login.activity.Join"></activity>
         <activity android:name=".login.activity.Login"></activity>
         <activity android:name=".login.activity.UserTypeSet"></activity>
-        <activity android:name=".etc.RefreshToken"></activity>
+        <activity android:name=".login.activity.FindID"></activity>
+        <activity android:name=".login.activity.ResetPW"></activity>
+        <activity android:name=".login.activity.ResetPwAuth"></activity>
         <activity android:name=".employer.activity.JobEditPost"></activity>
         <activity
             android:name=".guide.UserGuideActivity"

@@ -1,6 +1,8 @@
 package com.example.hero.matching.dto;
 
 public class MatchingDetailResponseDTO {
+
+    private String userId; // 매칭 글 작성자 id
     private String userName; //매칭 글 작성자
     private String matchingName; //매칭글 명
     private String country; //시/도
@@ -12,7 +14,8 @@ public class MatchingDetailResponseDTO {
     private Integer viewCount; //조회수
     private String matchingImgFile;
 
-    public MatchingDetailResponseDTO(String userName, String matchingName, String country, String city, String startEduDate, String endEduDate, String eduContent, String snsUrl, Integer viewCount, String matchingImgFile) {
+    public MatchingDetailResponseDTO(String userId, String userName, String matchingName, String country, String city, String startEduDate, String endEduDate, String eduContent, String snsUrl, Integer viewCount, String matchingImgFile) {
+        this.userId = userId;
         this.userName = userName;
         this.matchingName = matchingName;
         this.country = country;
@@ -23,6 +26,10 @@ public class MatchingDetailResponseDTO {
         this.snsUrl = snsUrl;
         this.viewCount = viewCount;
         this.matchingImgFile = matchingImgFile;
+    }
+
+    public boolean isMyPost(String userId) {
+        return this.userId.equals(userId);
     }
 
     public String getUserName() {

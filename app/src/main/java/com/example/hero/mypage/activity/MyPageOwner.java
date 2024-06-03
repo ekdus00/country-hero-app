@@ -15,12 +15,14 @@ import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.etc.UserManager;
 import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.login.activity.Login;
 import com.example.hero.matching.activity.MatchingList;
 import com.example.hero.mypage.dto.OwnerProfileDTO;
 import com.example.hero.review.activity.ReviewEmployerList;
+import com.example.hero.setting.SettingActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import retrofit2.Call;
@@ -29,12 +31,14 @@ import retrofit2.Response;
 
 public class MyPageOwner extends AppCompatActivity {
     private TokenManager tokenManager;
+    private UserManager userManager;
     private ApiService apiService;
     private TextView myPage_name_textView, my_total_reviewAvg;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_owner);
         tokenManager = new TokenManager(this);
+        userManager = new UserManager(this);
 
         myPage_name_textView = findViewById(R.id.myPage_name_textView);
         my_total_reviewAvg = findViewById(R.id.my_total_reviewAvg);
@@ -58,6 +62,7 @@ public class MyPageOwner extends AppCompatActivity {
             public void onClick(View view) {
                 tokenManager.clearTokens();
                 tokenManager.clearTokens();
+                userManager.clearUserDetails();
                 Intent intent = new Intent(MyPageOwner.this, Login.class);
                 startActivity(intent);
                 finish();
@@ -69,8 +74,8 @@ public class MyPageOwner extends AppCompatActivity {
         setting_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), ModifyOwner.class);
-//                startActivity(intent);
+                Intent intent = new Intent(MyPageOwner.this, SettingActivity.class);
+                startActivity(intent);
             }
         });
 

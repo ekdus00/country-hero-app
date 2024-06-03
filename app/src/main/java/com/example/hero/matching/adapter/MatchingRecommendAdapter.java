@@ -52,7 +52,7 @@ public class MatchingRecommendAdapter extends RecyclerView.Adapter<MatchingRecom
 
             recom_name.setText(dto.getUserName());
             recom_id.setText(dto.getUserId());
-            recom_type.setText(dto.getUserType());
+//            recom_type.setText(dto.getUserType());
 
         }
 
@@ -61,7 +61,7 @@ public class MatchingRecommendAdapter extends RecyclerView.Adapter<MatchingRecom
             super(itemView);
             recom_name = itemView.findViewById(R.id.recom_name);
             recom_id = itemView.findViewById(R.id.recom_id);
-            recom_type = itemView.findViewById(R.id.recom_type);
+//            recom_type = itemView.findViewById(R.id.recom_type);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {

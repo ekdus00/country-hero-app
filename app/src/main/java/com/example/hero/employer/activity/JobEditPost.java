@@ -134,17 +134,6 @@ public class JobEditPost extends AppCompatActivity {
 
         getEditJobPost();
 
-
-//        ArrayAdapter<CharSequence> adapterStart = ArrayAdapter.createFromResource(this,
-//                R.array.work_time1, android.R.layout.simple_spinner_item);
-//        adapterStart.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        working_time_start.setAdapter(adapterStart);
-//
-//        ArrayAdapter<CharSequence> adapterEnd = ArrayAdapter.createFromResource(this,
-//                R.array.work_time2, android.R.layout.simple_spinner_item);
-//        adapterEnd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        working_time_end.setAdapter(adapterEnd);
-
         spinnerProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

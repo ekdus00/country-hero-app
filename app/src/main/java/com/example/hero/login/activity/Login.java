@@ -1,5 +1,7 @@
 package com.example.hero.login.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -79,15 +81,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        //로그아웃
-        login_logout = findViewById(R.id.login_logout);
-        login_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logoutUser();
-            }
-        });
-
         //아이디찾기
         Button login_id_findBtn = findViewById(R.id.login_id_findBtn);
         login_id_findBtn.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +117,7 @@ public class Login extends AppCompatActivity {
 //                binding.tvExpires.text = NaverIdLoginSDK.getExpiresAt().toString()
 //                binding.tvType.text = NaverIdLoginSDK.getTokenType()
 //                binding.tvState.text = NaverIdLoginSDK.getState().toString()
-                requestNaverLogin();
+//                requestNaverLogin(accessToken);
             }
 
             @Override
@@ -143,28 +136,27 @@ public class Login extends AppCompatActivity {
 
     }//onCreate()
 
-    public void requestNaverLogin() {
-        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
-        String fcmToken = fcmTokenManager.getFCMToken();
-        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback(fcmToken);
-        call.enqueue(new Callback<NaverLoginResultDTO>() {
-            @Override
-            public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    // 로그인 성공 처리
-                    NaverLoginResultDTO loginResult = response.body();
-                    // JWT 토큰을 저장하고 사용자 홈으로 이동
-                } else {
-                    // 로그인 실패 처리
-                }
-            }
-
-            @Override
-            public void onFailure(Call<NaverLoginResultDTO> call, Throwable t) {
-                // 네트워크 문제나 서버 오류 처리
-            }
-        });
-    }
+//    public void requestNaverLogin(String accessToken) {
+//        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+//        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback(accessToken);
+//        call.enqueue(new Callback<NaverLoginResultDTO>() {
+//            @Override
+//            public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    // 로그인 성공 처리
+//                    NaverLoginResultDTO loginResult = response.body();
+//                    // JWT 토큰을 저장하고 사용자 홈으로 이동
+//                } else {
+//                    // 로그인 실패 처리
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<NaverLoginResultDTO> call, Throwable t) {
+//                // 네트워크 문제나 서버 오류 처리
+//            }
+//        });
+//    }
 
     private void loginRequest() {
         String join_id = login_id_editText.getText().toString();
@@ -179,6 +171,7 @@ public class Login extends AppCompatActivity {
         }
 
         String userType = userManager.getUserType();
+        Log.v(TAG, "유저타입: " + userType);
 
         LoginRequestDTO dto = new LoginRequestDTO();
         dto.setUserId(join_id);
@@ -197,25 +190,22 @@ public class Login extends AppCompatActivity {
             public void onResponse(Call<LoginResultDTO> call, Response<LoginResultDTO> response) {
                 if (response.isSuccessful()) {
                     Headers headers = response.headers();
-//                    String contentType = headers.get("Content-Type");
-//
-//                    String headerValue = headers.get("Authorization");
-//                    if (headerValue != null && headerValue.startsWith("Bearer ")) {
-//                        String token = headerValue.replace("Bearer ", "");
-//                        tokenManager.saveAccessTokens(token);
-//                        //token 변수에는 "Bearer "가 제거된 순수 토큰값만 저장
-//                    }
-//
-//                    String refreshToken = headers.get("Refresh-Token");
-//                    //헤더의 리프래시, 액세스토큰 토큰매니저에 저장
-//                    tokenManager.saveRefreshTokens(refreshToken);
-//                    tokenManager.saveRefreshTokenExpiryTime();
 
                     String accessToken = headers.get("Authorization").replace("Bearer ", "");
                     String refreshToken = headers.get("Refresh-Token");
 
                     tokenManager.saveAccessTokens(accessToken);
                     tokenManager.saveRefreshTokens(refreshToken);
+
+                    String a = tokenManager.getAccessToken();
+                    String b = tokenManager.getRefreshToken();
+                    long c = tokenManager.getAccessExpirationTime();
+                    long d = tokenManager.getRefreshExpirationTime();
+
+                    Log.v(TAG, "액세스토큰: " + a);
+                    Log.v(TAG, "리프레시토큰: " + b);
+                    Log.v(TAG, "액세스토큰 남은시간: " + c);
+                    Log.v(TAG, "리프레시토큰 남은시간: " + d);
 
                     if ("owner".equals(userType)) {
                         Log.d("LoginActivity", "Navigating to HomeRecruiter");
@@ -237,16 +227,6 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-
-    private void logoutUser() {
-        tokenManager.clearTokens();
-        tokenManager.clearTokens();
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
-        finish();
-    }
-
-
 
 }
 

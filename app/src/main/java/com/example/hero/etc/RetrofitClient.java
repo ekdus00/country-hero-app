@@ -13,11 +13,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     private static final String BASE_URL = "http://3.37.68.5:8080/";
     private static Retrofit retrofit = null;
-
     public static Retrofit getClient(TokenManager tokenManager) {
         if (retrofit == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+//            OkHttpClient client = new OkHttpClient.Builder()
+//                    .addInterceptor(chain -> {
+//                        Request original = chain.request();
+//                        Request request = original.newBuilder()
+//                                .header("Authorization", "Bearer " + tokenManager.getAccessToken())
+//                                .method(original.method(), original.body())
+//                                .build();
+//                        return chain.proceed(request);
+//                    })
+//                    .build();
+//
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl("https://api.example.com/")
+//                    .client(client)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .readTimeout(300, TimeUnit.SECONDS)

@@ -13,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hero.R;
+import com.example.hero.clip.activity.ClipActivity;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.etc.UserManager;
 import com.example.hero.home.activity.HomeWorker;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.login.activity.Login;
@@ -23,6 +25,7 @@ import com.example.hero.matching.activity.MatchingList;
 import com.example.hero.mypage.dto.WorkerProfileDTO;
 import com.example.hero.resume.activity.ResumePost;
 import com.example.hero.review.activity.ReviewList;
+import com.example.hero.setting.SettingActivity;
 import com.example.hero.worker.activity.WorkerStatus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +36,7 @@ import retrofit2.Response;
 
 public class MyPageWorker extends AppCompatActivity {
     private TokenManager tokenManager;
+    private UserManager userManager;
     private ApiService apiService;
     private TextView myPage_name_textView, my_total_reviewAvg, myPage_rating_textView, myPage_remain_TextView;
     private ImageView myPage_rating_imageView;
@@ -40,6 +44,7 @@ public class MyPageWorker extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_worker);
         tokenManager = new TokenManager(this);
+        userManager = new UserManager(this);
 
         myPage_name_textView = findViewById(R.id.myPage_name_textView);
         myPage_rating_textView = findViewById(R.id.myPage_rating_textView);
@@ -67,6 +72,7 @@ public class MyPageWorker extends AppCompatActivity {
             public void onClick(View view) {
                 tokenManager.clearTokens();
                 tokenManager.clearTokens();
+                userManager.clearUserDetails();
                 Intent intent = new Intent(MyPageWorker.this, Login.class);
                 startActivity(intent);
                 finish();
@@ -78,8 +84,8 @@ public class MyPageWorker extends AppCompatActivity {
         setting_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), ModifyOwner.class);
-//                startActivity(intent);
+                Intent intent = new Intent(MyPageWorker.this, SettingActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -108,8 +114,8 @@ public class MyPageWorker extends AppCompatActivity {
         myPage_clip_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), WorkerStatus.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), ClipActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -88,9 +88,11 @@ public class ReviewEmployerList extends AppCompatActivity {
             public void onResponse(Call<List<OwnerReviewInfoDTO>> call, Response<List<OwnerReviewInfoDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
-                    jobList.clear();  // 기존 데이터를 지우고
-                    jobList.addAll(response.body());  // 새 데이터를 추가합니다.
-                    adapter.notifyDataSetChanged();
+                    if (jobList != null) {
+                        jobList.clear();  // 기존 데이터를 지우고
+                        jobList.addAll(response.body());  // 새 데이터를 추가합니다.
+                        adapter.notifyDataSetChanged();
+                    }
 
 //                    OwnerReviewInfoDTO workerInfoDTO = response.body();
 //

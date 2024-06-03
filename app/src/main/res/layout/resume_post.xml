@@ -135,7 +135,10 @@
                             android:background="#CCD9C8"
                             android:textColor="@color/black"
                             android:text="이미지첨부" />
-                        <LinearLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
                             <Button
                                 android:id="@+id/selectImageButton"
                                 android:layout_width="100dp"
@@ -146,8 +149,8 @@
                                 android:onClick="onSelectImageClick" />
                             <ImageView
                                 android:id="@+id/resume_image_imageView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="230dp"
+                                android:layout_height="130dp"
                                 android:layout_below="@id/selectImageButton"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="5dp"

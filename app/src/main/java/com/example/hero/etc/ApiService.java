@@ -35,6 +35,7 @@ import com.example.hero.matching.dto.MatchingPostCommentDeleteRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentRequestDTO;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCommentUpdateRequestDTO;
+import com.example.hero.matching.dto.MatchingPostEditResponseDTO;
 import com.example.hero.matching.dto.MentorRecommendationResponseDTO;
 import com.example.hero.mypage.dto.BusinessDataDTO;
 import com.example.hero.mypage.dto.BusinessNumberRequest;
@@ -240,7 +241,7 @@ public interface ApiService {
     Call<OwnerUserInfoResponseDTO> getOwnerInfo();
 
     //회원정보수정(구직자) 조회
-    @GET("/api/user/userInfo/owner")
+    @GET("/api/user/userInfo/worker")
     Call<WorkerUserInfoResponseDTO> getWorkerInfo();
 
 
@@ -268,11 +269,9 @@ public interface ApiService {
     Call<ResponseBody> updateDefer(@Body WorkerStateRequestDTO requestDTO);
 
 
-
-
-    //네이버로그인
-    @GET("/naver/callback")
-    Call<NaverLoginResultDTO> naverLoginCallback(@Header("FCM-Token") String fcmToken);
+//    //네이버로그인
+//    @GET("/naver/callback")
+//    Call<NaverLoginResultDTO> naverLoginCallback(@Query("code") String code);
 
     //일반 회원가입
     @POST("/join")
@@ -292,7 +291,7 @@ public interface ApiService {
 
     // 사용자 인증
     @POST("/api/user/check")
-    Call<Response<String>> checkUser(@Body CheckUserRequestDTO request);
+    Call<String> checkUser(@Body CheckUserRequestDTO request);
 
     // 비밀번호 재설정
     @POST("/api/user/reset/pw")
@@ -300,7 +299,7 @@ public interface ApiService {
 
     //토근 재발급
     @POST("/api/token/refresh")
-    Call<Void> refreshToken(@Body RefreshTokenRequestDTO request);
+    Call<ResponseBody> refreshToken(@Body RefreshTokenRequestDTO request);
 
 
 
@@ -359,6 +358,13 @@ public interface ApiService {
     @DELETE("/api/comment/matching")
     Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentDelete(@Body MatchingPostCommentDeleteRequestDTO matchingPostCommentDeleteRequestDTO);
 
+
+    @GET("/api/matching/matchingDetail/{selectedMatchingId}/edit")
+    Call<MatchingPostEditResponseDTO> getMatchingPostEditInfo(@Path("selectedMatchingId") int selectedMatchingId);
+
+    @PUT("/api/matching/matchingDetail/edit")
+    Call<MatchingDetailResponseDTO> matchingPostEdit(@Part("request") RequestBody requestBody,
+                                                     @Part MultipartBody.Part uploadImg);
 
 
 

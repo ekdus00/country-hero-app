@@ -1,5 +1,7 @@
 package com.example.hero.login.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
+import com.example.hero.etc.RetrofitClient2;
 import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.login.dto.CheckUserRequestDTO;
 import com.example.hero.login.dto.FindUserIdRequestDTO;
@@ -73,19 +76,24 @@ public class ResetPwAuth extends AppCompatActivity {
         dto.setUserName(name);
         dto.setUserBirth(birth);
 
-        ApiService apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient2.getClient().create(ApiService.class);
 
         //사용자인증 서버요청
-        Call<Response<String>> call = apiService.checkUser(dto);
-        call.enqueue(new Callback<Response<String>>() {
+        Call<String> call = apiService.checkUser(dto);
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Response<String>> call, Response<Response<String>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    String successMessage = response.body().body();
-                    if ("User Authentication Successful".equals(successMessage)) {
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    String successMessage = response.body();
+
+                    Log.v(TAG, "사용자 인증 문구: " + successMessage);
+                    Log.v(TAG, "사용자 인증 문구: " + response.body());
+
+                    if ("User Authentication Successful".equals(successMessage) || "User Authentication Successful".equals(response.body())) {
                         Toast.makeText(context, "사용자 인증에 성공했습니다.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ResetPwAuth.this, ResetPW.class);
                         startActivity(intent);
+                        finish();
                         Log.e("tag", "사용자인증 서버응답 성공" + response.code() + ", " + response.message());
                     } else {
                         Toast.makeText(context, "사용자 인증에 실패했습니다", Toast.LENGTH_SHORT).show();
@@ -98,7 +106,7 @@ public class ResetPwAuth extends AppCompatActivity {
                     Log.e("tag", "사용자인증 서버응답 오류" + response.errorBody().toString());                        }
             }
             @Override
-            public void onFailure(Call<Response<String>> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.e("tag", "사용자인증 서버요청 오류", t);
             }
         });

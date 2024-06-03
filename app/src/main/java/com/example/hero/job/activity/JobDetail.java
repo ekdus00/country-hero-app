@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ import com.example.hero.job.dto.JobPostCommentResponseDTO;
 import com.example.hero.job.dto.JobDetailResponseDTO;
 import com.example.hero.job.dto.JobPostCommentUpdateRequestDTO;
 import com.example.hero.job.dto.ParticipateRequestDTO;
+import com.example.hero.worker.activity.WorkerStatus;
 import com.naver.maps.map.OnMapReadyCallback;
 
 import java.util.ArrayList;
@@ -189,7 +191,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
         job_detail_participate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                participateRequest();
+                showDialog();
             }
         });
 
@@ -467,8 +469,8 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-//                    Void ResponseDTO = response.body();
-                    //지원현황으로 이동
+                    Intent intent = new Intent(JobDetail.this, WorkerStatus.class);
+                    startActivity(intent);
                     
                 } else {
                     Log.e("api", "지원하기 서버응답 오류코드" + response.code() + ", " + response.message());
@@ -480,6 +482,32 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                 Log.e("api", "지원하기 서버요청 오류", t);
             }
         });
+    }
+
+    private void showDialog() {
+//        // LayoutInflater를 사용해 dialog_layout.xml을 불러옵니다.
+//        LayoutInflater inflater = getLayoutInflater();
+//        final View dialogView = inflater.inflate(R.layout.dialog_layout, null);
+
+        // AlertDialog를 생성하고 설정합니다.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("해당 공고에 지원하시겠습니까?");
+
+        // 확인 버튼 설정
+        builder.setPositiveButton("확인", (dialog, which) -> {
+            // 확인 버튼 클릭시 동작
+            participateRequest();
+            dialog.dismiss(); // 대화상자를 닫습니다.
+        });
+
+        // 취소 버튼 설정
+        builder.setNegativeButton("취소", (dialog, which) -> {
+            dialog.dismiss(); // 대화상자를 닫습니다.
+        });
+
+        // AlertDialog를 표시합니다.
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

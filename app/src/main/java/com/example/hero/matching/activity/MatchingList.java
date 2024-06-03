@@ -225,9 +225,9 @@ public class MatchingList extends AppCompatActivity {
 
                     List<MentorRecommendationResponseDTO> slides = response.body();
 
-//                    ViewPager2 viewPager = findViewById(R.id.pager);
-//                    MatchingRecommendAdapter adapter = new MatchingRecommendAdapter(slides, itemClickListener);
-//                    viewPager.setAdapter(adapter);
+                    ViewPager2 viewPager = findViewById(R.id.pager);
+                    MatchingRecommendAdapter adapter = new MatchingRecommendAdapter(slides, itemClickListener);
+                    viewPager.setAdapter(adapter);
 
                     Log.e("tag", "멘토추천 서버요청 성공");
 
@@ -255,9 +255,9 @@ public class MatchingList extends AppCompatActivity {
 
                     List<MatchingListInfoDTO> slides = response.body();
 
-//                    ViewPager2 viewPager = findViewById(R.id.pager2);
-//                    MatchingRecommendListAdapter adapter = new MatchingRecommendListAdapter(slides);
-//                    viewPager.setAdapter(adapter);
+                    ViewPager2 viewPager = findViewById(R.id.pager2);
+                    MatchingRecommendListAdapter adapter = new MatchingRecommendListAdapter(slides);
+                    viewPager.setAdapter(adapter);
 
                     Log.e("tag", "멘토추천 리스트 서버요청 성공");
 

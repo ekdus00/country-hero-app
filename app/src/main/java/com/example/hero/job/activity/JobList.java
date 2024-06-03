@@ -1,8 +1,14 @@
 package com.example.hero.job.activity;
 
+import static android.content.ContentValues.TAG;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -39,6 +45,8 @@ import com.example.hero.worker.activity.WorkerStatus;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.naver.maps.map.LocationTrackingMode;
+import com.naver.maps.map.util.FusedLocationSource;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -71,13 +79,28 @@ public class JobList extends AppCompatActivity {
     private UserManager userManager;
     private String sortType;
     private int jobId;
-
+    private FusedLocationSource locationSource;
+    private static final int PERMISSION_REQUEST_CODE = 100;
+    private static final String[] PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+    double longitude; // 위도
+    double latitude; // 경도
+    boolean isGPSEnabled;
+    boolean isNetworkEnabled;
+    String provider;
+    private LocationManager locationManager;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_list);
         context = this;
         tokenManager = new TokenManager(this);
         userManager = new UserManager(this);
+
+        locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
+
+        GetUserLocation();
 
         job_list_keyword = findViewById(R.id.job_list_keyword);
         job_list_sum = findViewById(R.id.job_list_sum);
@@ -100,9 +123,8 @@ public class JobList extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         //사용자 위도, 경도
-        locationClient = LocationServices.getFusedLocationProviderClient(this);
-        fetchLocation();
-        
+//        locationClient = LocationServices.getFusedLocationProviderClient(this);
+
         //검색어 입력
         Button search_btn = findViewById(R.id.search_btn);
         search_btn.setOnClickListener(new View.OnClickListener() {
@@ -152,24 +174,30 @@ public class JobList extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     if (userManager.getUserType().equals("owner")) {
                         startActivity(new Intent(JobList.this, HomeWorker.class));
+                        finish();
                         return true;
                     } else {
                         startActivity(new Intent(JobList.this, HomeWorker.class));
+                        finish();
                         return true;
                     }
 
                 } else if (id == R.id.nav_search) {
                     startActivity(new Intent(JobList.this, JobList.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_matching) {
                     startActivity(new Intent(JobList.this, MatchingList.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_mypage) {
                     if (userManager.getUserType().equals("owner")) {
                         startActivity(new Intent(JobList.this, MyPageOwner.class));
+                        finish();
                         return true;
                     } else {
                         startActivity(new Intent(JobList.this, MyPageWorker.class));
+                        finish();
                         return true;
                     }
                 }
@@ -254,13 +282,54 @@ public class JobList extends AppCompatActivity {
         jobFilterDTO.setPayGoe(payGoe);
         jobFilterDTO.setKeyWord(keyWord);
         jobFilterDTO.setSortType(sortType);
-        jobFilterDTO.setUserLatitude(userLatitude);
-        jobFilterDTO.setUserLongitude(userLongitude);
+        jobFilterDTO.setUserLatitude(longitude);
+        jobFilterDTO.setUserLongitude(latitude);
 
         Log.d("JobFilterDTO", "Filter Data: " + jobFilterDTO.toString());
 
         jobListRequest(jobFilterDTO);
 
+    }
+
+    @SuppressLint("MissingPermission")
+    private void GetUserLocation() {
+        locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+
+        // GPS 프로바이더 사용가능여부
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 네트워크 프로바이더 사용가능여부
+        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Log.d("Main", "isGPSEnabled="+ isGPSEnabled);
+        Log.d("Main", "isNetworkEnabled="+ isNetworkEnabled);
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                // 현재 위치의 위도 경도 받아오기
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+                Log.d(TAG, "onLocationChanged: latitude =" + latitude);
+                Log.d(TAG, "onLocationChanged: longitude =" + longitude);
+
+            }
+        };
+        // 위치 업데이트 요청
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0,locationListener);
+
+        // 마지막으로 알려진 위치 가져오기
+        provider = LocationManager.GPS_PROVIDER;
+        Location lastKnownLocation = locationManager.getLastKnownLocation(provider);
+
+        if(lastKnownLocation != null) {
+            latitude = lastKnownLocation.getLatitude();
+            longitude = lastKnownLocation.getLongitude();
+            Log.d(TAG, "GetUserLoction: lastKnownLocation != null");
+            Log.d(TAG, "GetUserLoction: latitude =" + latitude);
+            Log.d(TAG, "GetUserLoction: longitude =" + longitude);
+        }
     }
 
     private void participateRequest(int jobId) {
@@ -277,6 +346,7 @@ public class JobList extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Intent intent = new Intent(JobList.this, WorkerStatus.class);
                     startActivity(intent);
+                    finish();
 
                 } else {
                     Log.e("api", "지원하기 서버응답 오류코드" + response.code() + ", " + response.message());
@@ -322,20 +392,20 @@ public class JobList extends AppCompatActivity {
         return date.format(formatter);
     }
 
-    private void fetchLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // 권한 요청
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-            return;
-        }
-
-        locationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
-                userLatitude = location.getLatitude();
-                userLongitude = location.getLongitude();
-            }
-        });
-    }
+//    private void fetchLocation() {
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // 권한 요청
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+//            return;
+//        }
+//
+//        locationClient.getLastLocation().addOnSuccessListener(this, location -> {
+//            if (location != null) {
+//                userLatitude = location.getLatitude();
+//                userLongitude = location.getLongitude();
+//            }
+//        });
+//    }
 
 
 

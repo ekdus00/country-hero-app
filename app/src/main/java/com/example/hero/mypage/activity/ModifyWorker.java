@@ -36,7 +36,7 @@ public class ModifyWorker extends AppCompatActivity {
         modify_birth = findViewById(R.id.modify_birth);
         modify_email = findViewById(R.id.modify_email);
 
-        getModifyOwner();
+        getModifyWorker();
 
         //뒤로가기
         Button btn_Back = findViewById(R.id.btn_back);
@@ -54,7 +54,7 @@ public class ModifyWorker extends AppCompatActivity {
 
     }//onCreate()
 
-    public void getModifyOwner() {
+    public void getModifyWorker() {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
         //회원정보수정(구직자) 조회 서버요청

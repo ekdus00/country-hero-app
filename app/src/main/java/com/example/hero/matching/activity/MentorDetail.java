@@ -27,6 +27,7 @@ import com.example.hero.etc.ApiService;
 import com.example.hero.etc.OnCommentClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.etc.UserManager;
 import com.example.hero.job.activity.EmployerData;
 import com.example.hero.matching.adapter.MatchingCommentAdapter;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
@@ -59,11 +60,12 @@ public class MentorDetail extends AppCompatActivity {
     MatchingCommentAdapter commentAdapter;
     ScrollView scrollView;
 
-    ImageButton goMatchingPostBtn;
+    ImageButton goMatchingPostEditBtn;
     int commentParent = -1;
 
     OnCommentClickListener buttonClickListener;
     private TokenManager tokenManager;
+    private UserManager userManager;
     private ApiService apiService;
 
     @Override
@@ -71,6 +73,7 @@ public class MentorDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mentor_detail);
         tokenManager = new TokenManager(this);
+        userManager = new UserManager(this);
 
 
         Intent intent = getIntent();
@@ -87,11 +90,13 @@ public class MentorDetail extends AppCompatActivity {
         eduDate = findViewById(R.id.txt_edu_date);
         eduContent = findViewById(R.id.txt_edu_content);
 
-        goMatchingPostBtn = findViewById(R.id.edit_btn);
-        goMatchingPostBtn.setOnClickListener(new View.OnClickListener() {
+        goMatchingPostEditBtn = findViewById(R.id.edit_btn);
+        goMatchingPostEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MentorDetail.this, MatchingPost.class);
+                intent.putExtra("matchingId", matchingId);
+                intent.putExtra("isEdit", true);
                 startActivity(intent);
             }
         });
@@ -147,6 +152,13 @@ public class MentorDetail extends AppCompatActivity {
                         area.setText(matchingDetailResponseDTO.getCountry() + " " +matchingDetailResponseDTO.getCity());
                         eduDate.setText(matchingDetailResponseDTO.getStartEduDate() + "~" + matchingDetailResponseDTO.getEndEduDate());
                         eduContent.setText(matchingDetailResponseDTO.getEduContent());
+
+                        // 게시글의 userId가 내 userId와 같다면 내 게시글이므로 수정버튼을 띄운다.
+                        if(matchingDetailResponseDTO.isMyPost(userManager.getUserId())) {
+                            goMatchingPostEditBtn.setVisibility(View.VISIBLE);
+                        } else {
+                            goMatchingPostEditBtn.setVisibility(View.GONE);
+                        }
 
                         String imageData = matchingDetailResponseDTO.getMatchingImgFile();
 

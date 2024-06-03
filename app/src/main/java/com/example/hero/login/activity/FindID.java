@@ -1,5 +1,7 @@
 package com.example.hero.login.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.login.dto.FindUserIdRequestDTO;
 import com.example.hero.login.dto.JoinRequestDTO;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,7 +77,7 @@ public class FindID extends AppCompatActivity {
         dto.setUserName(name);
         dto.setUserBirth(birth);
 
-        ApiService apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClientWithoutAuth.getClient2().create(ApiService.class);
 
         //아이디 찾기 서버요청
         Call<String> call = apiService.findUserId(dto);
@@ -82,7 +85,12 @@ public class FindID extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
+
                     String result = response.body();
+                    Log.v(TAG, "아이디: " + result);
+                    Log.v(TAG, "아이디: " + response.body());
+
+                    find_id_result.setText(response.body());
                     find_id_result.setText(result);
 
                     Log.e("tag", "아이디찾기 서버응답 성공" + response.code() + ", " + response.message());
