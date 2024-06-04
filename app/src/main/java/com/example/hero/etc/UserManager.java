@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 public class UserManager {
     private static final String PREFS_NAME = "AppPrefs";
     private static final String USER_ID_KEY = "userId";
+    private static final String JOIN_TYPE = "joinType";
     private static final String USER_TYPE_KEY = "userType";
     private SharedPreferences sharedPreferences;
 
@@ -19,9 +20,15 @@ public class UserManager {
         editor.apply();
     }
 
-    public void saveUserType( String userType) {
+    public void saveUserType(String userType) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USER_TYPE_KEY, userType);
+        editor.apply();
+    }
+
+    public void saveJoinType(String joinType) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(JOIN_TYPE, joinType);
         editor.apply();
     }
 
@@ -32,6 +39,10 @@ public class UserManager {
     public String getUserType() {
         return sharedPreferences.getString(USER_TYPE_KEY, null);
     }
+    public String getJoinType() {
+        return sharedPreferences.getString(JOIN_TYPE, null);
+    }
+
 
     public void saveUserInfoInputCompleted(boolean isCompleted) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -47,6 +58,7 @@ public class UserManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(USER_ID_KEY);
         editor.remove(USER_TYPE_KEY);
+        editor.remove(JOIN_TYPE);
         editor.apply();
     }
 

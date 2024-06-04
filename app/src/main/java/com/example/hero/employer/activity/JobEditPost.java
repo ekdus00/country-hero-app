@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.collection.CircularArray;
 
+import com.bumptech.glide.Glide;
 import com.example.hero.employer.dto.JobPostEditResponseDTO;
 import com.example.hero.employer.dto.JobRequestDTO;
 import com.example.hero.employer.dto.JopPostUpdateRequestDTO;
@@ -47,6 +48,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -67,7 +70,7 @@ public class JobEditPost extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView post_ImageView;
     private Button btn_send;
-    public TextView address_main, address_postcode;
+    public TextView address_main, address_postcode, job_edit_imageName;
     String selectedPreferText = "";
     private Spinner spinnerProvince, spinnerCity, working_time_start, working_time_end, work_crop1, work_crop2;
     private Uri imageUri;
@@ -113,6 +116,7 @@ public class JobEditPost extends AppCompatActivity {
 
         address_detail_editView= findViewById(R.id.address_detail_editView);
 
+        job_edit_imageName = findViewById(R.id.job_edit_imageName);
         post_ImageView = findViewById(R.id.post_image_imageView);
 
         address_postcode = findViewById(R.id.address_postcode);
@@ -238,18 +242,16 @@ public class JobEditPost extends AppCompatActivity {
                     }
 
                     //스피너 셋
-//                    working_time_start.setText(dto.getStartWorkTime());
-//                    working_time_end.setText(dto.getJobName());
-//                    spinnerProvince.setText(dto.getJobName());
-//                    spinnerCity.setText(dto.getJobName());
-//                    work_crop1.setText(dto.getJobName());
-//                    work_crop2.setText(dto.getJobName());
+                    setSpinnerSelection1(dto.getCountry());
+                    setSpinnerSelection2(dto.getCity());
+                    setSpinnerSelection3(dto.getCropForm());
+                    setSpinnerSelection4(dto.getCropType());
+                    setSpinnerSelection5(dto.getStartWorkTime());
+                    setSpinnerSelection6(dto.getEndWorkTime());
 
                     textview_work_prefer.setText(dto.getSpec());
                     textView_recruit_introduction.setText(dto.getJobIntro());
 
-//                    address_postcode.setText(dto.getWorkAddress());
-//                    address_main.setText(dto.getWorkAddress());
                     address_detail_editView.setText(dto.getWorkAddressDetail());
 
                     String workAddress = dto.getWorkAddress();
@@ -266,12 +268,7 @@ public class JobEditPost extends AppCompatActivity {
                     textView_recruit_number.setText(String.valueOf(dto.getRecruitCount()));
                     textView_recruit_age.setText(String.valueOf(dto.getAge()));
 
-//                    String imageUrl = "http://3.37.68.5:8080/" + dto.getUploadImgFileName();
-//                    Glide.with(JobEditPost.this)
-//                            .load(imageUrl)
-//                            .placeholder(R.drawable.start_app) // 로딩 중 표시할 이미지
-//                            .error(R.drawable.start_app)         // 오류 발생 시 표시할 이미지
-//                            .into(post_ImageView);
+                    job_edit_imageName.setText(dto.getUploadImgFileName());
 
                     Log.e("tag", "공고수정 조회 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
@@ -285,6 +282,78 @@ public class JobEditPost extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setSpinnerSelection1(String province) {
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinnerProvince.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(province);
+            if (position != -1) {
+                spinnerProvince.setSelection(position);
+            } else {
+                Log.e("tag", "해당 지역을 찾을 수 없습니다: " + province);
+            }
+        }
+    }
+
+    private void setSpinnerSelection2(String city) {
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinnerCity.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(city);
+            if (position != -1) {
+                spinnerCity.setSelection(position);
+            } else {
+                Log.e("tag", "해당 도시를 찾을 수 없습니다: " + city);
+            }
+        }
+    }
+
+    private void setSpinnerSelection3(String crop1) {
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) work_crop1.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(crop1);
+            if (position != -1) {
+                work_crop1.setSelection(position);
+            } else {
+                Log.e("tag", "해당 품목을 찾을 수 없습니다: " + crop1);
+            }
+        }
+    }
+
+    private void setSpinnerSelection4(String crop2) {
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) work_crop2.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(crop2);
+            if (position != -1) {
+                work_crop2.setSelection(position);
+            } else {
+                Log.e("tag", "해당 작물을 찾을 수 없습니다: " + crop2);
+            }
+        }
+    }
+
+    private void setSpinnerSelection5(String time1) {
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) working_time_start.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(time1);
+            if (position != -1) {
+                working_time_start.setSelection(position);
+            } else {
+                Log.e("tag", "해당 작물을 찾을 수 없습니다: " + time1);
+            }
+        }
+    }
+
+    private void setSpinnerSelection6(String time2) {
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) working_time_end.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(time2);
+            if (position != -1) {
+                working_time_end.setSelection(position);
+            } else {
+                Log.e("tag", "해당 작물을 찾을 수 없습니다: " + time2);
+            }
+        }
     }
 
     public void jobPostUpdate() {

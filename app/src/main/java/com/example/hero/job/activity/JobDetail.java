@@ -277,15 +277,14 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
         //공고댓글 작성 요청
-        Call<Void> call2 = apiService.createJobPostComment(dto);
-        call2.enqueue(new Callback<Void>() {
+        Call<List<JobPostCommentResponseDTO>> call2 = apiService.createJobPostComment(dto);
+        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
                     Intent intent = new Intent(JobDetail.this, JobDetail.class);
                     intent.putExtra("jobId", jobId);
                     startActivity(intent);
-//                    startActivity(new Intent(JobDetail.this, JobDetail.class));
                     Log.e("api", "공고상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
 
                 } else {
@@ -293,7 +292,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                     Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
                 Log.e("api", "공고상세 댓글 서버요청 오류", t);
             }
         });
@@ -309,18 +308,20 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
         //공고 자식댓글 작성 요청
-        Call<Void> call2 = apiService.createJobPostComment(dto);
-        call2.enqueue(new Callback<Void>() {
+        Call<List<JobPostCommentResponseDTO>> call2 = apiService.createJobPostComment(dto);
+        call2.enqueue(new Callback<List<JobPostCommentResponseDTO>>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
-
+                    List<JobPostCommentResponseDTO> comments = response.body();
+                    adapter = new JobCommentAdapter(comments, buttonClickListener);
+                    job_comment_recyclerView.setAdapter(adapter);
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
                 Log.e("api", "공고상세 댓글 서버요청 오류", t);
             }
         });
@@ -372,7 +373,6 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                     List<JobPostCommentResponseDTO> comments = response.body();
                     adapter = new JobCommentAdapter(comments, buttonClickListener);
                     job_comment_recyclerView.setAdapter(adapter);
-
 
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());

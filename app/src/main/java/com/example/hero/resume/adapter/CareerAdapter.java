@@ -35,9 +35,11 @@ public class CareerAdapter extends RecyclerView.Adapter<CareerAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
+        if (careerList == null) {
+            return 0;
+        }
         return careerList.size();
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView career_textView;
         public ViewHolder(@NonNull View itemView) {

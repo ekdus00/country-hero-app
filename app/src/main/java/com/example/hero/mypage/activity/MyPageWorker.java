@@ -33,6 +33,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.example.hero.login.dto.NaverLoginResultDTO;
+import com.navercorp.nid.NaverIdLoginSDK;
+import com.navercorp.nid.oauth.OAuthLoginCallback;
+import com.navercorp.nid.oauth.NidOAuthBehavior;
+import com.navercorp.nid.oauth.NidOAuthLogin;
+import com.navercorp.nid.oauth.view.NidOAuthLoginButton;
+import com.navercorp.nid.profile.NidProfileCallback;
+import com.navercorp.nid.profile.data.NidProfileMap;
+import com.navercorp.nid.profile.data.NidProfileResponse;
+
 
 public class MyPageWorker extends AppCompatActivity {
     private TokenManager tokenManager;
@@ -71,8 +81,8 @@ public class MyPageWorker extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tokenManager.clearTokens();
-                tokenManager.clearTokens();
                 userManager.clearUserDetails();
+                NaverIdLoginSDK.INSTANCE.logout();
                 Intent intent = new Intent(MyPageWorker.this, Login.class);
                 startActivity(intent);
                 finish();

@@ -118,7 +118,7 @@
                             android:textColor="@color/black"
                             android:text="소개" />
                         <TextView
-                            android:id="@+id/resume_email"
+                            android:id="@+id/resume_info"
                             android:text="(소개)"
                             android:layout_gravity="center"
                             android:layout_width="250dp"

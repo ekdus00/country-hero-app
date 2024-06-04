@@ -38,7 +38,7 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_item, parent, false);
-        return new JobCommentAdapter.ViewHolder(view, buttonClickListener);
+        return new JobCommentAdapter.ViewHolder(view, buttonClickListener, this);
 
 //        if (viewType == 0) {  // 부모 댓글
 //            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_item, parent, false);
@@ -72,9 +72,11 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
         RecyclerView childRecyclerView;
         int commentId;
         Button job_comment_childBtn, job_comment_editBtn, job_comment_deleteBtn;
+        JobCommentAdapter adapter;
 
-        public ViewHolder(View itemView, OnCommentClickListener buttonClickListener) {
+        public ViewHolder(View itemView, OnCommentClickListener buttonClickListener, JobCommentAdapter adapter) {
             super(itemView);
+            this.adapter = adapter;
             textViewContent = itemView.findViewById(R.id.job_comment_content);
             textViewAuthor = itemView.findViewById(R.id.job_comment_userName);
             childRecyclerView = itemView.findViewById(R.id.job_commentChild_recyclerView);
@@ -97,19 +99,20 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
 
             job_comment_deleteBtn.setOnClickListener(v -> {
                 int position = getAdapterPosition();
-
-                if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                if (buttonClickListener != null && position != RecyclerView.NO_POSITION) {
+                    // 데이터 수정
+                    adapter.commentsList.get(position).setCommentContent("삭제된 댓글입니다");
+                    // RecyclerView 업데이트
+                    adapter.notifyItemChanged(position);
                     buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.DELETE);
-
-//                    JobPostCommentResponseDTO modifiedComment = commentsList.get(position);
-//                    modifiedComment.setCommentContent("삭제된 댓글입니다");
-//                    commentsList.set(position, modifiedComment);
-//
-//                    textViewContent.setText("삭제된 댓글입니다");
-//                    notifyItemChanged(position);
-
                 }
             });
+
+//            job_comment_deleteBtn.setOnClickListener(v -> {
+//                if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+//                    buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.DELETE);
+//                }
+//            });
 
         }
 

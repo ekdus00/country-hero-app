@@ -218,8 +218,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/border_gray_spinner"
+                    android:layout_marginRight="15dp"
+                    android:drawable="@drawable/border_gray_spinner"
                     />
 
                 <Spinner
@@ -227,7 +227,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:background="@drawable/border_gray_spinner"
+                    android:drawable="@drawable/border_gray_spinner"
                     />
 
 

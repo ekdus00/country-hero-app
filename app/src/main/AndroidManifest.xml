@@ -75,6 +75,7 @@
         <activity android:name=".login.activity.ResetPW"></activity>
         <activity android:name=".login.activity.ResetPwAuth"></activity>
         <activity android:name=".employer.activity.JobEditPost"></activity>
+        <activity android:name=".resume.activity.ResumeCheck"></activity>
         <activity
             android:name=".guide.UserGuideActivity"
             android:exported="false" />

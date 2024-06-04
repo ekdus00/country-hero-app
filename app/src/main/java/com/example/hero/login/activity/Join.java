@@ -96,6 +96,7 @@ public class Join extends AppCompatActivity {
 
                     Intent intent = new Intent(Join.this, UserTypeSet.class);
                     intent.putExtra("userId", join_id);  // 실제 사용자 ID를 넘겨줌
+                    intent.putExtra("loginType", "join");  // 실제 사용자 ID를 넘겨줌
                     startActivity(intent);
                     Log.e("tag", "회원가입 서버응답 성공" + response.code() + ", " + response.message());
                 } else {

@@ -4,26 +4,26 @@ import com.example.hero.home.dto.OwnerHomeDTO;
 import com.example.hero.home.dto.WorkerHomeDTO;
 
 public class LoginResultDTO {
-    private OwnerHomeDTO ownerHomeDTO;
-    private WorkerHomeDTO workerHomeDTO;
-    private JWTPayloadDTO jwtPayloadDTO;
+    private OwnerHomeDTO ownerHomeDTO; // 구인자 홈 필요 데이터
+    private WorkerHomeDTO workerHomeDTO; // 구직자 홈 필요 데이터
+    private String userType; // 사용자 유형
 
-    public LoginResultDTO(OwnerHomeDTO ownerHomeDTO, JWTPayloadDTO jwtPayloadDTO) {
+    public LoginResultDTO(OwnerHomeDTO ownerHomeDTO, String userType) {
         this.ownerHomeDTO = ownerHomeDTO;
-        this.jwtPayloadDTO = jwtPayloadDTO;
+        this.userType = userType;
     }
 
-    public LoginResultDTO(WorkerHomeDTO workerHomeDTO, JWTPayloadDTO jwtPayloadDTO) {
+    public LoginResultDTO(WorkerHomeDTO workerHomeDTO, String userType) {
         this.workerHomeDTO = workerHomeDTO;
-        this.jwtPayloadDTO = jwtPayloadDTO;
+        this.userType = userType;
     }
 
-    public JWTPayloadDTO getJwtPayloadDTO() {
-        return jwtPayloadDTO;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setJwtPayloadDTO(JWTPayloadDTO jwtPayloadDTO) {
-        this.jwtPayloadDTO = jwtPayloadDTO;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public WorkerHomeDTO getWorkerHomeDTO() {

@@ -16,9 +16,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.hero.R;
 import com.example.hero.employer.activity.EmployerStatus;
 import com.example.hero.employer.activity.EmployerStatusDetail;
+import com.example.hero.employer.activity.JobEditPost;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
@@ -37,7 +39,7 @@ import retrofit2.Response;
 
 public class ResumeCheck extends AppCompatActivity {
     private ImageView resume_check_image;
-    private TextView resume_name, resume_gender, resume_review;
+    private TextView resume_name, resume_gender, resume_review, resume_info;
     private ApiService apiService;
     private TokenManager tokenManager;
     private RecyclerView resume_career;
@@ -47,13 +49,13 @@ public class ResumeCheck extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resume_check);
-
         tokenManager = new TokenManager(this);
 
         resume_name = findViewById(R.id.resume_name);
         resume_gender = findViewById(R.id.resume_gender);
         resume_review = findViewById(R.id.resume_review);
         resume_check_image = findViewById(R.id.resume_check_image);
+        resume_info = findViewById(R.id.resume_info);
 
         resume_career = findViewById(R.id.resume_career);
         resume_career.setLayoutManager(new LinearLayoutManager(this));
@@ -111,6 +113,7 @@ public class ResumeCheck extends AppCompatActivity {
                     resume_name.setText(dto.getUserName());
                     resume_gender.setText(dto.getGender());
                     resume_review.setText(String.valueOf(dto.getTotalReviewScore()));
+                    resume_info.setText(dto.getUserIntro());
 
                     List<String> careerList = dto.getEtcCareer();
                     adapter = new CareerAdapter(careerList);

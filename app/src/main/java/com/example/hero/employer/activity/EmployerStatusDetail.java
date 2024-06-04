@@ -52,6 +52,14 @@ public class EmployerStatusDetail extends AppCompatActivity {
         context = this;
         tokenManager = new TokenManager(this);
 
+        buttonClickListener = (jobId, userId) -> {
+            //이력서 확인으로 이동
+            Intent intent = new Intent(EmployerStatusDetail.this, ResumeCheck.class);
+            intent.putExtra("userId", userId);
+            intent.putExtra("jobId", jobId);
+            startActivity(intent);
+        };
+
         Button btn_Back = findViewById(R.id.btn_back);
         btn_Back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,14 +81,6 @@ public class EmployerStatusDetail extends AppCompatActivity {
 
         employerStatusDetailJobId = getIntent().getIntExtra("jobId", 0);
         employerStatusDetailRequest(employerStatusDetailJobId);
-
-        buttonClickListener = (jobId, userId) -> {
-            //이력서 확인으로 이동
-            Intent intent = new Intent(EmployerStatusDetail.this, ResumeCheck.class);
-            intent.putExtra("userId", userId);
-            intent.putExtra("jobId", jobId);
-            startActivity(intent);
-        };
 
     }//onCreate()
 

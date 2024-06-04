@@ -119,7 +119,7 @@ public interface ApiService {
 
     //공고댓글 작성
     @POST("/api/comment/job")
-    Call<Void> createJobPostComment(
+    Call<List<JobPostCommentResponseDTO>> createJobPostComment(
             @Body JobPostCommentRequestDTO requestDTO
     );
 
@@ -137,11 +137,10 @@ public interface ApiService {
     );
 
     //공고댓글 삭제
-    @DELETE("/api/comment/job")
+    @HTTP(method = "DELETE", path="/api/comment/job", hasBody = true)
     Call<List<JobPostCommentResponseDTO>> deleteJobPostComment(
             @Body JobPostCommentDeleteRequestDTO requestDTO
     );
-
 
 
 
@@ -160,10 +159,6 @@ public interface ApiService {
     //지원현황
     @GET("/api/participate")
     Call<ParticipateResponseDTO> getParticipateList();
-
-//    //지원취소
-//    @DELETE("/api/participate")
-//    Call<ResponseBody> DeleteParticipate(@Body ParticipateDeleteRequestDTO requestDTO);
 
     //지원취소
     @HTTP(method = "DELETE", path="/api/participate", hasBody = true)
@@ -258,7 +253,7 @@ public interface ApiService {
 
     //구인자의 이력서 확인
     @GET("/api/resume/{selectedWorker}")
-    Call<ResumeResponseDTO> checkResume(@Path("selectedUserId") String selectedUserId);
+    Call<ResumeResponseDTO> checkResume(@Path("selectedWorker") String selectedUserId);
 
     //일자리 승인
     @PUT("/api/resume/approve")
@@ -269,9 +264,15 @@ public interface ApiService {
     Call<ResponseBody> updateDefer(@Body WorkerStateRequestDTO requestDTO);
 
 
+
+
+    //네이버로그인
+    @GET("/")
+    Call<NaverLoginResultDTO> naverLoginCallback(@Query("code") String code);
+
 //    //네이버로그인
 //    @GET("/naver/callback")
-//    Call<NaverLoginResultDTO> naverLoginCallback(@Query("code") String code);
+//    Call<NaverLoginResultDTO> naverLoginCallback();
 
     //일반 회원가입
     @POST("/join")

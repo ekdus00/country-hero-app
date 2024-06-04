@@ -20,7 +20,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.hero.R;
+import com.example.hero.employer.activity.JobEditPost;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
@@ -53,14 +55,14 @@ public class ResumePost extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView resume_image_imageView;
     private EditText resume_career_edit, resume_info;
-    private TextView resume_review_result, resume_name;
+    private TextView resume_review_result, resume_name, resume_post_imageName;
     private TokenManager tokenManager;
     private ApiService apiService;
     private Uri imageUri;
     private CareerAdapter adapter;
     private Button resume_career_btn, resume_send;
     private RecyclerView resume_career_recyclerView;
-    private List<String> resumePostList2;
+    private List<String> resumePostList2 = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resume_post);
@@ -68,6 +70,7 @@ public class ResumePost extends AppCompatActivity {
 
         resume_info = findViewById(R.id.resume_info);
         resume_image_imageView = findViewById(R.id.resume_image_imageView);
+        resume_post_imageName = findViewById(R.id.resume_post_imageName);
         resume_review_result = findViewById(R.id.resume_review_result);
         resume_name = findViewById(R.id.resume_name);
 
@@ -75,7 +78,6 @@ public class ResumePost extends AppCompatActivity {
         resume_career_btn = findViewById(R.id.resume_career_btn);
         resume_career_recyclerView = findViewById(R.id.resume_career_recyclerView);
 
-        resumePostList2 = new ArrayList<>();
         adapter = new CareerAdapter(resumePostList2);
         resume_career_recyclerView.setAdapter(adapter);
         resume_career_recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -168,38 +170,8 @@ public class ResumePost extends AppCompatActivity {
                     List<String> resumePostList = dto.getEtcCareer();
                     adapter = new CareerAdapter(resumePostList);
                     resume_career_recyclerView.setAdapter(adapter);
-                    String imageData = dto.getUploadImgFileName();
 
-
-                    if (imageData != null && imageData.length() > 0) {
-                        try {
-                            // Base64 문자열을 바이트 배열로 디코드
-                            byte[] decodedString = Base64.decode(imageData, Base64.DEFAULT);
-                            // 디코드된 바이트 배열을 Bitmap으로 변환
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                            // Bitmap을 ImageView에 설정
-                            resume_image_imageView.setImageBitmap(bitmap);
-                        } catch (IllegalArgumentException e) {
-                            e.printStackTrace();
-                            // Base64 디코딩 실패 시 기본 이미지 설정
-                            resume_image_imageView.setImageResource(R.drawable.mypage);
-                        }
-                    } else {
-                        // Base64 문자열이 없을 경우 기본 이미지 설정
-                        resume_image_imageView.setImageResource(R.drawable.mypage);
-                    }
-
-//                    if (imageData != null && imageData.length() > 0) {
-//                        // Base64 문자열을 바이트 배열로 디코드
-//                        byte[] decodedString = Base64.decode(imageData, Base64.DEFAULT);
-//                        // 디코드된 바이트 배열을 Bitmap으로 변환
-//                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//                        // Bitmap을 ImageView에 설정
-//                        resume_image_imageView.setImageBitmap(bitmap);
-//                    } else {
-//                        // 이미지가 없을 경우 기본 이미지 설정
-//                        resume_image_imageView.setImageResource(R.drawable.mypage);
-//                    }
+                    resume_post_imageName.setText(dto.getUploadImgFileName());
 
                     Log.e("api", "이력서관리 조회 서버응답 성공" + response.code() + ", " + response.message());
 
