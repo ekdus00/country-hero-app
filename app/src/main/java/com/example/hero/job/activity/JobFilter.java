@@ -144,7 +144,7 @@ public class JobFilter extends AppCompatActivity{
                     selectedRegion = parent.getItemAtPosition(position).toString();
                     loadCities(selectedRegion); // 도시 목록 로드
                     isRegionInitialized = false;
-                } else {
+                } else{
                     isRegionInitialized = true; // 처음 로드 시에는 반응하지 않음
                 }
             }
