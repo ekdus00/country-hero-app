@@ -267,12 +267,8 @@ public interface ApiService {
 
 
     //네이버로그인
-    @GET("/")
+    @GET("/naver/callback")
     Call<NaverLoginResultDTO> naverLoginCallback(@Query("code") String code);
-
-//    //네이버로그인
-//    @GET("/naver/callback")
-//    Call<NaverLoginResultDTO> naverLoginCallback();
 
     //일반 회원가입
     @POST("/join")

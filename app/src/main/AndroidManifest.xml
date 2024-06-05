@@ -76,6 +76,18 @@
         <activity android:name=".login.activity.ResetPwAuth"></activity>
         <activity android:name=".employer.activity.JobEditPost"></activity>
         <activity android:name=".resume.activity.ResumeCheck"></activity>
+        <activity android:name=".login.activity.NaverWebView"></activity>
+
+        <!--        <activity android:name=".login.activity.Login"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data android:scheme="here" android:host="naver-callback" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
         <activity
             android:name=".guide.UserGuideActivity"
             android:exported="false" />

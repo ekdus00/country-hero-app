@@ -6,9 +6,13 @@ import static android.system.Os.connect;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -74,6 +78,7 @@ public class Login extends AppCompatActivity {
         login_id_editText = findViewById(R.id.login_id_editText);
         login_pw_editText = findViewById(R.id.login_pw_editText);
 
+
         //로그인 완료
         login_sendBtn = findViewById(R.id.login_sendBtn);
         login_sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -111,244 +116,18 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        executorService = Executors.newSingleThreadExecutor();
-
         //네이버 로그인
-        NaverIdLoginSDK.INSTANCE.initialize(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.naver_client_name));
-        NidOAuthLoginButton buttonOAuthLoginImg = findViewById(R.id.buttonOAuthLoginImg);
-        buttonOAuthLoginImg.setOAuthLogin(new OAuthLoginCallback() {
+        Button naver = findViewById(R.id.naver);
+        naver.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess() {
-                // 로그인 성공시
-                // 액세스 토큰 가져오기
-                String accessToken = NaverIdLoginSDK.INSTANCE.getAccessToken();
-                Log.v(TAG, "액세스토큰: " + accessToken);
-
-                userManager.saveJoinType("naver");
-                buttonOAuthLoginImg.setVisibility(View.GONE);
-
-//                binding.tvRefreshToken.text = NaverIdLoginSDK.getRefreshToken()
-//                binding.tvExpires.text = NaverIdLoginSDK.getExpiresAt().toString()
-//                binding.tvType.text = NaverIdLoginSDK.getTokenType()
-//                binding.tvState.text = NaverIdLoginSDK.getState().toString()
-
-                executorService.execute(() -> {
-                    String responseBody = getUserProfile(accessToken);
-                    Log.i("프로필 가져오기", responseBody);
-
-                    if (responseBody != null && !responseBody.isEmpty()) {
-                        runOnUiThread(() -> updateProfile(responseBody));
-                    }
-                });
-
-                requestNaverLogin2(accessToken);
-
-//                requestNaverLogin();
-
-//                //최초 네이버 로그인일 경우
-//                if (userManager.getUserType() == null) {
-//                    Intent intent = new Intent(Login.this, UserTypeSet.class);
-//                    intent.putExtra("loginType", "naver");  // 실제 사용자 ID를 넘겨줌
-//                    startActivity(intent);
-//                } else {
-//                    // 기존 로그인 처리 로직
-//                    requestNaverLogin();
-//                }
-            }
-            @Override
-            public void onFailure(int httpStatus, @NonNull String message) {
-                // 통신 오류
-                Log.e("네아로", "onFailure: httpStatus - " + httpStatus + " / message - " + message);
-            }
-
-            @Override
-            public void onError(int errorCode, @NonNull String message) {
-                // 네이버 로그인 중 오류 발생
-                Log.e("네아로", "onError: errorCode - " + errorCode + " / message - " + message);
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NaverWebView.class);
+                startActivity(intent);
             }
         });
-
-
 
     }//onCreate()
 
-    private String getUserProfile(String accessToken) {
-        String apiURL = "https://openapi.naver.com/v1/nid/me";
-        String authorization = "Bearer " + accessToken; // Bearer 다음에 공백 추가
-
-        HttpURLConnection con = connect(apiURL);
-        try {
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", authorization);
-
-            int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                return readBody(con.getInputStream());
-            } else { // 에러 발생
-                return readBody(con.getErrorStream());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("API 요청과 응답 실패", e);
-        } finally {
-            con.disconnect();
-        }
-    }
-
-    private HttpURLConnection connect(String apiUrl){
-        try {
-            URL url = new URL(apiUrl);
-            return (HttpURLConnection)url.openConnection();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
-        } catch (IOException e) {
-            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
-        }
-    }
-
-    private String readBody(InputStream body){
-        InputStreamReader streamReader = new InputStreamReader(body);
-
-        try (BufferedReader lineReader = new BufferedReader(streamReader)) {
-            StringBuilder responseBody = new StringBuilder();
-
-            String line;
-            while ((line = lineReader.readLine()) != null) {
-                responseBody.append(line);
-            }
-            return responseBody.toString();
-        } catch (IOException e) {
-            throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
-        }
-    }
-
-    private void updateProfile(String responseBody) {
-        try {
-            JSONObject jsonObject = new JSONObject(responseBody);
-            JSONObject response = jsonObject.getJSONObject("response");
-            String id = response.getString("id");
-
-            String email = response.getString("email");
-            String[] parts = email.split("@"); // "@" 기호를 기준으로 문자열을 분리합니다.
-            String userId = parts[0];
-
-            Log.v(TAG, "네이버이메일: " + email);
-            Log.v(TAG, "아이디값 추출: " + userId);
-
-            userManager.saveUserId(userId);
-
-        } catch (JSONException e) {
-            Log.e("네아로", "JSON 파싱 오류", e);
-        }
-    }
-    public void requestNaverLogin2(String code) {
-//        if (userManager.getUserType() == null) {
-//            Intent intent = new Intent(Login.this, UserTypeSet.class);
-//            startActivity(intent);
-//        }
-        Log.v(TAG, "코드값: " + code);
-
-        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
-        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback(code);
-        call.enqueue(new Callback<NaverLoginResultDTO>() {
-            @Override
-            public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Headers headers = response.headers();
-
-                    String accessToken = headers.get("Authorization").replace("Bearer ", "");
-                    String refreshToken = headers.get("Refresh-Token");
-
-                    tokenManager.saveAccessTokens(accessToken);
-                    tokenManager.saveRefreshTokens(refreshToken);
-
-                    String a = tokenManager.getAccessToken();
-                    String b = tokenManager.getRefreshToken();
-                    long c = tokenManager.getAccessExpirationTime();
-                    long d = tokenManager.getRefreshExpirationTime();
-
-                    Log.v(TAG, "액세스토큰: " + a);
-                    Log.v(TAG, "리프레시토큰: " + b);
-                    Log.v(TAG, "액세스토큰 남은시간: " + c);
-                    Log.v(TAG, "리프레시토큰 남은시간: " + d);
-
-                    String userType = userManager.getUserType();
-
-                    if (userManager.getUserType() == null) {
-                        Intent intent = new Intent(Login.this, UserTypeSet.class);
-                        startActivity(intent);
-                    }
-
-                    if ("owner".equals(userType)) {
-                        Log.d("LoginActivity", "Navigating to HomeRecruiter");
-                        startActivity(new Intent(Login.this, HomeOwner.class));
-                    } else if("worker".equals(userType)) {
-                        Log.d("LoginActivity", "Navigating to HomeApplicant");
-                        startActivity(new Intent(Login.this, HomeWorker.class));
-                    }
-                    Log.e("login", "네이버로그인 서버응답 성공" + response.code() + ", " + response.message());
-                } else {
-                    Log.e("login", "네이버로그인 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("login", "네이버로그인 서버응답 오류" + response.errorBody().toString());
-                }
-            }
-            @Override
-            public void onFailure(Call<NaverLoginResultDTO> call, Throwable t) {
-                Log.e("login", "네이버로그인 서버요청 오류", t);
-            }
-        });
-    }
-
-//    public void requestNaverLogin() {
-//        if (userManager.getUserType() == null) {
-//            Intent intent = new Intent(Login.this, UserTypeSet.class);
-//            startActivity(intent);
-//        }
-
-//        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
-//        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback();
-//        call.enqueue(new Callback<NaverLoginResultDTO>() {
-//            @Override
-//            public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    Headers headers = response.headers();
-//
-//                    String accessToken = headers.get("Authorization").replace("Bearer ", "");
-//                    String refreshToken = headers.get("Refresh-Token");
-//
-//                    tokenManager.saveAccessTokens(accessToken);
-//                    tokenManager.saveRefreshTokens(refreshToken);
-//
-//                    String a = tokenManager.getAccessToken();
-//                    String b = tokenManager.getRefreshToken();
-//                    long c = tokenManager.getAccessExpirationTime();
-//                    long d = tokenManager.getRefreshExpirationTime();
-//
-//                    Log.v(TAG, "액세스토큰: " + a);
-//                    Log.v(TAG, "리프레시토큰: " + b);
-//                    Log.v(TAG, "액세스토큰 남은시간: " + c);
-//                    Log.v(TAG, "리프레시토큰 남은시간: " + d);
-//
-//                    String userType = userManager.getUserType();
-//
-//                    if ("owner".equals(userType)) {
-//                        Log.d("LoginActivity", "Navigating to HomeRecruiter");
-//                        startActivity(new Intent(Login.this, HomeOwner.class));
-//                    } else if("worker".equals(userType)) {
-//                        Log.d("LoginActivity", "Navigating to HomeApplicant");
-//                        startActivity(new Intent(Login.this, HomeWorker.class));
-//                    }
-//                    Log.e("login", "네이버로그인 서버응답 성공" + response.code() + ", " + response.message());
-//                } else {
-//                    Log.e("login", "네이버로그인 서버응답 오류코드" + response.code() + ", " + response.message());
-//                    Log.e("login", "네이버로그인 서버응답 오류" + response.errorBody().toString());
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<NaverLoginResultDTO> call, Throwable t) {
-//                Log.e("login", "네이버로그인 서버요청 오류", t);
-//            }
-//        });
-//    }
 
     private void loginRequest() {
         String id = login_id_editText.getText().toString();
@@ -362,7 +141,7 @@ public class Login extends AppCompatActivity {
 
         ApiService apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
 
-        //로그인 서버요청
+        //일반 로그인 서버요청
         Call<LoginResultDTO> call = apiService.loginUser(dto);
         call.enqueue(new Callback<LoginResultDTO>() {
             @Override
