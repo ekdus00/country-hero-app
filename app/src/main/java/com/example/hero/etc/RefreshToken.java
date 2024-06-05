@@ -83,14 +83,6 @@ public class RefreshToken extends AppCompatActivity {
         }
     }
 
-//    private void scheduleTokenRefresh() {
-//        long accessRefreshTime = tokenManager.getAccessExpirationTime();
-//        long refreshLogoutTime = tokenManager.getRefreshExpirationTime();
-//
-//        handler.postDelayed(this::refreshToken, accessRefreshTime);
-//        handler.postDelayed(this::logoutUser, refreshLogoutTime);
-//    }
-
 
 
     private void refreshToken() {

@@ -7,9 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,14 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClientWithoutAuth;
-import com.example.hero.login.dto.FindUserIdRequestDTO;
 import com.example.hero.login.dto.ResetUserPwRequestDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ResetPW extends AppCompatActivity {
+public class ResetPw extends AppCompatActivity {
     private Context context;
     private Button sendBtn;
     private EditText reset_id_editText, reset_new_pw_editText;
@@ -75,11 +71,11 @@ public class ResetPW extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(context, "비밀번호 재설정에 성공했습니다.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ResetPW.this, Login.class);
+                    Intent intent = new Intent(ResetPw.this, Login.class);
                     startActivity(intent);
                     Log.e("tag", "비밀번호 재설정 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
-                    Toast.makeText(ResetPW.this, "비밀번호 재설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResetPw.this, "비밀번호 재설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("tag", "비밀번호 재설정 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("tag", "비밀번호 재설정 서버응답 오류" + response.errorBody().toString());                        }
             }

@@ -3,32 +3,27 @@ package com.example.hero.login.activity;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.login.dto.FindUserIdRequestDTO;
-import com.example.hero.login.dto.JoinRequestDTO;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FindID extends AppCompatActivity {
+public class FindId extends AppCompatActivity {
     private Context context;
     private Button sendBtn;
     private EditText find_name_editText, find_email_editText;
@@ -95,7 +90,7 @@ public class FindID extends AppCompatActivity {
 
                     Log.e("tag", "아이디찾기 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
-                    Toast.makeText(FindID.this, "아이디찾기에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FindId.this, "아이디찾기에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("tag", "아이디찾기 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("tag", "아이디찾기 서버응답 오류" + response.errorBody().toString());
                 }

@@ -1,6 +1,5 @@
 package com.example.hero.etc;
 
-import com.android.volley.NetworkResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -11,7 +10,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class RetrofitClient2 {
+public class RetrofitClientJson {
     private static final String BASE_URL = "http://3.37.68.5:8080/";
     private static Retrofit retrofit = null;
 

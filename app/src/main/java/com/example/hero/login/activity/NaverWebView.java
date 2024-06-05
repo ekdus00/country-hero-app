@@ -116,8 +116,19 @@ public class NaverWebView extends AppCompatActivity {
                         Log.d("LoginActivity", "Navigating to HomeApplicant");
                         startActivity(new Intent(NaverWebView.this, HomeWorker.class));
                     }
+
                     Log.e("login", "네이버로그인 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
+
+                    // 400 에러에 대한 추가적인 처리
+                    if (response.code() == 400) {
+                        
+                        // 아이디 값과 토큰 값을 옮겨야됨
+                        Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
+                        intent.putExtra("login", "추가정보 null 오류");
+                        startActivity(intent);
+                    }
+
                     Log.e("login", "네이버로그인 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("login", "네이버로그인 서버응답 오류" + response.errorBody().toString());
                 }
