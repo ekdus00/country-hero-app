@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import com.example.hero.etc.OnItemClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.etc.UserManager;
+import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.home.activity.HomeWorker;
 import com.example.hero.job.adapter.JobListAdapter;
 
@@ -81,6 +83,7 @@ public class JobList extends AppCompatActivity {
     private int jobId;
     private FusedLocationSource locationSource;
     private static final int PERMISSION_REQUEST_CODE = 100;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final String[] PERMISSIONS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -99,6 +102,7 @@ public class JobList extends AppCompatActivity {
         userManager = new UserManager(this);
 
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
 
         GetUserLocation();
 
@@ -126,7 +130,7 @@ public class JobList extends AppCompatActivity {
 //        locationClient = LocationServices.getFusedLocationProviderClient(this);
 
         //검색어 입력
-        Button search_btn = findViewById(R.id.search_btn);
+        ImageButton search_btn = findViewById(R.id.search_btn);
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +138,7 @@ public class JobList extends AppCompatActivity {
             }
         });
 
-        Button search_cancel = findViewById(R.id.search_cancel);
+        ImageButton search_cancel = findViewById(R.id.search_cancel);
         search_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +177,7 @@ public class JobList extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.nav_home) {
                     if (userManager.getUserType().equals("owner")) {
-                        startActivity(new Intent(JobList.this, HomeWorker.class));
+                        startActivity(new Intent(JobList.this, HomeOwner.class));
                         finish();
                         return true;
                     } else {
@@ -222,7 +226,7 @@ public class JobList extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
 
                     int itemCount = adapter.getItemCount();
-                    job_list_sum.setText(itemCount + "개");
+                    job_list_sum.setText("총 " + itemCount + "개");
 
                     Log.e("JobList", "공고목록 서버요청 성공");
 

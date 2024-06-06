@@ -82,7 +82,6 @@ public class MyPageWorker extends AppCompatActivity {
             public void onClick(View view) {
                 tokenManager.clearTokens();
                 userManager.clearUserDetails();
-                NaverIdLoginSDK.INSTANCE.logout();
                 Intent intent = new Intent(MyPageWorker.this, Login.class);
                 startActivity(intent);
                 finish();

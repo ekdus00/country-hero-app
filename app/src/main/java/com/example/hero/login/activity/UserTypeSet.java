@@ -64,8 +64,9 @@ public class UserTypeSet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 user_type_result = "owner";
+                userTypeRequest();
 
-                if (loginType.equals("naver")) {
+                if (loginType.equals("Naver")) {
                     userTypeRequestNaver();
                 } else {
                     userTypeRequest();
@@ -79,7 +80,7 @@ public class UserTypeSet extends AppCompatActivity {
             public void onClick(View v) {
                 user_type_result = "worker";
 
-                if (loginType.equals("naver")) {
+                if (loginType.equals("Naver")) {
                     userTypeRequestNaver();
                 } else {
                     userTypeRequest();
@@ -101,16 +102,11 @@ public class UserTypeSet extends AppCompatActivity {
     private void userTypeRequestNaver() {
         ExtraInfoDTO dto = new ExtraInfoDTO();
 
-        String naverId = userManager.getUserId();
-        Log.v(TAG, "네이버아이디: " + naverId);
-
-        dto.setUserId(naverId);
         dto.setUserType(user_type_result);
-
         userManager.saveUserType(user_type_result);
 
-        //추가정보입력 서버요청
-        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+        //추가정보입력(네이버 로그인) 서버요청
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
         Call<Void> call = apiService.setUserType(dto);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -118,7 +114,15 @@ public class UserTypeSet extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     userManager.saveUserInfoInputCompleted(true);
 
-//                    requestNaverLogin();
+                    startActivity(new Intent(UserTypeSet.this, Login.class));
+
+//                    if ("owner".equals(userType)) {
+//                        Log.d("LoginActivity", "Navigating to HomeRecruiter");
+//                        startActivity(new Intent(UserTypeSet.this, HomeOwner.class));
+//                    } else if("worker".equals(userType)) {
+//                        Log.d("LoginActivity", "Navigating to HomeApplicant");
+//                        startActivity(new Intent(UserTypeSet.this, HomeWorker.class));
+//                    }
 
                     Log.e("tag", "추가정보입력 서버응답 성공" + response.code() + ", " + response.message());
 
@@ -137,65 +141,15 @@ public class UserTypeSet extends AppCompatActivity {
 
     }
 
-//    public void requestNaverLogin() {
-//        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
-//        Call<NaverLoginResultDTO> call = apiService.naverLoginCallback();
-//        call.enqueue(new Callback<NaverLoginResultDTO>() {
-//            @Override
-//            public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    Headers headers = response.headers();
-//
-//                    String accessToken = headers.get("Authorization").replace("Bearer ", "");
-//                    String refreshToken = headers.get("Refresh-Token");
-//
-//                    tokenManager.saveAccessTokens(accessToken);
-//                    tokenManager.saveRefreshTokens(refreshToken);
-//
-//                    String a = tokenManager.getAccessToken();
-//                    String b = tokenManager.getRefreshToken();
-//                    long c = tokenManager.getAccessExpirationTime();
-//                    long d = tokenManager.getRefreshExpirationTime();
-//
-//                    Log.v(TAG, "액세스토큰: " + a);
-//                    Log.v(TAG, "리프레시토큰: " + b);
-//                    Log.v(TAG, "액세스토큰 남은시간: " + c);
-//                    Log.v(TAG, "리프레시토큰 남은시간: " + d);
-//
-//                    String userType = userManager.getUserType();
-//
-//                    if ("owner".equals(userType)) {
-//                        Log.d("LoginActivity", "Navigating to HomeRecruiter");
-//                        startActivity(new Intent(UserTypeSet.this, HomeOwner.class));
-//                    } else if("worker".equals(userType)) {
-//                        Log.d("LoginActivity", "Navigating to HomeApplicant");
-//                        startActivity(new Intent(UserTypeSet.this, HomeWorker.class));
-//                    }
-//                    Log.e("login", "네이버로그인 서버응답 성공" + response.code() + ", " + response.message());
-//                } else {
-//                    Log.e("login", "네이버로그인 서버응답 오류코드" + response.code() + ", " + response.message());
-//                    Log.e("login", "네이버로그인 서버응답 오류" + response.errorBody().toString());
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<NaverLoginResultDTO> call, Throwable t) {
-//                Log.e("login", "네이버로그인 서버요청 오류", t);
-//            }
-//        });
-//    }
-
 
     private void userTypeRequest() {
         ExtraInfoDTO dto = new ExtraInfoDTO();
 
-        dto.setUserId(userId);
         dto.setUserType(user_type_result);
-
-        userManager.saveUserId(userId);
         userManager.saveUserType(user_type_result);
 
         //추가정보입력 서버요청
-        apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
         Call<Void> call = apiService.setUserType(dto);
         call.enqueue(new Callback<Void>() {
             @Override

@@ -71,22 +71,12 @@
         <activity android:name=".login.activity.Join"></activity>
         <activity android:name=".login.activity.Login"></activity>
         <activity android:name=".login.activity.UserTypeSet"></activity>
-        <activity android:name=".login.activity.FindID"></activity>
-        <activity android:name=".login.activity.ResetPW"></activity>
+        <activity android:name=".login.activity.FindId"></activity>
+        <activity android:name=".login.activity.ResetPw"></activity>
         <activity android:name=".login.activity.ResetPwAuth"></activity>
         <activity android:name=".employer.activity.JobEditPost"></activity>
         <activity android:name=".resume.activity.ResumeCheck"></activity>
         <activity android:name=".login.activity.NaverWebView"></activity>
-
-        <!--        <activity android:name=".login.activity.Login"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-<!--                <data android:scheme="here" android:host="naver-callback" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
 
         <activity
             android:name=".guide.UserGuideActivity"
@@ -114,10 +104,6 @@
         <activity
             android:name=".matching.activity.MatchingList"
             android:exported="false" />
-
-        <!--        <activity-->
-<!--            android:name=".login.activity.Login"-->
-<!--            android:exported="true"></activity>-->
 
         <service
             android:name=".etc.MyFirebaseMessagingService"

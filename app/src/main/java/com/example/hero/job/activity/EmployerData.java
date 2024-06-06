@@ -121,9 +121,6 @@ public class EmployerData extends AppCompatActivity {
                     }
 
                     employer_review_result.setText(String.format("%.1f", rating1));
-//                    employer_review_detail1.setText(String.format("%.1f", rating2));
-//                    employer_review_detail2.setText(String.format("%.1f", rating3));
-//                    employer_review_detail3.setText(String.format("%.1f", rating4));
 
                     List<ReviewContentInfoDTO> EmployerDateComment = date2.getReviewContents();
                     adapter1 = new EmployerDataAdapter(EmployerDateComment);

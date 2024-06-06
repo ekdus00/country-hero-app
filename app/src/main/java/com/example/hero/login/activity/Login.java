@@ -3,28 +3,18 @@ package com.example.hero.login.activity;
 import static android.content.ContentValues.TAG;
 import static android.system.Os.connect;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
-import com.example.hero.etc.FcmTokenManager;
 import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.etc.UserManager;
@@ -38,28 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.example.hero.login.dto.NaverLoginResultDTO;
-import com.navercorp.nid.NaverIdLoginSDK;
-import com.navercorp.nid.oauth.OAuthLoginCallback;
-import com.navercorp.nid.oauth.NidOAuthBehavior;
-import com.navercorp.nid.oauth.NidOAuthLogin;
-import com.navercorp.nid.oauth.view.NidOAuthLoginButton;
-import com.navercorp.nid.profile.NidProfileCallback;
-import com.navercorp.nid.profile.data.NidProfileMap;
-import com.navercorp.nid.profile.data.NidProfileResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Login extends AppCompatActivity {
     private ApiService apiService;
@@ -103,7 +72,7 @@ public class Login extends AppCompatActivity {
         login_id_findBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this, FindID.class));
+                startActivity(new Intent(Login.this, FindId.class));
             }
         });
 
@@ -184,7 +153,8 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
 
                     Log.e("login", "로그인 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("login", "로그인 서버응답 오류" + response.errorBody().toString());                        }
+                    Log.e("login", "로그인 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<LoginResultDTO> call, Throwable t) {

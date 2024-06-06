@@ -94,8 +94,6 @@ public class WorkerStatus extends AppCompatActivity{
 
     }//onCreate()
 
-
-
     private void workerStatusRequest() {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 

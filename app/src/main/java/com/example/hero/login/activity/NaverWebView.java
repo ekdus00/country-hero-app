@@ -23,6 +23,7 @@ import com.example.hero.home.activity.HomeWorker;
 import com.example.hero.login.dto.NaverLoginResultDTO;
 
 import okhttp3.Headers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,12 +74,58 @@ public class NaverWebView extends AppCompatActivity {
 
 
     public void requestNaverLogin2(String code) {
-        ApiService apiService = RetrofitClientWithoutAuth.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClientWithoutAuth.getClient3().create(ApiService.class);
         Call<NaverLoginResultDTO> call = apiService.naverLoginCallback(code);
         call.enqueue(new Callback<NaverLoginResultDTO>() {
             @Override
             public void onResponse(Call<NaverLoginResultDTO> call, Response<NaverLoginResultDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Headers headers = response.headers();
+                    NaverLoginResultDTO dto = response.body();
+
+                    String userType =  dto.getUserType();
+                    userManager.saveUserType(userType);
+                    Log.v(TAG, "유저타입응답: " + userType);
+
+                    String accessToken = headers.get("Authorization").replace("Bearer ", "");
+                    String refreshToken = headers.get("Refresh-Token");
+
+                    tokenManager.saveAccessTokens(accessToken);
+                    tokenManager.saveRefreshTokens(refreshToken);
+
+                    String a = tokenManager.getAccessToken();
+                    String b = tokenManager.getRefreshToken();
+                    long c = tokenManager.getAccessExpirationTime();
+                    long d = tokenManager.getRefreshExpirationTime();
+                    Log.v(TAG, "액세스토큰: " + a);
+                    Log.v(TAG, "리프레시토큰: " + b);
+                    Log.v(TAG, "액세스토큰 남은시간: " + c);
+                    Log.v(TAG, "리프레시토큰 남은시간: " + d);
+
+                    if (userManager.getUserType() == null) {
+                        Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
+                        intent.putExtra("loginType", "Naver");
+                        startActivity(intent);
+                    }
+
+//                    if ("Additional information required".equals(responseBody.trim())) {
+//                        Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
+//                        intent.putExtra("loginType", "Naver");
+//                        startActivity(intent);
+//                    }
+
+                    if ("owner".equals(userType)) {
+                        Log.d("LoginActivity", "Navigating to HomeRecruiter");
+                        startActivity(new Intent(NaverWebView.this, HomeOwner.class));
+                    } else if("worker".equals(userType)) {
+                        Log.d("LoginActivity", "Navigating to HomeApplicant");
+                        startActivity(new Intent(NaverWebView.this, HomeWorker.class));
+                    }
+
+                    Log.e("login", "네이버로그인 서버응답 성공" + response.code() + ", " + response.message());
+
+                } else if (response.body() == null && "text/plain".equals(response.headers().get("Content-Type"))) {
+                    // 텍스트 응답을 처리하는 로직
                     Headers headers = response.headers();
 
                     String accessToken = headers.get("Authorization").replace("Bearer ", "");
@@ -91,7 +138,6 @@ public class NaverWebView extends AppCompatActivity {
                     String b = tokenManager.getRefreshToken();
                     long c = tokenManager.getAccessExpirationTime();
                     long d = tokenManager.getRefreshExpirationTime();
-
                     Log.v(TAG, "액세스토큰: " + a);
                     Log.v(TAG, "리프레시토큰: " + b);
                     Log.v(TAG, "액세스토큰 남은시간: " + c);
@@ -99,15 +145,11 @@ public class NaverWebView extends AppCompatActivity {
 
                     if (userManager.getUserType() == null) {
                         Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
+                        intent.putExtra("loginType", "Naver");
                         startActivity(intent);
                     }
 
                     String userType = userManager.getUserType();
-
-                    if (userManager.getUserType() == null) {
-                        Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
-                        startActivity(intent);
-                    }
 
                     if ("owner".equals(userType)) {
                         Log.d("LoginActivity", "Navigating to HomeRecruiter");
@@ -116,8 +158,36 @@ public class NaverWebView extends AppCompatActivity {
                         Log.d("LoginActivity", "Navigating to HomeApplicant");
                         startActivity(new Intent(NaverWebView.this, HomeWorker.class));
                     }
-                    Log.e("login", "네이버로그인 서버응답 성공" + response.code() + ", " + response.message());
+
                 } else {
+                    Headers headers = response.headers();
+
+                    if (headers.get("Authorization") != null) {
+                        String accessToken = headers.get("Authorization").replace("Bearer ", "");
+                        String refreshToken = headers.get("Refresh-Token");
+                        tokenManager.saveAccessTokens(accessToken);
+                        tokenManager.saveRefreshTokens(refreshToken);
+                    }
+
+//                    String accessToken = headers.get("Authorization").replace("Bearer ", "");
+//                    String refreshToken = headers.get("Refresh-Token");
+//                    tokenManager.saveAccessTokens(accessToken);
+//                    tokenManager.saveRefreshTokens(refreshToken);
+
+                    // 400 에러일 경우의 처리 로직 추가
+                    if (response.code() == 400) {
+                        // 에러 화면으로 이동하는 인텐트 생성
+                        Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
+                        intent.putExtra("loginType", "Naver");
+                        startActivity(intent);
+                    }
+
+                    if (userManager.getUserType() == null) {
+                        Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
+                        intent.putExtra("loginType", "Naver");
+                        startActivity(intent);
+                    }
+
                     Log.e("login", "네이버로그인 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("login", "네이버로그인 서버응답 오류" + response.errorBody().toString());
                 }

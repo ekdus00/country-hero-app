@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient2;
-import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.login.dto.CheckUserRequestDTO;
-import com.example.hero.login.dto.FindUserIdRequestDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +87,7 @@ public class ResetPwAuth extends AppCompatActivity {
 
                     if ("User Authentication Successful".equals(successMessage) || "User Authentication Successful".equals(response.body())) {
                         Toast.makeText(context, "사용자 인증에 성공했습니다.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(ResetPwAuth.this, ResetPW.class);
+                        Intent intent = new Intent(ResetPwAuth.this, ResetPw.class);
                         startActivity(intent);
                         finish();
                         Log.e("tag", "사용자인증 서버응답 성공" + response.code() + ", " + response.message());

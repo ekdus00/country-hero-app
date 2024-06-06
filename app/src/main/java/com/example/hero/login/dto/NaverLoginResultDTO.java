@@ -6,24 +6,24 @@ import com.example.hero.home.dto.WorkerHomeDTO;
 public class NaverLoginResultDTO {
     private OwnerHomeDTO ownerHomeDTO;
     private WorkerHomeDTO workerHomeDTO;
-    private JWTPayloadDTO jwtPayloadDTO;
+    private String userType; // 사용자 유형
 
-    public NaverLoginResultDTO(OwnerHomeDTO ownerHomeDTO, JWTPayloadDTO jwtPayloadDTO) {
+    public NaverLoginResultDTO(OwnerHomeDTO ownerHomeDTO, String userType) {
         this.ownerHomeDTO = ownerHomeDTO;
-        this.jwtPayloadDTO = jwtPayloadDTO;
+        this.userType = userType;
     }
 
-    public NaverLoginResultDTO(WorkerHomeDTO workerHomeDTO, JWTPayloadDTO jwtPayloadDTO) {
+    public NaverLoginResultDTO(WorkerHomeDTO workerHomeDTO, String userType) {
         this.workerHomeDTO = workerHomeDTO;
-        this.jwtPayloadDTO = jwtPayloadDTO;
+        this.userType = userType;
     }
 
-    public JWTPayloadDTO getJwtPayloadDTO() {
-        return jwtPayloadDTO;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setJwtPayloadDTO(JWTPayloadDTO jwtPayloadDTO) {
-        this.jwtPayloadDTO = jwtPayloadDTO;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public WorkerHomeDTO getWorkerHomeDTO() {

@@ -71,7 +71,6 @@ public class MyPageOwner extends AppCompatActivity {
             public void onClick(View view) {
                 tokenManager.clearTokens();
                 userManager.clearUserDetails();
-                NaverIdLoginSDK.INSTANCE.logout();
                 Intent intent = new Intent(MyPageOwner.this, Login.class);
                 startActivity(intent);
                 finish();
