@@ -12,12 +12,10 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_margin="20dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
@@ -31,27 +29,69 @@
                 android:textSize="20dp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>
-            <EditText
-                android:hint="아이디"
-                android:id="@+id/reset_id_editText"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+
+            <TextView
+                android:text="아이디"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <EditText
-                android:hint="새 비밀번호"
-                android:id="@+id/reset_new_pw_editText"
-                android:layout_margin="10dp"
+            <LinearLayout
+                android:background="@drawable/border_gray3"
                 android:layout_gravity="center"
+                android:layout_width="340dp"
+                android:layout_height="45dp">
+                <EditText
+                    android:hint="아이디"
+                    android:id="@+id/reset_id_editText"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <TextView
+                android:text="새 비밀번호"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:text="(8자이상/숫자, 영문, 특수문자 1개이상/공백문자불가)"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:background="@drawable/border_gray3"
+                android:layout_gravity="center"
+                android:layout_width="340dp"
+                android:layout_height="45dp">
+                <EditText
+                    android:hint="새 비밀번호"
+                    android:id="@+id/reset_new_pw_editText"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
             <Button
                 android:text="적용하기"
                 android:id="@+id/sendBtn"
-                android:layout_margin="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/rounded_background_btn"
+                android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="150dp"
+                android:layout_height="40dp"/>
         </LinearLayout>
 
 

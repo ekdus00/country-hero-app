@@ -8,14 +8,14 @@ public class OwnerReviewInfoDTO {
     private String cropForm;
     private String cropType;
     private String jobName;
-    private LocalDate startWorkDate;
-    private LocalDate endWorkDate;
+    private String startWorkDate;
+    private String endWorkDate;
     private String workerName;
     private Integer reviewId;
     private Integer jobId;
     private String targetUserId;
 
-    public OwnerReviewInfoDTO(String country, String city, String cropForm, String cropType, String jobName, LocalDate startWorkDate, LocalDate endWorkDate, String workerName) {
+    public OwnerReviewInfoDTO(String country, String city, String cropForm, String cropType, String jobName, String startWorkDate, String endWorkDate, String workerName) {
         this.jobName = jobName;
         this.startWorkDate = startWorkDate;
         this.endWorkDate = endWorkDate;
@@ -61,19 +61,19 @@ public class OwnerReviewInfoDTO {
         this.workerName = workerName;
     }
 
-    public LocalDate getEndWorkDate() {
+    public String getEndWorkDate() {
         return endWorkDate;
     }
 
-    public void setEndWorkDate(LocalDate endWorkDate) {
+    public void setEndWorkDate(String endWorkDate) {
         this.endWorkDate = endWorkDate;
     }
 
-    public LocalDate getStartWorkDate() {
+    public String getStartWorkDate() {
         return startWorkDate;
     }
 
-    public void setStartWorkDate(LocalDate startWorkDate) {
+    public void setStartWorkDate(String startWorkDate) {
         this.startWorkDate = startWorkDate;
     }
 

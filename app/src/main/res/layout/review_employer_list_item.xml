@@ -1,133 +1,177 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:background="@drawable/rounded_background"
+android:elevation="@dimen/cardview_default_radius"
+android:layout_marginBottom="10dp"
+android:padding="8dp"
+android:orientation="horizontal">
+
+<LinearLayout
+    android:layout_marginLeft="5dp"
+    android:layout_marginBottom="5dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="8dp"
-    android:orientation="horizontal">
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        app:contentPadding="10dp"
-        android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:orientation="vertical"
+            <TextView
+                android:id="@+id/address_country"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:textColor="#325904"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center"
+                android:textSize="11dp"
+                android:text="(주소1)"/>
+            <TextView
+                android:id="@+id/address_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#325904"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textSize="11dp"
+                android:text="(주소2)"/>
+            <LinearLayout
+                android:layout_marginLeft="7dp"
+                android:background="@drawable/rounded_background_gray3"
+                android:layout_width="match_parent"
+                android:layout_height="25dp">
+                <TextView
+                    android:id="@+id/cropForm"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/address_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:textSize="15dp"
-                        android:text="(주소)"/>
-                    <TextView
-                        android:id="@+id/address_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:textSize="15dp"
-                        android:text="(주소)"/>
-                    <TextView
-                        android:id="@+id/cropForm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:text="(품목)"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:text=">"/>
-                    <TextView
-                        android:id="@+id/cropType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:text="(품목)"/>
-                </LinearLayout>
-                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="11dp"
+                    android:layout_marginRight="3dp"
+                    android:text="(품목)"/>
+                <TextView
+                    android:id="@+id/cropType"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/review_employer_list_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textSize="15dp"
-                        android:text="(공고제목)"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textSize="15dp"
-                        android:text="작업기간:"/>
-                    <TextView
-                        android:id="@+id/work_period_start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textSize="15dp"
-                        android:text="(값)"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textSize="15dp"
-                        android:text="~"/>
-                    <TextView
-                        android:id="@+id/work_period_end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textSize="15dp"
-                        android:text="(값)"/>
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="11dp"
+                    android:text="(작물)"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_marginLeft="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="지원자명"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/review_employer_list_name"
-                        android:text="(이름)"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <Button
-                    android:text="평가하기"
-                    android:id="@+id/review_post_btn"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content">
-                </Button>
-            </LinearLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/review_employer_list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:text="(공고제목)"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/work_period_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
+                android:text="작업기간:"/>
+            <TextView
+                android:id="@+id/work_period_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="10dp"
+                android:text="(시작)"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:textSize="10dp"
+                android:text="~"/>
+            <TextView
+                android:id="@+id/work_period_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="10dp"
+                android:text="(끝)"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_background_gray3"
+            android:layout_width="wrap_content"
+            android:padding="6dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:text="지원자명"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/review_employer_list_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:text="(이름)"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/rounded_background_btn"
+        android:layout_marginRight="5dp"
+        android:layout_width="70dp"
+        android:layout_height="35dp">
+        <Button
+            android:text="평가하기"
+            android:textSize="13dp"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:id="@+id/review_post_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+    </LinearLayout>
+
 </LinearLayout>
+</LinearLayout>
+

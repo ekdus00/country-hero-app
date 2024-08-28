@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.hero.login.activity.Login;
 import com.example.hero.login.dto.RefreshTokenRequestDTO;
+import com.example.hero.setting.SettingActivity;
 
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -112,10 +113,11 @@ public class AuthInterceptor implements Interceptor {
 
     private void logoutUser() {
         tokenManager.clearTokens();
-        userManager.clearUserDetails();
-        Intent intent = new Intent(context, Login.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        if (userManager != null) {
+            userManager.clearUserDetails();
+        } else {
+            Log.e("UserManager", "UserManager instance is null");
+        }
     }
 
 }

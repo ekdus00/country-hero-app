@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -89,7 +90,7 @@ public class MyPageWorker extends AppCompatActivity {
         });
 
         //설정
-        Button setting_btn = findViewById(R.id.setting_btn);
+        ImageButton setting_btn = findViewById(R.id.setting_btn);
         setting_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,8 +163,6 @@ public class MyPageWorker extends AppCompatActivity {
 
     }//onCreate()
 
-
-
     private void workerHomeDataRequest() {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
@@ -202,11 +201,8 @@ public class MyPageWorker extends AppCompatActivity {
                             myPage_rating_textView.setText("열매");
                             break;
                         default:
-//                            myPage_rating_imageView.setImageResource(R.drawable.level_1_img);
-//                            myPage_rating_textView.setText("씨앗");
                             break;
                     }
-
                 } else {
                     Log.e("api", "마이페이지(구직자) 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("api", "마이페이지(구직자) 서버응답 오류" + response.errorBody().toString());

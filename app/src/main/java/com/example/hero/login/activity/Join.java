@@ -1,5 +1,7 @@
 package com.example.hero.login.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.RetrofitClientWithoutAuth;
+import com.example.hero.etc.TokenManager;
 import com.example.hero.job.activity.JobFilter;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.job.dto.JobPostCreateRequestDTO;
@@ -34,11 +37,13 @@ public class Join extends AppCompatActivity {
     private EditText join_id_editText, join_pw_editText, join_email_editText, join_name_editText;
     private Spinner spinner_join_birth;
     private RadioGroup radio_join_gender;
+    private TokenManager tokenManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.join);
+        tokenManager = new TokenManager(this);
         context = this;
 
         join_id_editText = findViewById(R.id.join_id_editText);
@@ -94,10 +99,29 @@ public class Join extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
 
+                    Headers headers = response.headers();
+
+                    String accessToken = headers.get("Authorization").replace("Bearer ", "");
+                    String refreshToken = headers.get("Refresh-Token");
+
+                    tokenManager.saveAccessTokens(accessToken);
+                    tokenManager.saveRefreshTokens(refreshToken);
+
+                    String a = tokenManager.getAccessToken();
+                    String b = tokenManager.getRefreshToken();
+                    long c = tokenManager.getAccessExpirationTime();
+                    long d = tokenManager.getRefreshExpirationTime();
+
+                    Log.v(TAG, "액세스토큰: " + a);
+                    Log.v(TAG, "리프레시토큰: " + b);
+                    Log.v(TAG, "액세스토큰 남은시간: " + c);
+                    Log.v(TAG, "리프레시토큰 남은시간: " + d);
+
                     Intent intent = new Intent(Join.this, UserTypeSet.class);
                     intent.putExtra("userId", join_id);
                     intent.putExtra("loginType", "join");
                     startActivity(intent);
+
                     Log.e("tag", "회원가입 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
                     Toast.makeText(Join.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();

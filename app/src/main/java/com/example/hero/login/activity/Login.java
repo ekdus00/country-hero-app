@@ -32,11 +32,10 @@ import java.util.concurrent.ExecutorService;
 
 public class Login extends AppCompatActivity {
     private ApiService apiService;
-    private Button login_sendBtn, login_joinBtn, login_logout, buttonOAuthLoginImg;
+    private Button login_sendBtn, login_joinBtn;
     private EditText login_id_editText, login_pw_editText;
     private TokenManager tokenManager;
     private UserManager userManager;
-    private ExecutorService executorService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

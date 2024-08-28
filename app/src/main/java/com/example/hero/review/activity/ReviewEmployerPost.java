@@ -1,5 +1,6 @@
 package com.example.hero.review.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -11,13 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
+import com.airbnb.lottie.L;
 import com.example.hero.R;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.job.dto.ParticipateRequestDTO;
+import com.example.hero.login.activity.FindId;
 import com.example.hero.review.dto.BlockRequestDTO;
 import com.example.hero.review.dto.OwnerReviewUpdateRequestDTO;
 import com.example.hero.review.dto.WorkerReviewUpdateRequestDTO;
@@ -35,6 +40,7 @@ public class ReviewEmployerPost extends AppCompatActivity {
     private TokenManager tokenManager;
     private int reviewJobId;
     private String reviewTargetId;
+    private int radioValue;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review_employer_post);
@@ -45,7 +51,7 @@ public class ReviewEmployerPost extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView textView = toolbar.findViewById(R.id.toolbar_title);
-        textView.setText("(구직자 이름)");
+        textView.setText("평가하기");
 
         radioGroupQ1 = findViewById(R.id.radioGroupQ1);
         radioGroupQ2 = findViewById(R.id.radioGroupQ2);
@@ -53,11 +59,6 @@ public class ReviewEmployerPost extends AppCompatActivity {
         radioGroupQ4 = findViewById(R.id.radioGroupQ4);
 
         review_post_editText = findViewById(R.id.review_post_editText);
-
-        score1 = getScoreFromRadioGroup(radioGroupQ1);
-        score2 = getScoreFromRadioGroup(radioGroupQ2);
-        score3 = getScoreFromRadioGroup(radioGroupQ3);
-        score4 = getScoreFromRadioGroup(radioGroupQ4);
 
         reviewJobId = getIntent().getIntExtra("jobId", 0);
         reviewTargetId = getIntent().getStringExtra("targetUserId");
@@ -76,7 +77,7 @@ public class ReviewEmployerPost extends AppCompatActivity {
         review_employer_post_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fetchDataBlock();
+                showDialog();
             }
         });
 
@@ -94,6 +95,10 @@ public class ReviewEmployerPost extends AppCompatActivity {
 
     private void reviewEmployerPostRequest() {
         String reviewContent = review_post_editText.getText().toString();
+        score1 = getScoreFromRadioGroup(radioGroupQ1);
+        score2 = getScoreFromRadioGroup(radioGroupQ2);
+        score3 = getScoreFromRadioGroup(radioGroupQ3);
+        score4 = getScoreFromRadioGroup(radioGroupQ4);
 
         OwnerReviewUpdateRequestDTO dto = new OwnerReviewUpdateRequestDTO();
 
@@ -145,8 +150,9 @@ public class ReviewEmployerPost extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(ReviewEmployerPost.this, ReviewEmployerList.class);
-                    startActivity(intent);
+
+                    Toast.makeText(ReviewEmployerPost.this, "해당 구직자를 차단하였습니다.", Toast.LENGTH_SHORT).show();
+
                     Log.e("tag", "구직자차단 서버요청 성공" + response.code());
                 } else {
                     Log.e("api", "구직자차단 서버응답 오류코드" + response.code() + ", " + response.message());
@@ -164,7 +170,32 @@ public class ReviewEmployerPost extends AppCompatActivity {
     private int getScoreFromRadioGroup(RadioGroup group) {
         int radioButtonID = group.getCheckedRadioButtonId();
         View radioButton = group.findViewById(radioButtonID);
-        return Integer.parseInt(radioButton.getTag().toString());
+
+        if (radioButton != null) {
+            radioValue = Integer.parseInt(radioButton.getTag().toString());
+            // tag 사용
+        } else {
+            Log.v("구인자 리뷰작성", "라디오 값 오류");
+        }
+        return radioValue;
+    }
+
+    private void showDialog() {
+        // AlertDialog를 생성
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("해당 구직자를 차단하시겠습니까?");
+
+        builder.setPositiveButton("확인", (dialog, which) -> {
+            fetchDataBlock();
+            dialog.dismiss();
+        });
+
+        builder.setNegativeButton("취소", (dialog, which) -> {
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

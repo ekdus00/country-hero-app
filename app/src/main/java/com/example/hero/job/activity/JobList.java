@@ -72,7 +72,6 @@ public class JobList extends AppCompatActivity {
     private OnButtonClickListener buttonClickListener;
     public TextView job_list_keyword, job_list_sum;
     public Spinner job_list_range;
-    private FusedLocationProviderClient locationClient;
     private double userLatitude = 0.0;
     private double userLongitude = 0.0;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -126,9 +125,6 @@ public class JobList extends AppCompatActivity {
         adapter = new JobListAdapter(jobList, itemClickListener, buttonClickListener);
         recyclerView.setAdapter(adapter);
 
-        //사용자 위도, 경도
-//        locationClient = LocationServices.getFusedLocationProviderClient(this);
-
         //검색어 입력
         ImageButton search_btn = findViewById(R.id.search_btn);
         search_btn.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +134,7 @@ public class JobList extends AppCompatActivity {
             }
         });
 
+        //검색 취소
         ImageButton search_cancel = findViewById(R.id.search_cancel);
         search_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +142,6 @@ public class JobList extends AppCompatActivity {
                 job_list_keyword.setText("");
             }
         });
-
 
         //정렬검색
         job_list_range = findViewById(R.id.job_list_range);
@@ -229,7 +225,6 @@ public class JobList extends AppCompatActivity {
                     job_list_sum.setText("총 " + itemCount + "개");
 
                     Log.e("JobList", "공고목록 서버요청 성공");
-
                 } else {
                     Log.e("JobList", "공고목록 서버응답 실패" + response.code() + ", " + response.message());
                     Log.e("JobList", "공고목록 서버응답 실패" + response.errorBody());
@@ -292,7 +287,6 @@ public class JobList extends AppCompatActivity {
         Log.d("JobFilterDTO", "Filter Data: " + jobFilterDTO.toString());
 
         jobListRequest(jobFilterDTO);
-
     }
 
     @SuppressLint("MissingPermission")
@@ -395,22 +389,5 @@ public class JobList extends AppCompatActivity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return date.format(formatter);
     }
-
-//    private void fetchLocation() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // 권한 요청
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-//            return;
-//        }
-//
-//        locationClient.getLastLocation().addOnSuccessListener(this, location -> {
-//            if (location != null) {
-//                userLatitude = location.getLatitude();
-//                userLongitude = location.getLongitude();
-//            }
-//        });
-//    }
-
-
 
 }

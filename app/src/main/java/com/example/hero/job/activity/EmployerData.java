@@ -1,5 +1,7 @@
 package com.example.hero.job.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -106,18 +108,27 @@ public class EmployerData extends AppCompatActivity {
 
                     double rating1 = date2.getTotalReviewAvg();
                     employer_review_result.setText(String.format("%.1f", rating1));
+                    employer_review_result_rating.setRating((float) rating1);
 
                     if (date2.getItem1ReviewAvg() != null) {
                         double rating2 = date2.getItem1ReviewAvg();
                         employer_review_detail1.setText(String.format("%.1f", rating2));
-                    } else if (date2.getItem2ReviewAvg() != null){
+                        employer_review_detail1_rating.setRating((float) rating2);
+                        Log.v(TAG, "2: " + rating2);
+                    }
+
+                    if (date2.getItem2ReviewAvg() != null) {
                         double rating3 = date2.getItem2ReviewAvg();
                         employer_review_detail2.setText(String.format("%.1f", rating3));
-                    } else if (date2.getItem3ReviewAvg() != null){
+                        employer_review_detail2_rating.setRating((float) rating3);
+                        Log.v(TAG, "3: " + rating3);
+                    }
+
+                    if (date2.getItem3ReviewAvg() != null){
                         double rating4 = date2.getItem3ReviewAvg();
                         employer_review_detail3.setText(String.format("%.1f", rating4));
-                    } else {
-                        Log.e("EmployerData", "상호평가 총점 null");
+                        employer_review_detail3_rating.setRating((float) rating4);
+                        Log.v(TAG, "4: " + rating4);
                     }
 
                     employer_review_result.setText(String.format("%.1f", rating1));

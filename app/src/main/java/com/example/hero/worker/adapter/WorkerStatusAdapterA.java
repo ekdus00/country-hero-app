@@ -94,11 +94,11 @@ public class WorkerStatusAdapterA extends RecyclerView.Adapter<com.example.hero.
         public void bind(final ParticipateInfoDTO participateInfoDTO, final OnItemClickListener listener, final OnButtonClickListener buttonClickListener) {
             currentJobId = participateInfoDTO.getJobId();  // 현재 jobId 저장
 
-            address_country.setText(participateInfoDTO.getJobName());
-            address_city.setText(participateInfoDTO.getCountry());
-            cropForm.setText(participateInfoDTO.getCity());
-            cropType.setText(participateInfoDTO.getCropForm());
-            title.setText(participateInfoDTO.getCropType());
+            address_country.setText(participateInfoDTO.getCountry());
+            address_city.setText(participateInfoDTO.getCity());
+            cropForm.setText(participateInfoDTO.getCropForm());
+            cropType.setText(participateInfoDTO.getCropType());
+            title.setText(participateInfoDTO.getJobName());
 
             work_period_start.setText(participateInfoDTO.getStartWorkDate());
             work_period_end.setText(participateInfoDTO.getEndWorkDate());

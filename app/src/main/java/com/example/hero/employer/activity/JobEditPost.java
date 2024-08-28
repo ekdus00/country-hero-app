@@ -71,7 +71,6 @@ public class JobEditPost extends AppCompatActivity {
     private ImageView post_ImageView;
     private Button btn_send;
     public TextView address_main, address_postcode, job_edit_imageName;
-    String selectedPreferText = "";
     private Spinner spinnerProvince, spinnerCity, working_time_start, working_time_end, work_crop1, work_crop2;
     private Uri imageUri;
     private RadioButton work_mon, work_tue, work_wen, work_thu, work_fri, work_prefer1, work_prefer2;

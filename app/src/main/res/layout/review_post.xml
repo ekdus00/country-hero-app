@@ -8,16 +8,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"/>
     <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_width="wrap_content"
+        android:padding="30dp"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_margin="20dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="1.작성된 공고와 실제 활동 내용이 동일했습니까?"
+                android:text="1. 작성된 공고와 실제 활동 내용이 동일했습니까?"
+                android:textSize="15dp"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -99,12 +103,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_margin="20dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="2.참여한 활동의 난이도는 어떻습니까?"
+                android:text="2. 참여한 활동의 난이도는 어떻습니까?"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -119,12 +125,12 @@
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:text="강하다"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:text="보통이다"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
@@ -145,7 +151,7 @@
                 <RadioGroup
                     android:id="@+id/radioGroupQ2"
                     android:orientation="horizontal"
-                    android:layout_width="match_parent"
+                    android:layout_width="320dp"
                     android:layout_height="match_parent">
                     <RadioButton
                         android:layout_marginRight="43dp"
@@ -186,12 +192,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_margin="20dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="3.구인자에 대한 점수를 평가해주세요."
+                android:text="3. 구인자에 대한 점수를 평가해주세요."
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -232,7 +240,7 @@
                 <RadioGroup
                     android:id="@+id/radioGroupQ3"
                     android:orientation="horizontal"
-                    android:layout_width="match_parent"
+                    android:layout_width="305dp"
                     android:layout_height="match_parent">
                     <RadioButton
                         android:layout_marginRight="43dp"
@@ -273,30 +281,39 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_margin="20dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="4.활동에 참여한 후 느낀 점을 자유롭게 작성해주세요."
+                android:text="4. 활동에 참여한 후 느낀 점을 자유롭게 작성해주세요."
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:textSize="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
+                android:background="@drawable/border_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/review_post_editText"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@null"
+                    android:layout_width="330dp"
+                    android:layout_height="80dp"/>
             </LinearLayout>
         </LinearLayout>
         <Button
+            android:layout_marginTop="30dp"
             android:id="@+id/review_post_send"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_background_btn"
+            android:textColor="@color/white"
             android:text="저장하기"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="170dp"
+            android:layout_height="40dp"/>
 
     </LinearLayout>
 </LinearLayout>

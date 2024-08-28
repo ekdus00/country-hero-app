@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +26,7 @@ import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.job.dto.JobPostCreateRequestDTO;
+import com.example.hero.login.activity.FindId;
 import com.example.hero.mypage.dto.OwnerUserInfoResponseDTO;
 import com.example.hero.resume.adapter.CareerAdapter;
 import com.example.hero.resume.dto.ResumeResponseDTO;
@@ -159,6 +161,8 @@ public class ResumeCheck extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ResumeCheck.this, "해당 구직자를 승인하였습니다.", Toast.LENGTH_SHORT).show();
+
                     Intent intent = new Intent(ResumeCheck.this, EmployerStatus.class);
                     startActivity(intent);
 
@@ -166,7 +170,8 @@ public class ResumeCheck extends AppCompatActivity {
 
                 } else {
                     Log.e("api", "일자리승인 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "일자리승인 서버응답 오류" + response.errorBody().toString());                        }
+                    Log.e("api", "일자리승인 서버응답 오류" + response.errorBody().toString());                        
+                }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -189,6 +194,8 @@ public class ResumeCheck extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ResumeCheck.this, "해당 구직자를 보류하였습니다.", Toast.LENGTH_SHORT).show();
+
                     Intent intent = new Intent(ResumeCheck.this, EmployerStatus.class);
                     startActivity(intent);
 
@@ -196,7 +203,8 @@ public class ResumeCheck extends AppCompatActivity {
 
                 } else {
                     Log.e("api", "일자리보류 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "일자리보류 서버응답 오류" + response.errorBody().toString());                        }
+                    Log.e("api", "일자리보류 서버응답 오류" + response.errorBody().toString());                        
+                }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {

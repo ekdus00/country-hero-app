@@ -15,6 +15,7 @@
 
         <LinearLayout
             android:id="@+id/back_btn"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -22,12 +23,17 @@
 
             <ImageView
                 android:layout_width="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_back" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="17dp"
                 android:paddingTop="2dp"
                 android:text="목록" />
         </LinearLayout>
@@ -75,10 +81,10 @@
 
                 <ImageButton
                     android:id="@+id/edit_btn"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/edit_icon"
-                    />
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:background="@null"
+                    android:src="@drawable/edit_btn_post" />
             </LinearLayout>
             
             <LinearLayout
@@ -89,8 +95,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:src="@drawable/baseline_account_circle_24" />
 
                 <TextView
@@ -98,27 +104,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
                     android:text="김지원"
-                    android:textSize="17sp"
+                    android:textSize="19sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txt_created_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:text="2024.03.14"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+<!--                <TextView-->
+<!--                    android:id="@+id/txt_created_date"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="end"-->
+<!--                    android:text="2024.03.14"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textStyle="bold" />-->
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/black"
                 android:text="프로그램 정보"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
 
@@ -135,7 +144,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:background="@drawable/border_bottom_gray"
                     android:orientation="horizontal">
 
@@ -145,9 +154,9 @@
                         android:layout_weight="1.2"
                         android:background="#C2D5C3"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:text="이름"
-                        android:textStyle="bold" />
-
+                        />
                     <TextView
                         android:id="@+id/txt_user_name"
                         android:layout_width="0dp"
@@ -157,15 +166,15 @@
                         android:gravity="center"
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
+                        android:textColor="@color/black"
                         android:text="김지원"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
-
+                        />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:background="@drawable/border_bottom_gray"
                     android:orientation="horizontal">
 
@@ -175,9 +184,9 @@
                         android:layout_weight="1.2"
                         android:background="#C2D5C3"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:text="상호평가 총 평점"
-                        android:textStyle="bold" />
-
+                        />
                     <TextView
                         android:id="@+id/txt_grade"
                         android:layout_width="0dp"
@@ -187,10 +196,10 @@
                         android:gravity="center"
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
+                        android:textColor="@color/black"
                         android:text="4.5"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
-
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -205,9 +214,9 @@
                         android:layout_weight="1.2"
                         android:background="#C2D5C3"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:text="경력"
-                        android:textStyle="bold" />
-
+                        />
                     <TextView
                         android:id="@+id/txt_career"
                         android:layout_width="0dp"
@@ -215,16 +224,16 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight="3"
                         android:gravity="center"
-                        android:text="ㅇㄴㅇㄴㅇ"
+                        android:textColor="@color/black"
+                        android:text="(경력)"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
-
+                        />
                 </LinearLayout>
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:background="@drawable/border_bottom_gray"
                     android:orientation="horizontal">
 
@@ -234,9 +243,9 @@
                         android:layout_weight="1.2"
                         android:background="#C2D5C3"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:text="선호 지역"
-                        android:textStyle="bold" />
-
+                        />
                     <TextView
                         android:id="@+id/txt_area"
                         android:layout_width="0dp"
@@ -246,15 +255,15 @@
                         android:gravity="center"
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
-                        android:text="강원 영"
+                        android:textColor="@color/black"
+                        android:text="(선호지역)"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
-
+                        />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:background="@drawable/border_bottom_gray"
                     android:orientation="horizontal">
 
@@ -264,9 +273,9 @@
                         android:layout_weight="1.2"
                         android:background="#C2D5C3"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:text="선호 기간"
-                        android:textStyle="bold" />
-
+                        />
                     <TextView
                         android:id="@+id/txt_edu_date"
                         android:layout_width="0dp"
@@ -277,9 +286,9 @@
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
                         android:text="2024.04.02~2024.06.30"
+                        android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
-
+                        />
                 </LinearLayout>
 
             </LinearLayout>
@@ -301,8 +310,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_info"
                 android:layout_marginTop="20dp"
+                android:textColor="@color/black"
                 android:text="소개말"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -311,13 +321,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_info"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_background_gray"
+                android:background="@drawable/rounded_background_gray3"
                 android:lineSpacingExtra="5dp"
                 android:padding="10dp"
+                android:textColor="@color/black"
                 android:text="우리 농장은 최고의 품질과 안전성을 자랑합니다. 신선한 채소와 과일을 전문적으로 재배하며, 천연 비료와 친환경적인 방법으로 생산합니다. 고객들에게는 맛과 영양을 모두 갖춘 제품을 제공하고, 지역사회에는 일자리와 활력을 불어넣습니다. 우리는 농업의 미래를 위해 항상 노력하고 있습니다."
                 android:textSize="12sp"
-                android:textStyle="bold" />
-
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -341,6 +351,7 @@
                     android:id="@+id/submit_comment_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:background="@null"
                     android:layout_weight="0.1"
                     android:src="@drawable/baseline_send_24" />
 
@@ -351,6 +362,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="4dp"
+                android:padding="8dp"
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

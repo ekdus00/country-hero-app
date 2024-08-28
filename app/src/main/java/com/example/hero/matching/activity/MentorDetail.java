@@ -47,7 +47,7 @@ public class MentorDetail extends AppCompatActivity {
     LinearLayout backBtn; // 뒤로가기 버튼
     int matchingId;
 
-    TextView title;
+    TextView title, txt_link;
     TextView name;
     TextView area;
     TextView eduDate;
@@ -75,7 +75,6 @@ public class MentorDetail extends AppCompatActivity {
         tokenManager = new TokenManager(this);
         userManager = new UserManager(this);
 
-
         Intent intent = getIntent();
 
         if(intent.getStringExtra("matchingId") == null) {
@@ -89,6 +88,7 @@ public class MentorDetail extends AppCompatActivity {
         area = findViewById(R.id.txt_area);
         eduDate = findViewById(R.id.txt_edu_date);
         eduContent = findViewById(R.id.txt_edu_content);
+        txt_link = findViewById(R.id.txt_link);
 
         goMatchingPostEditBtn = findViewById(R.id.edit_btn);
         goMatchingPostEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,9 +102,7 @@ public class MentorDetail extends AppCompatActivity {
         });
 
         imageView = findViewById(R.id.image_view);
-
         scrollView = findViewById(R.id.scroll_view);
-
         recyclerView = findViewById(R.id.recycler_view);
 
         comment = findViewById(R.id.txt_comment);
@@ -153,6 +151,8 @@ public class MentorDetail extends AppCompatActivity {
                         eduDate.setText(matchingDetailResponseDTO.getStartEduDate() + "~" + matchingDetailResponseDTO.getEndEduDate());
                         eduContent.setText(matchingDetailResponseDTO.getEduContent());
 
+                        txt_link.setText(matchingDetailResponseDTO.getSnsUrl());
+
                         // 게시글의 userId가 내 userId와 같다면 내 게시글이므로 수정버튼을 띄운다.
                         if(matchingDetailResponseDTO.isMyPost(userManager.getUserId())) {
                             goMatchingPostEditBtn.setVisibility(View.VISIBLE);
@@ -173,14 +173,11 @@ public class MentorDetail extends AppCompatActivity {
                             // 이미지가 없을 경우 기본 이미지 설정
                             imageView.setImageResource(R.drawable.start_app);
                         }
-
-
                         Log.d("MENTEE_DETAIL_PAGE", matchingDetailResponseDTO.toString());
                     } else {
                         Log.e("MENTEE_DETAIL_PAGE", "Response error: " + response.errorBody());
                     }
                 }
-
                 @Override
                 public void onFailure(Call<MatchingDetailResponseDTO> call, Throwable t) {
                     Log.e("MENTEE_DETAIL_PAGE", "MENTEE_DETAIL_PAGE 에러 발생", t);
@@ -189,8 +186,8 @@ public class MentorDetail extends AppCompatActivity {
 
         }
 
-        backBtn = findViewById(R.id.back_btn); // 뒤로가기 버튼의 객체(linear layout)를 id로 찾아서 받아옴
-        backBtn.setOnClickListener(new View.OnClickListener() { // 뒤로가기 버튼(linear layout)에 클릭 이벤트를 달아줌
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MentorDetail.this, MatchingList.class);
@@ -206,7 +203,6 @@ public class MentorDetail extends AppCompatActivity {
             }
         });
     }
-
 
     public void onChildComment(int commentId) {
         final EditText editText = new EditText(this);
@@ -284,15 +280,15 @@ public class MentorDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<MatchingPostCommentResponseDTO>> call, Response<List<MatchingPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(MentorDetail.this, MentorDetail.class);
-                    intent.putExtra("matchingId", matchingId);
-                    startActivity(intent);
-//                    startActivity(new Intent(JobDetail.this, JobDetail.class));
-                    Log.e("api", "매칭상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
+                    List<MatchingPostCommentResponseDTO> comments = response.body();
+                    commentAdapter = new MatchingCommentAdapter(comments, buttonClickListener);
+                    recyclerView.setAdapter(commentAdapter);
 
+                    Log.e("api", "매칭상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
                     Log.e("api", "매칭상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<MatchingPostCommentResponseDTO>> call, Throwable t) {
@@ -316,7 +312,9 @@ public class MentorDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<MatchingPostCommentResponseDTO>> call, Response<List<MatchingPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
-
+                    List<MatchingPostCommentResponseDTO> comments = response.body();
+                    commentAdapter = new MatchingCommentAdapter(comments, buttonClickListener);
+                    recyclerView.setAdapter(commentAdapter);
                 } else {
                     Log.e("api", "매칭상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());                }

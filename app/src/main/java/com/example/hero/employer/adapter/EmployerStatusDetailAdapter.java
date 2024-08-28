@@ -64,7 +64,7 @@ public class EmployerStatusDetailAdapter extends RecyclerView.Adapter<EmployerSt
         public void bind(final WorkerInfoDTO workerInfoDTO, final OnButtonClickListenerReviewStatus listener) {
             worker_name.setText(workerInfoDTO.getUserName());
 
-            if(workerInfoDTO.getApproval().equals("approve")){
+            if(workerInfoDTO.getApproval() != null && workerInfoDTO.getApproval().equals("approve")){
                 defer_and_approve.setText("승인");
             } else {
                 defer_and_approve.setText("보류");

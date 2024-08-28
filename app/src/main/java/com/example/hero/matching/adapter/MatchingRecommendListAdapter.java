@@ -32,7 +32,10 @@ public class MatchingRecommendListAdapter extends RecyclerView.Adapter<MatchingR
         MatchingListInfoDTO dto = slides.get(position);
         holder.recom_title.setText(dto.getMatchingName());
         holder.recom_userName.setText(dto.getUserName());
-        holder.recom_date.setText(dto.getCreatedMatchingDate());
+
+        String createDate = dto.getCreatedMatchingDate();
+        String dateOnly = createDate.substring(0, 10);
+        holder.recom_date.setText(dateOnly);
     }
 
     @Override

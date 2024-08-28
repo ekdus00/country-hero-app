@@ -1,5 +1,6 @@
 package com.example.hero.matching.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -26,6 +28,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
 import com.example.hero.R;
+import com.example.hero.employer.activity.EmployerStatus;
+import com.example.hero.employer.activity.JobEditPost;
+import com.example.hero.employer.dto.JobPostEditResponseDTO;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.LocalDateAdapter;
 import com.example.hero.etc.LocalTimeAdapter;
@@ -35,6 +40,7 @@ import com.example.hero.etc.UserManager;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCreateRequestDTO;
 import com.example.hero.matching.dto.MatchingPostEditResponseDTO;
+import com.example.hero.matching.dto.MatchingPostUpdateRequestDTO;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
@@ -50,6 +56,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -62,42 +69,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MatchingPost extends AppCompatActivity {
-
     private static final int PICK_IMAGE_REQUEST = 1;
-
-    LinearLayout backBtn; // 뒤로가기 버튼
-    String[] origin_regionals = {"시/도",};
-    String[] regionals;
-    String[] origin_citys = {"시/군/구"};
-    String[] citys;
-
-    ArrayAdapter<String> adapterRegionals;
-    ArrayAdapter<String> adapterCitys;
-
-    TextView txt_startdate, txt_enddate;
-    String startDateStr, endDateStr;
-
-    Button postMatchingBtn;
-
-    EditText eduContent;
-
-    ImageButton selectImage;
-
-    EditText title;
-    EditText snsUrl;
-
+    private LinearLayout backBtn; // 뒤로가기 버튼
+    private String[] origin_regionals = {"시/도",};
+    private String[] regionals;
+    private String[] origin_citys = {"시/군/구"};
+    private String[] citys;
+    private ArrayAdapter<String> adapterRegionals;
+    private ArrayAdapter<String> adapterCitys;
+    private TextView textView_date_start, textView_date_end, image_name;
+    private String startDateStr, endDateStr;
+    private Button postMatchingBtn;
+    private EditText eduContent;
+    private ImageButton selectImage;
+    private EditText title;
+    private EditText snsUrl;
     private Uri imageUri;
     private String selectedRadioItem;
-
-
-    Spinner city_spinner, regional_spinner;
-
+    private Spinner city_spinner, regional_spinner;
     int matchingId;
-
     private TokenManager tokenManager;
     private UserManager userManager;
-
     private ApiService apiService;
+    public ImageButton btn_Work_Start, btn_Work_End;
+    private boolean isEdit;
+    private String selectCity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,112 +103,59 @@ public class MatchingPost extends AppCompatActivity {
         userManager = new UserManager(this);
 
         Intent intent = getIntent();
-        boolean isEdit = intent.getBooleanExtra("isEdit", false);
+        isEdit = intent.getBooleanExtra("isEdit", false);
         matchingId = intent.getIntExtra("matchingId", -1);
 
         title = findViewById(R.id.title);
         snsUrl = findViewById(R.id.sns_url);
         eduContent = findViewById(R.id.txt_edu_content);
-        RadioGroup rdgGroup = findViewById(R.id.writer_type);
-        rdgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        btn_Work_Start = findViewById(R.id.start_work);
+        btn_Work_End = findViewById(R.id.end_work);
+        textView_date_start = findViewById(R.id.textView_date_start);
+        textView_date_end = findViewById(R.id.textView_date_end);
+
+        postMatchingBtn = findViewById(R.id.post_matching);
+
+        //뷰 초기화
+        city_spinner = findViewById(R.id.city_spinner);
+        regional_spinner = findViewById(R.id.regional_spinner);
+
+        image_name = findViewById(R.id.image_name);
+
+        btn_Work_Start.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                if (checkedId == R.id.radio_mentor) {
-                    selectedRadioItem = "mentor";
-                } else if (checkedId == R.id.radio_mentee) {
-                    selectedRadioItem = "mentee";
-                }
+            public void onClick(View v) {
+                showDatePickerDialog(textView_date_start);
+            }
+        });
+        btn_Work_End.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(textView_date_end);
             }
         });
 
-        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-        Call<List<String>> call = apiService.getCountries();
-        call.enqueue(new Callback<List<String>>() {
+        loadCountries();
+
+        getEditMatchingPost();
+        regional_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.isSuccessful()) {
-                    Log.d("BOARDWRITE", response.body().toString());
-                    List<String> newList = new ArrayList<>(Arrays.asList(origin_regionals));
-                    // addAll() 메서드를 호출하여 두 번째 배열의 값을 추가
-                    newList.addAll(new ArrayList<>(response.body()));
-
-                    // List 객체의 값을 배열에 할당
-                    regionals = new String[newList.size()];
-                    regionals = newList.toArray(regionals);
-
-                    //스피너 어댑터 초기화
-                    adapterRegionals = new ArrayAdapter<>(MatchingPost.this, android.R.layout.simple_spinner_item, regionals);
-
-                    //스피너 어댑터 설정
-                    adapterRegionals.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    //스피너에 어댑터 적용
-                    regional_spinner.setAdapter(adapterRegionals);
-
-                    regional_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            if (i == 0) return;
-                            apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-                            Call<List<String>> call = apiService.getCitiesByCountry(regional_spinner.getSelectedItem().toString());
-                            call.enqueue(
-                                    new Callback<List<String>>() {
-                                        @Override
-                                        public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                                            List<String> newList = new ArrayList<>(Arrays.asList(origin_citys));
-                                            // addAll() 메서드를 호출하여 두 번째 배열의 값을 추가
-                                            assert response.body() != null;
-                                            newList.addAll(new ArrayList<>(response.body()));
-
-                                            // List 객체의 값을 배열에 할당
-                                            citys = new String[newList.size()];
-                                            citys = newList.toArray(citys);
-
-                                            adapterCitys = new ArrayAdapter<>(MatchingPost.this, android.R.layout.simple_spinner_item, citys);
-                                            adapterCitys.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                            city_spinner.setAdapter(adapterCitys);
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<List<String>> call, Throwable t) {
-                                            Log.e("BOARDWRITE", "BOARDWRITE 에러 발생", t);
-                                        }
-                                    }
-                            );
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-
-                    //도 ,시로 미리 골라놓기
-                    city_spinner.setSelection(0, false);
-                    regional_spinner.setSelection(0, false);
-
-                } else {
-                    try {
-                        assert response.errorBody() != null;
-                        Log.e("API_CALL", "Response error: " + response.errorBody().string());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCountry = parent.getItemAtPosition(position).toString();
+                loadCities(selectedCountry);  // 도시 목록 로드
             }
-
             @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                Log.e("BOARDWRITE", "BOARDWRITE 에러 발생", t);
+            public void onNothingSelected(AdapterView<?> parent) {
+                // 아무것도 선택되지 않았을 때
             }
         });
 
-        backBtn = findViewById(R.id.back_btn); // 뒤로가기 버튼의 객체(linear layout)를 id로 찾아서 받아옴
-        backBtn.setOnClickListener(new View.OnClickListener() { // 뒤로가기 버튼(linear layout)에 클릭 이벤트를 달아줌
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
-            } // 클릭하면 뒤로가기 동작이 실행됨
+                finish();
+            }
         });
 
         selectImage = findViewById(R.id.select_image);
@@ -223,116 +166,11 @@ public class MatchingPost extends AppCompatActivity {
             }
         });
 
+        postMatchingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        postMatchingBtn = findViewById(R.id.post_matching);
-
-
-        //클릭시 기간 선택창
-        findViewById(R.id.data_picker).setOnClickListener(v -> {
-            DatePickerdialog();
-        });
-
-        //뷰 초기화
-        city_spinner = findViewById(R.id.city_spinner);
-        regional_spinner = findViewById(R.id.regional_spinner);
-        txt_startdate = findViewById(R.id.txt_startdate);
-        txt_enddate = findViewById(R.id.txt_enddate);
-
-
-        if (isEdit && matchingId != -1) {
-            apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-            Call<MatchingPostEditResponseDTO> call1 = apiService.getMatchingPostEditInfo(matchingId);
-            call1.enqueue(new Callback<MatchingPostEditResponseDTO>() {
-                @Override
-                public void onResponse(Call<MatchingPostEditResponseDTO> call, Response<MatchingPostEditResponseDTO> response) {
-                    if (response.isSuccessful()) {
-                        MatchingPostEditResponseDTO dto = response.body();
-                        title.setText(dto.getMatchingName());
-
-                        int i = 0;
-                        for (i = 0; i < regionals.length; i++) {
-                            if (regionals[i].equals(dto.getCountry())) {
-                                break;
-                            }
-                        }
-
-                        regional_spinner.setSelection(i);
-
-                        for (i = 0; i < citys.length; i++) {
-                            if (citys[i].equals(dto.getCity())) {
-                                break;
-                            }
-                        }
-
-                        city_spinner.setSelection(i);
-
-                        txt_startdate.setText(dto.getStartEduDate());
-                        txt_enddate.setText(dto.getEndEduDate());
-
-                        snsUrl.setText(dto.getSnsUrl());
-
-                        imageUri = Uri.parse(dto.getUploadImgFileName());
-                        try {
-                            Bitmap bitmap = resizeImage(imageUri, 200, 200);
-                            selectImage.setImageBitmap(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        postMatchingBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, MatchingPost.this);
-                                Gson gson = new GsonBuilder()
-                                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                                        .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
-                                        .create();
-
-
-                                String json = gson.toJson(new MatchingPostCreateRequestDTO(userManager.getUserId(), userManager.getUserType(), regional_spinner.getSelectedItem().toString(), city_spinner.getSelectedItem().toString(),
-                                        title.getText().toString(), selectedRadioItem, startDateStr, endDateStr, eduContent.getText().toString(), snsUrl.getText().toString()));
-                                RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json"));
-
-                                apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-                                Call<MatchingDetailResponseDTO> call = apiService.matchingPostEdit(requestBody, image);
-                                call.enqueue(new Callback<MatchingDetailResponseDTO>() {
-                                    @Override
-                                    public void onResponse(Call<MatchingDetailResponseDTO> call, Response<MatchingDetailResponseDTO> response) {
-                                        if (response.isSuccessful()) {
-
-                                        } else {
-                                            try {
-                                                assert response.errorBody() != null;
-                                                Log.e("API_CALL", "Response error: " + response.errorBody().string());
-                                            } catch (IOException e) {
-                                                throw new RuntimeException(e);
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<MatchingDetailResponseDTO> call, Throwable t) {
-                                        Log.e("BOARDWRITE", "스크랩 에러 발생", t);
-                                    }
-                                });
-
-
-                                onBackPressed();
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<MatchingPostEditResponseDTO> call, Throwable t) {
-
-                }
-            });
-        } else {
-            postMatchingBtn.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onClick(View view) {
+                if (isEdit && matchingId != -1) {
 
                     MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, MatchingPost.this);
                     Gson gson = new GsonBuilder()
@@ -340,17 +178,19 @@ public class MatchingPost extends AppCompatActivity {
                             .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
                             .create();
 
+                    String json = gson.toJson(new MatchingPostUpdateRequestDTO(matchingId, title.getText().toString(), regional_spinner.getSelectedItem().toString(), city_spinner.getSelectedItem().toString(),
+                            textView_date_start.getText().toString(), textView_date_end.getText().toString(), snsUrl.getText().toString(), eduContent.getText().toString()));
 
-                    String json = gson.toJson(new MatchingPostCreateRequestDTO(userManager.getUserId(), userManager.getUserType(), regional_spinner.getSelectedItem().toString(), city_spinner.getSelectedItem().toString(),
-                            title.getText().toString(), selectedRadioItem, startDateStr, endDateStr, eduContent.getText().toString(), snsUrl.getText().toString()));
                     RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json"));
 
                     apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
-                    Call<Void> call = apiService.matchingPost(requestBody, image);
-                    call.enqueue(new Callback<Void>() {
+                    Call<MatchingDetailResponseDTO> call = apiService.matchingPostEdit(requestBody, image);
+                    call.enqueue(new Callback<MatchingDetailResponseDTO>() {
                         @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
+                        public void onResponse(Call<MatchingDetailResponseDTO> call, Response<MatchingDetailResponseDTO> response) {
                             if (response.isSuccessful()) {
+                                Intent intent = new Intent(MatchingPost.this, MatchingList.class);
+                                startActivity(intent);
 
                             } else {
                                 try {
@@ -361,51 +201,142 @@ public class MatchingPost extends AppCompatActivity {
                                 }
                             }
                         }
+                        @Override
+                        public void onFailure(Call<MatchingDetailResponseDTO> call, Throwable t) {
+                            Log.e("BOARDWRITE", "스크랩 에러 발생", t);
+                        }
+                    });
 
+                } else {
+
+                    MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, MatchingPost.this);
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                            .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
+                            .create();
+
+                    String json = gson.toJson(new MatchingPostCreateRequestDTO(userManager.getUserId(), userManager.getUserType(), regional_spinner.getSelectedItem().toString(), city_spinner.getSelectedItem().toString(),
+                            title.getText().toString(), getType() , textView_date_start.getText().toString(), textView_date_end.getText().toString(), eduContent.getText().toString(), snsUrl.getText().toString()));
+
+                    RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json"));
+
+                    apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+                    Call<Void> call = apiService.matchingPost(requestBody, image);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                Intent intent = new Intent(MatchingPost.this, MatchingList.class);
+                                startActivity(intent);
+                            } else {
+                                try {
+                                    assert response.errorBody() != null;
+                                    Log.e("API_CALL", "Response error: " + response.errorBody().string());
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
                             Log.e("BOARDWRITE", "스크랩 에러 발생", t);
                         }
                     });
-
-
-                    onBackPressed();
                 }
-            });
-        }
+
+
+            }
+        });
+
+    } //onCreate()
+
+    private void getEditMatchingPost() {
+        apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        //공고수정 조회 서버요청
+        Call<MatchingPostEditResponseDTO> call = apiService.getMatchingPostEditInfo(matchingId);
+        call.enqueue(new Callback<MatchingPostEditResponseDTO>() {
+            @Override
+            public void onResponse(Call<MatchingPostEditResponseDTO> call, Response<MatchingPostEditResponseDTO> response) {
+                if (response.isSuccessful()) {
+                    MatchingPostEditResponseDTO dto = response.body();
+                        title.setText(dto.getMatchingName());
+
+                        setSpinnerSelection1(dto.getCountry());
+                        setSpinnerSelection2(dto.getCity());
+
+                        textView_date_start.setText(dto.getStartEduDate());
+                        textView_date_end.setText(dto.getEndEduDate());
+                        eduContent.setText(dto.getEduContent());
+                        snsUrl.setText(dto.getSnsUrl());
+                        image_name.setText(dto.getUploadImgFileName());
+
+                    Log.e("tag", "공고수정 조회 서버응답 성공" + response.code() + ", " + response.message());
+                } else {
+                    Log.e("tag", "공고수정 조회 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "공고수정 조회 서버응답 오류" + response.errorBody().toString());
+                }
+            }
+            @Override
+            public void onFailure(Call<MatchingPostEditResponseDTO> call, Throwable t) {
+                Log.e("tag", "공고수정 조회 서버요청", t);
+            }
+        });
     }
 
-    //기간 선택창 띄우는 함수
-    private void DatePickerdialog() {
+    public void loadCountries() {
+        ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
-        MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-        builder.setTitleText("기간을 선택해 주세요");
-        builder.setTheme(R.style.Theme_Hero);
-
-        MaterialDatePicker<Pair<Long, Long>> datePicker = builder.build();
-
-        datePicker.addOnPositiveButtonClickListener(selection -> {
-
-            Long startDate = selection.first;
-            Long endDate = selection.second;
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault());
-            String startDateString = sdf.format(new Date(startDate));
-            String endDateString = sdf.format(new Date(endDate));
-
-            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            startDateStr = sdf1.format(new Date(startDate));
-            endDateStr = sdf1.format(new Date(endDate));
-
-            txt_startdate.setText(startDateString);
-            txt_enddate.setText(endDateString);
-
+        Call<List<String>> call = apiService.getCountries();
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful()) {
+                    List<String> countries = response.body();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MatchingPost.this,
+                            android.R.layout.simple_spinner_dropdown_item, countries);
+                    regional_spinner.setAdapter(adapter);
+                } else {
+                    Log.e("tag", "시/도 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "시/도 서버응답 오류" + response.errorBody());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                Log.e("tag", "시/도 서버요청 오류", t);
+            }
         });
-        datePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+    }
+
+    public void loadCities(String country) {
+        ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        Call<List<String>> call = apiService.getCitiesByCountry(country);
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful()) {
+                    List<String> cities = response.body();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MatchingPost.this,
+                            android.R.layout.simple_spinner_dropdown_item, cities);
+                    city_spinner.setAdapter(adapter);
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("tag", "시/군/구 서버응답 오류" + response.errorBody());
+                    } catch (IOException e) {
+                        Log.e("tag", "시/군/구 서버응답 오류", e);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                Log.e("tag", "시/군/구 서버요청 오류", t);
+            }
+        });
     }
 
     public void onSelectImageClick() {
-        ;
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
@@ -474,4 +405,66 @@ public class MatchingPost extends AppCompatActivity {
 //        tempFile.delete();
         return filePart;
     }
+
+    private void showDatePickerDialog (final TextView textView){
+        DatePickerDialog.OnDateSetListener callbackMethod = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String formattedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, monthOfYear + 1, dayOfMonth);
+                if (textView != null) {
+                    textView.setText(formattedDate);
+                } else {
+                    Log.e("DatePicker", "TextView is null");
+                }
+            }
+        };
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, callbackMethod, year, month, day);
+        datePickerDialog.show();
+    }
+
+    public String getType(){
+        RadioGroup writer_type = findViewById(R.id.writer_type);
+
+        int checkedRadioButtonId = writer_type.getCheckedRadioButtonId();
+        String selectedPreferText = "mentor";
+
+        if (checkedRadioButtonId == R.id.radio_mentor) {
+            selectedPreferText = "mentor";
+        } else if (checkedRadioButtonId == R.id.radio_mentee) {
+            selectedPreferText = "mentee";
+        }
+        return selectedPreferText;
+    }
+
+    private void setSpinnerSelection2(String city) {
+        Log.e("tag", "해당 도시를 찾을 수 없습니다: " + city);
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) city_spinner.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(city);
+            if (position != -1) {
+                city_spinner.setSelection(position);
+            } else {
+                Log.e("tag", "해당 도시를 찾을 수 없습니다: " + city);
+            }
+        }
+    }
+
+    private void setSpinnerSelection1(String province) {
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) regional_spinner.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(province);
+            if (position != -1) {
+                regional_spinner.setSelection(position);
+            } else {
+                Log.e("tag", "해당 지역을 찾을 수 없습니다: " + province);
+            }
+        }
+    }
+
 }

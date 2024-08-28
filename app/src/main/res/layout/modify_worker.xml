@@ -23,8 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/border_layout"
+                android:layout_marginTop="40dp"
                 android:orientation="vertical">
                 <TableLayout
                     android:layout_gravity="center"
@@ -44,6 +43,9 @@
                             android:text="이름" />
                         <TextView
                             android:id="@+id/modify_name"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
                             android:text="(이름)"
                             android:layout_gravity="center"
                             android:layout_width="250dp"
@@ -62,6 +64,9 @@
                             android:text="성별" />
                         <TextView
                             android:id="@+id/modify_gender"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
                             android:text="(성별)"
                             android:layout_gravity="center"
                             android:layout_width="250dp"
@@ -81,6 +86,9 @@
                             android:text="출생연도" />
                         <TextView
                             android:id="@+id/modify_birth"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
                             android:text="(출생연도)"
                             android:layout_gravity="center"
                             android:layout_width="250dp"
@@ -99,6 +107,9 @@
                             android:text="이메일" />
                         <TextView
                             android:id="@+id/modify_email"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
                             android:text="(이메일)"
                             android:layout_gravity="center"
                             android:layout_width="250dp"
@@ -117,6 +128,9 @@
                             android:text="간편 로그인 정보" />
                         <TextView
                             android:id="@+id/modify_easy_login"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
                             android:text="네이버"
                             android:layout_gravity="center"
                             android:layout_width="250dp"

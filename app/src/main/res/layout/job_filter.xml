@@ -12,17 +12,21 @@
             android:id="@+id/toolbar"/>
     </LinearLayout>
     <LinearLayout
-        android:layout_margin="15dp"
+        android:layout_margin="30dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_margin="3dp"
+            android:layout_marginBottom="30dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
                 android:text="지역필터"
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -30,6 +34,7 @@
                 android:layout_height="wrap_content">
                 <Spinner
                     android:id="@+id/filter_area_region"
+                    android:layout_marginRight="20dp"
                     android:layout_width="wrap_content"
                     android:entries="@array/work_area1"
                     android:layout_height="match_parent" />
@@ -40,32 +45,36 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="70dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="vertical">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/job_filter_recyclerView1"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:background="#F0F0F0"
-                        android:padding="2dp" />
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+<!--            <androidx.core.widget.NestedScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="70dp">-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="70dp"-->
+<!--                    android:orientation="vertical">-->
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/job_filter_recyclerView1"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="70dp"-->
+<!--                        android:background="#F0F0F0"-->
+<!--                        android:padding="2dp" />-->
+<!--                </LinearLayout>-->
+<!--            </androidx.core.widget.NestedScrollView>-->
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_margin="3dp"
+            android:layout_marginBottom="30dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
                 android:text="작물 형태 및 품목 필터"
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -73,6 +82,7 @@
                 android:layout_height="wrap_content">
                 <Spinner
                     android:id="@+id/filter_crop1"
+                    android:layout_marginRight="20dp"
                     android:layout_width="wrap_content"
                     android:entries="@array/work_crop1"
                     android:layout_height="match_parent" />
@@ -83,76 +93,84 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="70dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="vertical">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/job_filter_recyclerView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:background="#F0F0F0"
-                        android:padding="2dp" />
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+<!--            <androidx.core.widget.NestedScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="70dp">-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="70dp"-->
+<!--                    android:orientation="vertical">-->
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/job_filter_recyclerView2"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="70dp"-->
+<!--                        android:background="#F0F0F0"-->
+<!--                        android:padding="2dp" />-->
+<!--                </LinearLayout>-->
+<!--            </androidx.core.widget.NestedScrollView>-->
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_margin="5dp"
+            android:layout_marginBottom="30dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
                 android:text="급여 필터"
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <RadioGroup
-                    android:id="@+id/radioGroupSalary"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <RadioButton
-                        android:layout_marginRight="43dp"
-                        android:text="일급"
-                        android:layout_weight="1"
-                        android:id="@+id/radio_salary"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content" />
-                    <RadioButton
-                        android:layout_marginRight="43dp"
-                        android:text="협의"
-                        android:layout_weight="1"
-                        android:id="@+id/radio_consultation"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content" />
-                </RadioGroup>
-            </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content">-->
+<!--                <RadioGroup-->
+<!--                    android:id="@+id/radioGroupSalary"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent">-->
+<!--                    <RadioButton-->
+<!--                        android:layout_marginRight="43dp"-->
+<!--                        android:text="일급"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:id="@+id/radio_salary"-->
+<!--                        android:layout_width="100dp"-->
+<!--                        android:layout_height="wrap_content" />-->
+<!--                    <RadioButton-->
+<!--                        android:layout_marginRight="43dp"-->
+<!--                        android:text="협의"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:id="@+id/radio_consultation"-->
+<!--                        android:layout_width="100dp"-->
+<!--                        android:layout_height="wrap_content" />-->
+<!--                </RadioGroup>-->
+<!--            </LinearLayout>-->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <EditText
                     android:hint="최저급여"
+                    android:textSize="15dp"
                     android:id="@+id/filter_salary_low"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:text="~"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:hint="최고급여"
+                    android:textSize="15dp"
                     android:id="@+id/filter_salary_high"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -160,17 +178,29 @@
 
 
         <LinearLayout
-            android:layout_margin="5dp"
+            android:layout_marginBottom="30dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
                 android:text="작업 기간 필터"
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_start_image"
+                    android:background="@color/white"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/calendar_button"/>
+
                 <TextView
                     android:id="@+id/filter_period_start"
                     android:layout_width="wrap_content"
@@ -178,19 +208,22 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:text="시작날짜" />
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/filter_start_image"
-                    android:background="@color/white"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/calendar_button"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:text="  ~  " />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_end_image"
+                    android:background="@color/white"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/calendar_button"/>
+
                 <TextView
                     android:id="@+id/filter_period_end"
                     android:layout_width="wrap_content"
@@ -198,13 +231,6 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:text="종료날짜" />
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/filter_end_image"
-                    android:background="@color/white"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/calendar_button"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -219,14 +245,21 @@
         android:layout_height="wrap_content">
         <Button
             android:text="초기화"
+            android:background="@drawable/rounded_background_btn"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:layout_marginRight="15dp"
             android:id="@+id/filter_reset_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="100dp"
+            android:layout_height="40dp"/>
         <Button
             android:text="적용하기"
+            android:background="@drawable/rounded_background_btn"
+            android:textColor="@color/white"
+            android:textSize="15dp"
             android:id="@+id/filter_send_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="100dp"
+            android:layout_height="40dp"/>
     </LinearLayout>
 
 </LinearLayout>

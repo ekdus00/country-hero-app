@@ -21,11 +21,16 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="5dp"
                 android:src="@drawable/arrow_back" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="17dp"
                 android:text="목록" />
         </LinearLayout>
 
@@ -53,8 +58,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/border_top_gray"
         android:orientation="vertical"
-        android:background="@drawable/border_top_bottom_gray"
         android:layout_centerHorizontal="true"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
@@ -69,7 +74,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_weight="1.2"
-                android:layout_height="match_parent"
+                android:layout_height="35dp"
                 android:background="#C2D5C3"
                 >
 
@@ -80,7 +85,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="작성자 유형"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -103,7 +108,8 @@
                     android:layout_weight="1"
                     android:layout_height="30dp"
                     android:text="멘토"
-                    android:textStyle="bold"
+                    android:tag="mentor"
+                    android:textColor="@color/black"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
@@ -112,13 +118,14 @@
 
                 <RadioButton
                     android:id="@+id/radio_mentee"
+                    android:tag="mentee"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
                     android:layout_weight="2"
                     android:text="멘티"
-                    android:textStyle="bold" />
+                    />
             </RadioGroup>
 
         </LinearLayout>
@@ -133,7 +140,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_weight="1.2"
-                android:layout_height="match_parent"
+                android:layout_height="35dp"
                 android:background="#C2D5C3"
                 >
 
@@ -144,7 +151,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="게시글 명"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -161,9 +168,8 @@
                 android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_gray"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="4dp"
+                android:layout_margin="5dp"
+
                 android:gravity="center"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -180,7 +186,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_weight="1.2"
-                android:layout_height="match_parent"
+                android:layout_height="35dp"
                 android:background="#C2D5C3"
                 >
 
@@ -191,7 +197,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="활동 지역"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -218,7 +224,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:drawable="@drawable/border_gray_spinner"
                     />
 
@@ -243,11 +249,10 @@
             android:background="@drawable/border_bottom_gray"
             >
             <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight="1.2"
-                android:layout_height="match_parent"
-                android:background="#C2D5C3"
-                >
+                android:layout_width="105dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="35dp"
+                android:background="#C2D5C3">
 
                 <TextView
                     android:id="@+id/title_4"
@@ -256,7 +261,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="활동 기간"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -267,41 +272,48 @@
                     />
 
             </RelativeLayout>
+            <LinearLayout
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textView_date_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="시작날짜" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/start_work"
+                    android:background="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/calendar_button"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="  ~  " />
+                <TextView
+                    android:id="@+id/textView_date_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="종료날짜" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/end_work"
+                    android:background="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/calendar_button"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/txt_startdate"
-                android:layout_width="0dp"
-                android:layout_weight="1.4"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:background="@drawable/border_gray"
-                android:gravity="center"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginStart="10dp"
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.2"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:text="~"
-                />
 
-            <TextView
-                android:id="@+id/txt_enddate"
-                android:layout_width="0dp"
-                android:layout_weight="1.4"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:background="@drawable/border_gray"
-                android:gravity="center"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="4dp"
-                />
 
 
 
@@ -329,7 +341,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="소개"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -343,13 +355,14 @@
             </RelativeLayout>
             <EditText
                 android:id="@+id/txt_edu_content"
+                android:background="@drawable/border_gray"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="match_parent"
-                android:background="@drawable/border_gray"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="10dp"
                 android:padding="10dp"
                 android:gravity="top|start"
                 android:inputType="textMultiLine"
@@ -362,7 +375,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:orientation="horizontal"
             android:background="@drawable/border_bottom_gray"
             >
@@ -371,7 +384,7 @@
                 android:layout_weight="1.2"
                 android:layout_height="match_parent"
                 android:text="SNS 링크"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:background="#C2D5C3"
                 android:gravity="center"
                 />
@@ -381,9 +394,7 @@
                 android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_gray"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="4dp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -393,7 +404,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:orientation="horizontal"
             android:background="@drawable/border_bottom_gray"
             >
@@ -402,7 +413,7 @@
                 android:layout_weight="1.2"
                 android:layout_height="match_parent"
                 android:text="이미지 첨부"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:background="#C2D5C3"
                 android:gravity="center"
                 />
@@ -418,15 +429,18 @@
                     android:layout_width="0dp"
                     android:layout_weight="0.3"
                     android:layout_height="30dp"
+                    android:layout_marginTop="3dp"
                     android:src="@drawable/baseline_image_24"
                     />
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:layout_height="match_parent"
-                    android:background="@drawable/border_gray"
+                    android:id="@+id/image_name"
+                    android:text="이미지 이름"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="4dp"
+                    android:layout_margin="5dp"
                     android:gravity="center"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -437,8 +451,10 @@
 
         <Button
             android:id="@+id/post_matching"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/rounded_background_btn"
             android:text="게시하기"
             android:textColor="@color/white"
             android:backgroundTint="#49654A"

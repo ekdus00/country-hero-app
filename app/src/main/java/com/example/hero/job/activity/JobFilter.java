@@ -3,6 +3,7 @@ package com.example.hero.job.activity;
 import static android.graphics.Insets.add;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,10 +26,13 @@ import com.example.hero.R;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.job.adapter.JobFilterListAdapter;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -90,17 +94,15 @@ public class JobFilter extends AppCompatActivity{
         filter_period_start = findViewById(R.id.filter_period_start);
         filter_period_end = findViewById(R.id.filter_period_end);
 
-        radioGroupSalary = findViewById(R.id.radioGroupSalary);
-
-        job_filter_recyclerView1 = findViewById(R.id.job_filter_recyclerView1);
-        job_filter_recyclerView1.setLayoutManager(new LinearLayoutManager(this));
-        jobFilterListAdapter1 = new JobFilterListAdapter(selectList);
-        job_filter_recyclerView1.setAdapter(jobFilterListAdapter1);
-
-        job_filter_recyclerView2 = findViewById(R.id.job_filter_recyclerView2);
-        job_filter_recyclerView2.setLayoutManager(new LinearLayoutManager(this));
-        jobFilterListAdapter2 = new JobFilterListAdapter(selectList2);
-        job_filter_recyclerView2.setAdapter(jobFilterListAdapter2);
+//        job_filter_recyclerView1 = findViewById(R.id.job_filter_recyclerView1);
+//        job_filter_recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+//        jobFilterListAdapter1 = new JobFilterListAdapter(selectList);
+//        job_filter_recyclerView1.setAdapter(jobFilterListAdapter1);
+//
+//        job_filter_recyclerView2 = findViewById(R.id.job_filter_recyclerView2);
+//        job_filter_recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+//        jobFilterListAdapter2 = new JobFilterListAdapter(selectList2);
+//        job_filter_recyclerView2.setAdapter(jobFilterListAdapter2);
         
         loadCountries();
         loadCropForms();
@@ -119,7 +121,7 @@ public class JobFilter extends AppCompatActivity{
         });
 
         //뒤로가기
-        Button filter_back_btn = findViewById(R.id.filter_back_btn);
+        ImageButton filter_back_btn = findViewById(R.id.filter_back_btn);
         filter_back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,76 +138,101 @@ public class JobFilter extends AppCompatActivity{
             }
         });
 
-        //도시 목록 로드
         filter_area_region.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isRegionInitialized) {
-                    selectedRegion = parent.getItemAtPosition(position).toString();
-                    loadCities(selectedRegion); // 도시 목록 로드
-                    isRegionInitialized = false;
-                } else{
-                    isRegionInitialized = true; // 처음 로드 시에는 반응하지 않음
-                }
+                String selectedCountry = parent.getItemAtPosition(position).toString();
+                loadCities(selectedCountry);  // 도시 목록 로드
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // 아무것도 선택되지 않았을 때
             }
         });
 
-        //지역 선택값 띄우기
-        filter_area_district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isDistrictInitialized) {
-                    selectedDistrict = parent.getItemAtPosition(position).toString();
-                    addToAreaList(selectedRegion, selectedDistrict);
-                    isDistrictInitialized = false;
-                } else {
-                    isDistrictInitialized = true; // 처음 로드 시에는 반응하지 않음
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // 아무것도 선택되지 않았을 때
-            }
-        });
-
-        //농작물 품목 로드
         filter_crop1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isCropFormInitialized) {
-                    selectedCropForm = parent.getItemAtPosition(position).toString();
-                    loadCropTypes(selectedCropForm);  // 농작물 품목 로드
-                    isCropFormInitialized = false;
-                } else {
-                    isCropFormInitialized = true; // 처음 로드 시에는 반응하지 않음
-                }
+                String selectedCropForm = parent.getItemAtPosition(position).toString();
+                loadCropTypes(selectedCropForm);  // 농작물 품목 로드
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        //농작물 선택값 띄우기
-        filter_crop2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isCropTypeInitialized) {
-                    selectedCropType = parent.getItemAtPosition(position).toString();
-                    addToCropList(selectedCropForm, selectedCropType);
-                    isCropTypeInitialized = false;
-                } else {
-                    isCropTypeInitialized = true; // 처음 로드 시에는 반응하지 않음
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // 아무것도 선택되지 않았을 때
-            }
-        });
+//        //도시 목록 로드
+//        filter_area_region.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (isRegionInitialized) {
+//                    selectedRegion = parent.getItemAtPosition(position).toString();
+//                    loadCities(selectedRegion); // 도시 목록 로드
+//                    isRegionInitialized = false;
+//                } else{
+//                    isRegionInitialized = true; // 처음 로드 시에는 반응하지 않음
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                // 아무것도 선택되지 않았을 때
+//            }
+//        });
+//
+//        //지역 선택값 띄우기
+//        filter_area_district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (isDistrictInitialized) {
+//                    selectedDistrict = parent.getItemAtPosition(position).toString();
+//                    addToAreaList(selectedRegion, selectedDistrict);
+//                    isDistrictInitialized = false;
+//                } else {
+//                    isDistrictInitialized = true; // 처음 로드 시에는 반응하지 않음
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                // 아무것도 선택되지 않았을 때
+//            }
+//        });
+//
+//        //농작물 품목 로드
+//        filter_crop1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (isCropFormInitialized) {
+//                    selectedCropForm = parent.getItemAtPosition(position).toString();
+//                    loadCropTypes(selectedCropForm);  // 농작물 품목 로드
+//                    isCropFormInitialized = false;
+//                } else {
+//                    isCropFormInitialized = true; // 처음 로드 시에는 반응하지 않음
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//
+//        //농작물 선택값 띄우기
+//        filter_crop2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (isCropTypeInitialized) {
+//                    selectedCropType = parent.getItemAtPosition(position).toString();
+//                    addToCropList(selectedCropForm, selectedCropType);
+//                    isCropTypeInitialized = false;
+//                } else {
+//                    isCropTypeInitialized = true; // 처음 로드 시에는 반응하지 않음
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                // 아무것도 선택되지 않았을 때
+//            }
+//        });
 
         Button resetButton = findViewById(R.id.filter_reset_btn);
         resetButton.setOnClickListener(new View.OnClickListener() {
@@ -219,40 +246,38 @@ public class JobFilter extends AppCompatActivity{
 
     private void jobFilterSend() {
         //공고필터 정보 전송
-//        String selectedAreaA = filter_area_region.getSelectedItem().toString();
-//        String selectedAreaB = filter_area_district.getSelectedItem().toString();
-//        area.add(selectedAreaA + " " + selectedAreaB);
-//
-//        String selectedCropA = filter_crop1.getSelectedItem().toString();
-//        String selectedCropB = filter_crop2.getSelectedItem().toString();
-//        crop.add(selectedCropA + " " + selectedCropB);
+        String selectedAreaA = filter_area_region.getSelectedItem().toString();
+        String selectedAreaB = filter_area_district.getSelectedItem().toString();
+        area.add(selectedAreaA + " " + selectedAreaB);
+
+        String selectedCropA = filter_crop1.getSelectedItem().toString();
+        String selectedCropB = filter_crop2.getSelectedItem().toString();
+        crop.add(selectedCropA + " " + selectedCropB);
 
         Intent intent = new Intent(JobFilter.this, JobList.class);
 
         intent.putStringArrayListExtra("area", area);
         intent.putStringArrayListExtra("crop", crop);
-
         intent.putExtra("payLoe", filter_salary_low.getText().toString());
         intent.putExtra("payGoe", filter_salary_high.getText().toString());
-
         intent.putExtra("startWorkDate", filter_period_start.getText().toString());
         intent.putExtra("endWorkDate", filter_period_end.getText().toString());
 
         startActivity(intent);
     }
 
-    // 선택된 값 리스트에 추가 메서드
     private void addToAreaList(String select1, String select2) {
         String combined = select1 + " " + select2;
         area.add(combined);
         selectList.add(combined);
-        jobFilterListAdapter1.notifyDataSetChanged(); // 어댑터에 데이터 변경 알림
+        jobFilterListAdapter1.notifyDataSetChanged();
     }
+
     private void addToCropList(String select1, String select2) {
         String combined = select1 + " " + select2;
         crop.add(combined);
         selectList2.add(combined);
-        jobFilterListAdapter2.notifyDataSetChanged(); // 어댑터에 데이터 변경 알림
+        jobFilterListAdapter2.notifyDataSetChanged();
     }
 
     public void loadCountries() {
@@ -347,19 +372,6 @@ public class JobFilter extends AppCompatActivity{
         });
     }
 
-    public String getSalary(){
-        RadioGroup work_salary_radioGroup = findViewById(R.id.work_salary_radioGroup);
-
-        int checkedRadioButtonId = work_salary_radioGroup.getCheckedRadioButtonId();
-
-        if (checkedRadioButtonId == R.id.work_salary1) {
-            selectedSalaryText = "일급";
-        } else if (checkedRadioButtonId == R.id.work_salary2) {
-            selectedSalaryText = "협의";
-        }
-        return selectedSalaryText;
-    }
-
     private void showDatePickerDialog (final TextView textView){
         DatePickerDialog.OnDateSetListener callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -388,7 +400,6 @@ public class JobFilter extends AppCompatActivity{
 
         filter_salary_low.setText("");
         filter_salary_high.setText("");
-
         filter_period_start.setText("");
         filter_period_end.setText("");
     }

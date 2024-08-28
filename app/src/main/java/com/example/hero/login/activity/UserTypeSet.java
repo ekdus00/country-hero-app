@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,6 +59,40 @@ public class UserTypeSet extends AppCompatActivity {
 
         user_type_owner = findViewById(R.id.user_type_owner);
         user_type_worker = findViewById(R.id.user_type_worker);
+
+        // 호버 리스너를 설정합니다.
+        user_type_owner.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_HOVER_ENTER:
+                        // 커서가 버튼 위로 올라갔을 때의 색상 변경
+                        user_type_owner.setBackgroundColor(getResources().getColor(R.color.green));
+                        break;
+                    case MotionEvent.ACTION_HOVER_EXIT:
+                        // 커서가 버튼에서 벗어났을 때 원래 색상으로 복구
+                        user_type_owner.setBackgroundColor(getResources().getColor(R.color.white));
+                        break;
+                }
+                return true;
+            }
+        });
+        user_type_worker.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_HOVER_ENTER:
+                        // 커서가 버튼 위로 올라갔을 때의 색상 변경
+                        user_type_worker.setBackgroundColor(getResources().getColor(R.color.green));
+                        break;
+                    case MotionEvent.ACTION_HOVER_EXIT:
+                        // 커서가 버튼에서 벗어났을 때 원래 색상으로 복구
+                        user_type_worker.setBackgroundColor(getResources().getColor(R.color.white));
+                        break;
+                }
+                return true;
+            }
+        });
         
         //구인자 선택
         user_type_owner.setOnClickListener(new View.OnClickListener() {
@@ -113,19 +148,9 @@ public class UserTypeSet extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     userManager.saveUserInfoInputCompleted(true);
-
                     startActivity(new Intent(UserTypeSet.this, Login.class));
 
-//                    if ("owner".equals(userType)) {
-//                        Log.d("LoginActivity", "Navigating to HomeRecruiter");
-//                        startActivity(new Intent(UserTypeSet.this, HomeOwner.class));
-//                    } else if("worker".equals(userType)) {
-//                        Log.d("LoginActivity", "Navigating to HomeApplicant");
-//                        startActivity(new Intent(UserTypeSet.this, HomeWorker.class));
-//                    }
-
                     Log.e("tag", "추가정보입력 서버응답 성공" + response.code() + ", " + response.message());
-
                 } else {
                     Toast.makeText(context, "추가정보입력에 실패했습니다", Toast.LENGTH_SHORT).show();
                     Log.e("tag", "추가정보입력 서버응답 오류코드" + response.code() + ", " + response.message());
@@ -162,7 +187,6 @@ public class UserTypeSet extends AppCompatActivity {
                     finish();
 
                     Log.e("tag", "추가정보입력 서버응답 성공" + response.code() + ", " + response.message());
-                    
                 } else {
                     Toast.makeText(context, "추가정보입력에 실패했습니다", Toast.LENGTH_SHORT).show();
                     Log.e("tag", "추가정보입력 서버응답 오류코드" + response.code() + ", " + response.message());

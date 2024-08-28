@@ -3,10 +3,12 @@ package com.example.hero.matching.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,17 +20,25 @@ import com.example.hero.etc.ApiService;
 import com.example.hero.etc.OnItemClickListenerMatching;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
+import com.example.hero.etc.UserManager;
+import com.example.hero.home.activity.HomeOwner;
+import com.example.hero.home.activity.HomeWorker;
+import com.example.hero.job.activity.JobList;
 import com.example.hero.matching.adapter.MatchingRecommendAdapter;
 import com.example.hero.matching.adapter.MatchingRecommendListAdapter;
 import com.example.hero.matching.adapter.MentorMenteeAdapter;
 import com.example.hero.matching.dto.MatchingListInfoDTO;
 import com.example.hero.matching.dto.MentorRecommendationResponseDTO;
+import com.example.hero.mypage.activity.MyPageOwner;
+import com.example.hero.mypage.activity.MyPageWorker;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.relex.circleindicator.CircleIndicator3;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,12 +63,14 @@ public class MatchingList extends AppCompatActivity {
     Button goBoardWriteBtn;
 
     private TokenManager tokenManager;
+    private UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matching_list);
         tokenManager = new TokenManager(this);
+        userManager = new UserManager(this);
 
         itemClickListener = userId -> {
             selectId = userId;
@@ -71,6 +83,44 @@ public class MatchingList extends AppCompatActivity {
         recyclerViewMentorMentee = findViewById(R.id.recyclerViewMentorMentee);
         TabLayout layout_tab = findViewById(R.id.layout_tab);
         txt_count = findViewById(R.id.txt_count);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_home) {
+                    if (userManager.getUserType().equals("owner")) {
+                        startActivity(new Intent(MatchingList.this, HomeOwner.class));
+                        finish();
+                        return true;
+                    } else {
+                        startActivity(new Intent(MatchingList.this, HomeWorker.class));
+                        finish();
+                        return true;
+                    }
+                } else if (id == R.id.nav_search) {
+                    startActivity(new Intent(MatchingList.this, JobList.class));
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_matching) {
+                    startActivity(new Intent(MatchingList.this, MatchingList.class));
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_mypage) {
+                    if (userManager.getUserType().equals("owner")) {
+                        startActivity(new Intent(MatchingList.this, MyPageOwner.class));
+                        finish();
+                        return true;
+                    } else {
+                        startActivity(new Intent(MatchingList.this, MyPageWorker.class));
+                        finish();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         call.enqueue(new Callback<List<MatchingListInfoDTO>>() {
             @Override
@@ -120,19 +170,32 @@ public class MatchingList extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 int tabCount = layout_tab.getSelectedTabPosition();
                 if (tabCount == 0) {
-                    matchingMentorList = tempMatchingList.stream()
-                            .filter(t -> t.getWriterType().equals("mentor") && t.getMatchingName().contains(s))
-                            .collect(Collectors.toList());
-                    if (matchingMentorList.size() == 0) {
-                        matchingList.clear();
-                        mentorMenteeAdapter.notifyDataSetChanged();
+
+                    if (matchingMentorList != null) {
+                        matchingMentorList = tempMatchingList.stream()
+                                .filter(t -> t.getWriterType().equals("mentor") && t.getMatchingName().contains(s))
+                                .collect(Collectors.toList());
+                        // 스트림 처리 로직
                     } else {
-                        matchingList.clear();
-                        matchingList.addAll(matchingMentorList);
-                        mentorMenteeAdapter.notifyDataSetChanged();
+                        // myList가 null인 경우의 처리 로직
+                        Log.e("MatchingList", "List is null");
                     }
 
-                    txt_count.setText(matchingList.size() + "개");
+                    if (matchingMentorList != null && !matchingMentorList.isEmpty()) {
+                        if (matchingMentorList.size() == 0) {
+                            matchingList.clear();
+                            mentorMenteeAdapter.notifyDataSetChanged();
+                        } else {
+                            matchingList.clear();
+                            matchingList.addAll(matchingMentorList);
+                            mentorMenteeAdapter.notifyDataSetChanged();
+                            txt_count.setText("총 " + matchingList.size() + "개");
+                        }
+                    } else {
+                        // 리스트가 null이거나 비어있는 경우의 처리
+                        Log.d("MatchingList", "List is either null or empty");
+                    }
+
                 } else if (tabCount == 1) {
                     matchingMenteeList = tempMatchingList.stream()
                             .filter(t -> t.getWriterType().equals("mentee") && t.getMatchingName().contains(s))
@@ -198,16 +261,11 @@ public class MatchingList extends AppCompatActivity {
                     }
                 }
             }
-
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
         matchingRecom();
@@ -230,7 +288,6 @@ public class MatchingList extends AppCompatActivity {
                     viewPager.setAdapter(adapter);
 
                     Log.e("tag", "멘토추천 서버요청 성공");
-
                 } else {
                     Log.e("tag", "멘토추천 서버응답 실패" + response.code() + ", " + response.message());
                     Log.e("tag", "멘토추천 서버응답 실패" + response.errorBody());
@@ -260,7 +317,6 @@ public class MatchingList extends AppCompatActivity {
                     viewPager.setAdapter(adapter);
 
                     Log.e("tag", "멘토추천 리스트 서버요청 성공");
-
                 } else {
                     Log.e("tag", "멘토추천 리스트 서버응답 실패" + response.code() + ", " + response.message());
                     Log.e("tag", "멘토추천 리스트 서버응답 실패" + response.errorBody());
@@ -272,10 +328,5 @@ public class MatchingList extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 
 }

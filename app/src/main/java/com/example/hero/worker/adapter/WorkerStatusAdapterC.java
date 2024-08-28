@@ -65,7 +65,7 @@ public class WorkerStatusAdapterC extends RecyclerView.Adapter<com.example.hero.
             work_period_end = itemView.findViewById(R.id.work_period_end);
             recruitment_period_start = itemView.findViewById(R.id.recruitment_period_start);
             recruitment_period_end = itemView.findViewById(R.id.recruitment_period_end);
-            type = itemView.findViewById(R.id.type);
+
             salary = itemView.findViewById(R.id.salary);
 
             itemView.setOnClickListener(v -> {
@@ -78,19 +78,16 @@ public class WorkerStatusAdapterC extends RecyclerView.Adapter<com.example.hero.
         public void bind(final CareerDTO jobInfo, final OnItemClickListener listener) {
             currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
 
-            address_country.setText(jobInfo.getJobName());
-            address_city.setText(jobInfo.getCountry());
-            cropForm.setText(jobInfo.getCity());
-            cropType.setText(jobInfo.getCropForm());
-            title.setText(jobInfo.getCropType());
+            address_country.setText(jobInfo.getCountry());
+            address_city.setText(jobInfo.getCity());
+            cropForm.setText(jobInfo.getCropForm());
+            cropType.setText(jobInfo.getCropType());
+            title.setText(jobInfo.getJobName());
 
             work_period_start.setText(jobInfo.getStartWorkDate());
             work_period_end.setText(jobInfo.getEndWorkDate());
             recruitment_period_start.setText(jobInfo.getStartRecruitDate());
             recruitment_period_end.setText(jobInfo.getEndRecruitDate());
-
-            //협의 or 일급
-//            type.setText(participateInfoDTO.getCropType());
 
             salary.setText(String.valueOf(jobInfo.getPay()));
 

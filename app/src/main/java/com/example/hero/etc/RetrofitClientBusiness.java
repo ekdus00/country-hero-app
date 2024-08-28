@@ -13,12 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientBusiness {
     private Context context;
     private static Retrofit retrofit = null;
-//    private static final String BASE_URL = "https://api.odcloud.kr/api/nts-businessman/v1/status/";
     private static final String BASE_URL = "https://api.odcloud.kr/";
-    public static Retrofit getClient(Context context) {
-//        String service_key = context.getString(R.string.business_auth_key);
-//        String BASE_URL = "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=" + service_key;
-
+    public static Retrofit getClient(Context context) { //사업자 번호 인증
         if (retrofit == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -35,12 +31,4 @@ public class RetrofitClientBusiness {
         }
         return retrofit;
     }
-
-//    public static ApiService getClient(String serviceKey) {
-//        return new Retrofit.Builder()
-//                .baseUrl(BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//                .create(ApiService.class);
-//    }
 }

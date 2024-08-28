@@ -51,7 +51,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView address_country, address_city, title;
+        TextView address_country, address_city, review_list_title, cropForm, cropType;
         TextView work_period_start, work_period_end;
         int currentJobId;
         String targetUserId;
@@ -61,7 +61,10 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
             address_country = itemView.findViewById(R.id.address_country);
             address_city = itemView.findViewById(R.id.address_city);
 
-            title = itemView.findViewById(R.id.title);
+            cropForm = itemView.findViewById(R.id.cropForm);
+            cropType = itemView.findViewById(R.id.cropType);
+
+            review_list_title = itemView.findViewById(R.id.review_list_title);
 
             work_period_start = itemView.findViewById(R.id.work_period_start);
             work_period_end = itemView.findViewById(R.id.work_period_end);
@@ -79,18 +82,20 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
             currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
             targetUserId = jobInfo.getTargetUserId();
 
-            address_country.setText(jobInfo.getJobName());
-            address_city.setText(jobInfo.getCountry());
+            address_country.setText(jobInfo.getCountry());
+            address_city.setText(jobInfo.getCity());
+            cropForm.setText(jobInfo.getCropForm());
+            cropType.setText(jobInfo.getCropType());
 
-            title.setText(jobInfo.getCropType());
+            review_list_title.setText(jobInfo.getJobName());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart = jobInfo.getStartWorkDate().format(formatter);
-            work_period_start.setText(formattedStart);
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            String formattedStart = jobInfo.getStartWorkDate().format(formatter);
+            work_period_start.setText(jobInfo.getStartWorkDate());
 
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedStart2 = jobInfo.getEndWorkDate().format(formatter2);
-            work_period_end.setText(formattedStart2);
+//            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            String formattedStart2 = jobInfo.getEndWorkDate().format(formatter2);
+            work_period_end.setText(jobInfo.getEndWorkDate());
 
         }
     }

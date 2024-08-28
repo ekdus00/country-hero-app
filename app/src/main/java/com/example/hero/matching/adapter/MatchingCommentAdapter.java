@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
 import com.example.hero.etc.OnCommentClickListener;
+import com.example.hero.job.adapter.JobCommentAdapter;
 import com.example.hero.matching.dto.MatchingPostCommentResponseDTO;
 
 import java.util.List;
@@ -37,7 +39,7 @@ public class MatchingCommentAdapter extends RecyclerView.Adapter<MatchingComment
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.matching_comment_list_item, parent, false);
-        return new ViewHolder(view, buttonClickListener);
+        return new ViewHolder(view, buttonClickListener, this);
     }
 
 
@@ -52,15 +54,17 @@ public class MatchingCommentAdapter extends RecyclerView.Adapter<MatchingComment
         return commentsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewContent, textViewAuthor, textViewDate;
         RecyclerView childRecyclerView;
         int commentId;
-        Button matching_comment_childBtn, matching_comment_editBtn, matching_comment_deleteBtn;
+        ImageButton matching_comment_childBtn, matching_comment_editBtn, matching_comment_deleteBtn;
+        MatchingCommentAdapter adapter;
 
-        public ViewHolder(View itemView, OnCommentClickListener buttonClickListener) {
+        public ViewHolder(View itemView, OnCommentClickListener buttonClickListener, MatchingCommentAdapter adapter) {
             super(itemView);
+            this.adapter = adapter;
+
             textViewContent = itemView.findViewById(R.id.matching_comment_content);
             textViewAuthor = itemView.findViewById(R.id.matching_comment_userName);
             childRecyclerView = itemView.findViewById(R.id.matching_commentChild_recyclerView);
@@ -74,7 +78,6 @@ public class MatchingCommentAdapter extends RecyclerView.Adapter<MatchingComment
                     buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.CHILD);
                 }
             });
-
             matching_comment_editBtn.setOnClickListener(v -> {
                 if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.EDIT);
@@ -82,10 +85,16 @@ public class MatchingCommentAdapter extends RecyclerView.Adapter<MatchingComment
             });
 
             matching_comment_deleteBtn.setOnClickListener(v -> {
-                if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                int position = getAdapterPosition();
+                if (buttonClickListener != null && position != RecyclerView.NO_POSITION) {
+                    // 데이터 수정
+                    adapter.commentsList.get(position).setCommentContent("삭제된 댓글입니다");
+                    // RecyclerView 업데이트
+                    adapter.notifyItemChanged(position);
                     buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.DELETE);
                 }
             });
+
         }
 
         public void bind(MatchingPostCommentResponseDTO dto, OnCommentClickListener buttonClickListener) {
@@ -99,6 +108,8 @@ public class MatchingCommentAdapter extends RecyclerView.Adapter<MatchingComment
                 MatchingChildCommentAdapter childAdapter = new MatchingChildCommentAdapter(dto.getChildCommentList());
                 childRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
                 childRecyclerView.setAdapter(childAdapter);
+
+                childRecyclerView.setVisibility(View.VISIBLE); // 자식 댓글이 있을 때 보이게 처리
 
             } else {
                 childRecyclerView.setVisibility(View.GONE);  // 자식 댓글이 없을 경우 RecyclerView 숨김 처리

@@ -7,6 +7,7 @@ import com.example.hero.employer.dto.JobPostEditResponseDTO;
 import com.example.hero.employer.dto.JobRequestDTO;
 import com.example.hero.employer.dto.JopPostUpdateRequestDTO;
 import com.example.hero.employer.dto.WorkerInfoDTO;
+import com.example.hero.job.dto.ClipCreateRequestDTO;
 import com.example.hero.job.dto.JobFilterDTO;
 import com.example.hero.job.dto.JobInfoDTO;
 import com.example.hero.job.dto.JobPostCommentDeleteRequestDTO;
@@ -95,6 +96,10 @@ public interface ApiService {
     @GET("/api/job/jobDetail/{selectedJobId}")
     Call<JobDetailResponseDTO> getJobDetail(@Path("selectedJobId") int selectedJobId);
 
+    //스크랩
+    @POST("/api/clip")
+    Call<Void> createScrap(@Body ClipCreateRequestDTO requestDTO);
+
     //구인자정보
     @GET("/api/job/{selectedJobId}/ownerInfo")
     Call<OwnerInfoResponseDTO> getOwnerInfo(@Path("selectedJobId") int selectedJobId);
@@ -122,13 +127,6 @@ public interface ApiService {
     Call<List<JobPostCommentResponseDTO>> createJobPostComment(
             @Body JobPostCommentRequestDTO requestDTO
     );
-
-//    //공고댓글 수정조회
-//    @GET("/api/comment/job/{selectedJobId}/{selectedCommentId}")
-//    Call<JobPostCommentEditResponseDTO> getJobPostComment(
-//            @Path("selectedJobId") int selectedJobId,
-//            @Path("selectedCommentId") int selectedCommentId
-//    );
 
     //공고댓글 수정
     @PUT("/api/comment/job")
@@ -335,8 +333,7 @@ public interface ApiService {
     @POST("/api/matching/matchingPost")
     Call<Void> matchingPost(@Part("request") RequestBody requestBody,
                             @Part MultipartBody.Part uploadImg);
-
-
+    
     @GET("/api/matching/matchingDetail/{matchingId}")
     Call<MatchingDetailResponseDTO> getMatchingDetail(@Path("matchingId") int matchingId);
 
@@ -352,23 +349,15 @@ public interface ApiService {
     @PUT("/api/comment/matching")
     Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentUpdate( @Body MatchingPostCommentUpdateRequestDTO matchingPostCommentUpdateRequestDTO);
 
-    @DELETE("/api/comment/matching")
-    Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentDelete(@Body MatchingPostCommentDeleteRequestDTO matchingPostCommentDeleteRequestDTO);
-
+    @HTTP(method = "DELETE", path="/api/comment/matching", hasBody = true)
+    Call<List<MatchingPostCommentResponseDTO>> matchingPostCommentDelete(@Body MatchingPostCommentDeleteRequestDTO requestDTO);
 
     @GET("/api/matching/matchingDetail/{selectedMatchingId}/edit")
     Call<MatchingPostEditResponseDTO> getMatchingPostEditInfo(@Path("selectedMatchingId") int selectedMatchingId);
 
+    @Multipart
     @PUT("/api/matching/matchingDetail/edit")
-    Call<MatchingDetailResponseDTO> matchingPostEdit(@Part("request") RequestBody requestBody,
-                                                     @Part MultipartBody.Part uploadImg);
-
-
-
-
-
-
-
+    Call<MatchingDetailResponseDTO> matchingPostEdit(@Part("request") RequestBody requestBody, @Part MultipartBody.Part uploadImg);
 
     //멘토 추천 리스트 조회
     @GET("/api/matching/mentorRecommendation")
@@ -380,7 +369,7 @@ public interface ApiService {
 
     //회원탈퇴
     @DELETE("/api/user/withdrawal")
-    Call<Void> withdrawalUser();
+    Call<Void> withdrawalUser(@Header("Authorization") String authorization);
 
     //푸시알림 승인
     @POST("/api/fcm/approve")

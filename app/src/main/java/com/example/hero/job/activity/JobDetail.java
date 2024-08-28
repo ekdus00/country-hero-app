@@ -15,15 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hero.clip.adapter.ClipAdapter;
+import com.example.hero.clip.dto.ClipDTO;
 import com.example.hero.employer.activity.EmployerStatus;
 import com.example.hero.employer.activity.JobEditPost;
 import com.example.hero.etc.ApiService;
@@ -34,6 +38,7 @@ import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.home.activity.HomeOwner;
 import com.example.hero.job.adapter.JobCommentAdapter;
+import com.example.hero.job.dto.ClipCreateRequestDTO;
 import com.example.hero.job.dto.JobInfoDTO;
 import com.example.hero.job.dto.JobPostCommentDeleteRequestDTO;
 import com.example.hero.job.dto.JobPostCommentRequestDTO;
@@ -41,6 +46,7 @@ import com.example.hero.job.dto.JobPostCommentResponseDTO;
 import com.example.hero.job.dto.JobDetailResponseDTO;
 import com.example.hero.job.dto.JobPostCommentUpdateRequestDTO;
 import com.example.hero.job.dto.ParticipateRequestDTO;
+import com.example.hero.login.activity.FindId;
 import com.example.hero.worker.activity.WorkerStatus;
 import com.naver.maps.map.OnMapReadyCallback;
 
@@ -80,9 +86,9 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
     public TextView job_detail_content;
     private NaverMap naverMap;
     public EditText job_comment_content;
-    public Button job_comment_send;
-    public Button job_comment_editBtn;
-    public Button job_comment_deleteBtn;
+    public ImageButton job_comment_send;
+    public ImageButton job_comment_editBtn;
+    public ImageButton job_comment_deleteBtn;
     public ImageView job_detail_image;
     public RecyclerView job_comment_recyclerView;
     private int jobId;
@@ -182,6 +188,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), EmployerData.class);
+                intent.putExtra("jobId", jobId);
                 startActivity(intent);
             }
         });
@@ -195,6 +202,15 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+        //스크랩 리스너
+        Button job_detail_clip = findViewById(R.id.job_detail_clip);
+        job_detail_clip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clipRequest();
+            }
+        });
+
         //공고댓글 작성 리스너
         job_comment_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +221,32 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
 
 
     } //oncreate()
+
+    public void clipRequest() {
+        ApiService apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
+
+        ClipCreateRequestDTO dto = new ClipCreateRequestDTO();
+        dto.setJobId(jobId);
+
+        Call<Void> call = apiService.createScrap(dto);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(JobDetail.this, "공고가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    Log.e("tag", "스크랩 서버응답 성공" + response.code() + ", " + response.message());
+                } else {
+                    Log.e("tag", "스크랩 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "스크랩 서버응답 오류" + response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("tag", "스크랩 서버요청 오류", t);
+            }
+        });
+    }
 
     public void onChildComment(int commentId) {
         final EditText editText = new EditText(this);
@@ -282,14 +324,16 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onResponse(Call<List<JobPostCommentResponseDTO>> call, Response<List<JobPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(JobDetail.this, JobDetail.class);
-                    intent.putExtra("jobId", jobId);
-                    startActivity(intent);
-                    Log.e("api", "공고상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
 
+                    List<JobPostCommentResponseDTO> comments = response.body();
+                    adapter = new JobCommentAdapter(comments, buttonClickListener);
+                    job_comment_recyclerView.setAdapter(adapter);
+
+                    Log.e("api", "공고상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
@@ -318,7 +362,8 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                     job_comment_recyclerView.setAdapter(adapter);
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
@@ -347,7 +392,8 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                     job_comment_recyclerView.setAdapter(adapter);
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
@@ -376,7 +422,8 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
 
                 } else {
                     Log.e("api", "공고상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "공고상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<JobPostCommentResponseDTO>> call, Throwable t) {
@@ -397,7 +444,11 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                     JobDetailResponseDTO jobDetails = response.body();
                     // 화면에 job 상세 정보 표시
                     job_detail_title.setText(jobDetails.getJobName());
-                    job_detail_day.setText(jobDetails.getCreatedJobDate());
+
+                    String createDate = jobDetails.getCreatedJobDate();
+                    String dateOnly = createDate.substring(0, 10);
+                    job_detail_day.setText(dateOnly);
+
                     job_detail_salary.setText(String.valueOf(jobDetails.getPay()));
                     job_detail_address_country.setText(jobDetails.getCountry());
                     job_detail_address_city.setText(jobDetails.getCity());
@@ -412,9 +463,7 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
                     job_detail_recruitNumber.setText(String.valueOf(jobDetails.getRecruitCount()));
                     job_detail_age.setText(String.valueOf(jobDetails.getAge()));
                     job_detail_recruiterName.setText(jobDetails.getUserName());
-
                     job_detail_addressDetail.setText(jobDetails.getWorkAddressDetail());
-
                     job_detail_preference.setText(jobDetails.getSpec());
                     job_detail_content.setText(jobDetails.getJobIntro());
 
@@ -485,39 +534,25 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void showDialog() {
-//        // LayoutInflater를 사용해 dialog_layout.xml을 불러옵니다.
-//        LayoutInflater inflater = getLayoutInflater();
-//        final View dialogView = inflater.inflate(R.layout.dialog_layout, null);
-
-        // AlertDialog를 생성하고 설정합니다.
+        // AlertDialog 생성
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("해당 공고에 지원하시겠습니까?");
 
-        // 확인 버튼 설정
         builder.setPositiveButton("확인", (dialog, which) -> {
-            // 확인 버튼 클릭시 동작
             participateRequest();
-            dialog.dismiss(); // 대화상자를 닫습니다.
+            dialog.dismiss();
         });
 
-        // 취소 버튼 설정
         builder.setNegativeButton("취소", (dialog, which) -> {
-            dialog.dismiss(); // 대화상자를 닫습니다.
+            dialog.dismiss();
         });
 
-        // AlertDialog를 표시합니다.
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-
-
-
-
     public void onMapReady(NaverMap naverMap) {
         this.naverMap = naverMap;
-
-        // 서버에서 받은 위치로 카메라 이동
         LatLng location = new LatLng(latitude, longitude);
         naverMap.moveCamera(CameraUpdate.scrollTo(location));
 
@@ -525,12 +560,4 @@ public class JobDetail extends AppCompatActivity implements OnMapReadyCallback {
         marker.setPosition(location);
         marker.setMap(naverMap);
     }
-
-
-
-
-
-
-
-
 }

@@ -1,5 +1,6 @@
 package com.example.hero.review.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -14,14 +15,10 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.hero.R;
-import com.example.hero.employer.dto.WorkerInfoDTO;
 import com.example.hero.etc.ApiService;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
-import com.example.hero.job.dto.JobPostCreateRequestDTO;
 import com.example.hero.review.dto.WorkerReviewUpdateRequestDTO;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +34,7 @@ public class ReviewPost extends AppCompatActivity {
     private TokenManager tokenManager;
     private int reviewJobId;
     private String reviewTargetId;
+    private int radioValue;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +53,6 @@ public class ReviewPost extends AppCompatActivity {
         radioGroupQ3 = findViewById(R.id.radioGroupQ3);
 
         review_post_editText = findViewById(R.id.review_post_editText);
-
-        score1 = getScoreFromRadioGroup(radioGroupQ1);
-        score2 = getScoreFromRadioGroup(radioGroupQ2);
-        score3 = getScoreFromRadioGroup(radioGroupQ3);
 
         reviewJobId = getIntent().getIntExtra("jobId", 0);
         reviewTargetId = getIntent().getStringExtra("targetUserId");
@@ -86,6 +80,9 @@ public class ReviewPost extends AppCompatActivity {
     
     private void reviewPostRequest() {
         String reviewContent = review_post_editText.getText().toString();
+        score1 = getScoreFromRadioGroup(radioGroupQ1);
+        score2 = getScoreFromRadioGroup(radioGroupQ2);
+        score3 = getScoreFromRadioGroup(radioGroupQ3);
 
         WorkerReviewUpdateRequestDTO dto = new WorkerReviewUpdateRequestDTO();
 
@@ -110,7 +107,7 @@ public class ReviewPost extends AppCompatActivity {
                     Log.e("tag", "상호평가(구직자) 서버요청 성공" + response.code());
                 } else {
                     Log.e("tag", "상호평가(구직자) 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("tag", "상호평가(구직자) 서버응답 오류" + response.errorBody().toString());
+//                    Log.e("tag", "상호평가(구직자) 서버응답 오류" + response.errorBody().toString());
                 }
             }
             @Override
@@ -124,8 +121,15 @@ public class ReviewPost extends AppCompatActivity {
     private int getScoreFromRadioGroup(RadioGroup group) {
         int radioButtonID = group.getCheckedRadioButtonId();
         View radioButton = group.findViewById(radioButtonID);
-        return Integer.parseInt(radioButton.getTag().toString());
+
+        if (radioButton != null) {
+            radioValue = Integer.parseInt(radioButton.getTag().toString());
+        } else {
+
+        }
+        return radioValue;
     }
+
 
 
 

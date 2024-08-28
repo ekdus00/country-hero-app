@@ -9,19 +9,22 @@
         android:id="@+id/toolbar"/>
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:background="#EDEDED"
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
+            android:layout_margin="20dp"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/review_employer_list_recyclerView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
                 android:clipToPadding="false"
-                android:background="#F0F0F0"
+                android:background="#EDEDED"
                 android:scrollbars="vertical"/>
         </LinearLayout>
     </LinearLayout>

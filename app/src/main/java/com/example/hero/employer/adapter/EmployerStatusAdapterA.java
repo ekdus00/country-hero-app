@@ -87,6 +87,7 @@ public class EmployerStatusAdapterA extends RecyclerView.Adapter<EmployerStatusA
             work_period_end = itemView.findViewById(R.id.work_period_end);
             recruitment_period_start = itemView.findViewById(R.id.recruitment_period_start);
             recruitment_period_end = itemView.findViewById(R.id.recruitment_period_end);
+
             participateCount = itemView.findViewById(R.id.participateCount);
 
             employer_status_modify = itemView.findViewById(R.id.employer_status_modify);
@@ -116,11 +117,11 @@ public class EmployerStatusAdapterA extends RecyclerView.Adapter<EmployerStatusA
         public void bind(final EmployInfoDTO jobInfo, final OnItemClickListener listener, final OnButtonClickListenerOwnerStatus buttonClickListener) {
             currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
 
-            address_country.setText(jobInfo.getJobName());
-            address_city.setText(jobInfo.getCountry());
-            cropForm.setText(jobInfo.getCity());
-            cropType.setText(jobInfo.getCropForm());
-            title.setText(jobInfo.getCropType());
+            address_country.setText(jobInfo.getCountry());
+            address_city.setText(jobInfo.getCity());
+            cropForm.setText(jobInfo.getCropForm());
+            cropType.setText(jobInfo.getCropType());
+            title.setText(jobInfo.getJobName());
 
             work_period_start.setText(jobInfo.getStartWorkDate());
             work_period_end.setText(jobInfo.getEndWorkDate());

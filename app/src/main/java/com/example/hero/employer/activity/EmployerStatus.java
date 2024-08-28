@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,7 +83,7 @@ public class EmployerStatus extends AppCompatActivity {
         };
 
         //공고작성
-        Button employer_status_job_post = findViewById(R.id.employer_status_job_post);
+        ImageButton employer_status_job_post = findViewById(R.id.employer_status_job_post);
         employer_status_job_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +91,20 @@ public class EmployerStatus extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //뒤로가기
+        Button btn_Back = findViewById(R.id.btn_back);
+        btn_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView textView = toolbar.findViewById(R.id.toolbar_title);
+        textView.setText("나의공고");
 
         employer_status_progress_recyclerView = findViewById(R.id.employer_status_progress_recyclerView);
         employer_status_deadline_recyclerView = findViewById(R.id.employer_status_deadline_recyclerView);

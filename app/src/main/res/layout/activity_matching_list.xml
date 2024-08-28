@@ -21,28 +21,41 @@
             android:layout_weight="2.5"
             android:layout_height="wrap_content"
             app:queryHint="검색어를 입력해주세요"
-            android:background="@drawable/border_black"
+            android:background="@drawable/rounded_border_black"
             app:iconifiedByDefault="false"
             />
         <Button
             android:id="@+id/go_board_write_btn"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="43dp"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_background_btn"
             android:layout_marginLeft="10dp"
             android:backgroundTint="#49654A"
             android:text="글 작성"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_margin="10dp"
-        android:padding="3dp"
+        android:layout_marginTop="10dp"
+        android:background="#EDEDED"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <TextView
+            android:text="멘토추천"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp"
+            android:textSize="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:orientation="vertical"
             android:padding="3dp"
@@ -51,13 +64,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <me.relex.circleindicator.CircleIndicator3
-                android:id="@+id/indicatior"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_gravity="bottom|center"/>
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout
@@ -68,18 +75,16 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/pager2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <me.relex.circleindicator.CircleIndicator3
-                android:id="@+id/indicatior2"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_gravity="bottom|center"/>
+                android:layout_height="wrap_content"/>
+<!--            <me.relex.circleindicator.CircleIndicator3-->
+<!--                android:id="@+id/indicatior2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="10dp"-->
+<!--                android:layout_gravity="bottom|center"/>-->
         </LinearLayout>
 
 
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/txt_count"
@@ -87,11 +92,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         android:text="45개"
-        android:textSize="25sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         />
     <com.google.android.material.tabs.TabLayout
+        android:background="@drawable/border_top_gray"
         android:id="@+id/layout_tab"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -119,23 +126,52 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="315dp"
+        android:background="#EDEDED"
         android:fillViewport="true"
         >
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:id="@+id/recyclerViewMentorMentee"
+            android:background="#EDEDED"
             android:layout_width="match_parent"
+            android:padding="8dp"
             android:layout_height="0dp"
             />
     </ScrollView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomnavi"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#CDCDCD"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled"
-        />
+        android:layout_height="wrap_content">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="bottom"
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemIconTint="@color/black"
+            app:itemTextColor="@color/black"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:itemBackground="@android:color/white">
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
+    </LinearLayout>
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottomnavi"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#CDCDCD"-->
+<!--        app:menu="@menu/bottom_nav_menu"-->
+<!--        app:labelVisibilityMode="labeled"-->
+<!--        />-->
 
 </LinearLayout>

@@ -91,7 +91,7 @@ public class ModifyOwner extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TextView textView = toolbar.findViewById(R.id.toolbar_title);
-        textView.setText("회원 정보 수정");
+        textView.setText("회원정보수정");
 
         //회원정보수정 완료
         modify_send = findViewById(R.id.modify_send);

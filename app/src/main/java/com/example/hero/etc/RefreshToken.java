@@ -83,15 +83,6 @@ public class RefreshToken extends AppCompatActivity {
         }
     }
 
-//    private void scheduleTokenRefresh() {
-//        long accessRefreshTime = tokenManager.getAccessExpirationTime();
-//        long refreshLogoutTime = tokenManager.getRefreshExpirationTime();
-//
-//        handler.postDelayed(this::refreshToken, accessRefreshTime);
-//        handler.postDelayed(this::logoutUser, refreshLogoutTime);
-//    }
-
-
 
     private void refreshToken() {
         String refreshToken = tokenManager.getRefreshToken();
@@ -114,7 +105,6 @@ public class RefreshToken extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Headers headers = response.headers();
-//                    String refreshAccessToken = headers.get("Authorization");
                     String refreshAccessToken = headers.get("Authorization").replace("Bearer ", "");
                     tokenManager.saveAccessTokens(refreshAccessToken);
 
@@ -128,21 +118,17 @@ public class RefreshToken extends AppCompatActivity {
                     Log.v(TAG, "액세스토큰 남은시간: " + c);
                     Log.v(TAG, "리프레시토큰 남은시간: " + d);
 
-//                    newAccessToken = refreshAccessToken;
-
                     Log.e("tag", "토큰재발급 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
                     Log.e("tag", "토큰재발급 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("tag", "토큰재발급 서버응답 오류" + response.errorBody().toString());
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("tag", "토큰재발급 서버요청 오류", t);
             }
         });
-
     }
 
     private void logoutUser() {

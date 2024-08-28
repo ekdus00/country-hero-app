@@ -72,7 +72,7 @@ public class FindId extends AppCompatActivity {
         dto.setUserName(name);
         dto.setUserBirth(birth);
 
-        ApiService apiService = RetrofitClientWithoutAuth.getClient2().create(ApiService.class);
+        ApiService apiService = RetrofitClientWithoutAuth.getClient3().create(ApiService.class);
 
         //아이디 찾기 서버요청
         Call<String> call = apiService.findUserId(dto);

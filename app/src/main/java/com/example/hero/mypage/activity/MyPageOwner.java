@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -78,7 +79,7 @@ public class MyPageOwner extends AppCompatActivity {
         });
 
         //설정
-        Button setting_btn = findViewById(R.id.setting_btn);
+        ImageButton setting_btn = findViewById(R.id.setting_btn);
         setting_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,16 +87,6 @@ public class MyPageOwner extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        //지원현황
-//        Button my_page_employer_status_btn = findViewById(R.id.myPage_employer_status_btn);
-//        my_page_employer_status_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), EmployerStatus.class);
-//                startActivity(intent);
-//            }
-//        });
 
         //상호평가
         Button myPage_review_btn = findViewById(R.id.myPage_review_btn);

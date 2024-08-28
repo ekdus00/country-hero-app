@@ -30,6 +30,7 @@ import com.example.hero.etc.ApiService;
 import com.example.hero.R;
 import com.example.hero.etc.GsonLocalDateAdapter;
 import com.example.hero.etc.RetrofitClient;
+import com.example.hero.etc.RetrofitClientWithoutAuth;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.etc.UserManager;
 import com.example.hero.job.dto.JobPostCreateRequestDTO;
@@ -151,11 +152,6 @@ public class JobPost extends AppCompatActivity {
         address_postcode = findViewById(R.id.address_postcode);
         address_main = findViewById(R.id.address_main);
 
-//        address_btn.setOnClickListener(v -> {
-//            Intent intent = new Intent(JobPost.this, AddressActivity.class);
-//            startActivityForResult(intent, AddressActivity.ADDRESS_REQUEST_CODE);
-//        });
-
         //공고작성 완료
         btn_send = findViewById(R.id.job_post_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -211,24 +207,14 @@ public class JobPost extends AppCompatActivity {
 
         //작업기간 데이트피커
         String text_dateStart = textView_date_start.getText().toString();
-//        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-//        LocalDate startWorkDate = LocalDate.parse(text_dateStart, formatter1);
-
         String text_dateEnd = textView_date_end.getText().toString();
-//        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-//        LocalDate endWorkDate = LocalDate.parse(text_dateEnd, formatter2);
 
         //작업요일 라디오
         String text_workDay = getWorkDay();
 
         //작업시간 스피너
         String text_workTimeStart = working_time_start.getSelectedItem().toString();
-//        DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("HH:mm");
-//        LocalTime startWorkTime = LocalTime.parse(text_workTimeStart, formatter3);
-
         String text_workTimeEnd = working_time_end.getSelectedItem().toString();
-//        DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("HH:mm");
-//        LocalTime endWorkTime = LocalTime.parse(text_workTimeEnd, formatter4);
 
         //급여 에딧
         String text_salaryValue = work_salary_value.getText().toString();
@@ -236,12 +222,7 @@ public class JobPost extends AppCompatActivity {
 
         //모집기간 데이트피커
         String text_recruitStart = textView_recruit_start.getText().toString();
-//        DateTimeFormatter formatter5 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-//        LocalDate startRecruitDate = LocalDate.parse(text_recruitStart, formatter5);
-
         String text_recruitEnd = textView_recruit_end.getText().toString();
-//        DateTimeFormatter formatter6 = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-//        LocalDate endRecruitDate = LocalDate.parse(text_recruitEnd, formatter6);
 
         //모집인원 에딧
         String text_recruitNumber = textView_recruit_number.getText().toString();
@@ -272,9 +253,6 @@ public class JobPost extends AppCompatActivity {
         //소개
         String text_introduction = textView_recruit_introduction.getText().toString();
 
-        //이미지
-        //imageUri
-
         JobPostCreateRequestDTO jobPostDTO = new JobPostCreateRequestDTO();
 
         String id = userManager.getUserId();
@@ -304,7 +282,6 @@ public class JobPost extends AppCompatActivity {
         jobPostDTO.setWorkAddressDetail(text_addressDetail);
 
         MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, JobPost.this);
-//        jobPostDTO.setUploadImgFile(image);
 
         Gson gson = GsonLocalDateAdapter.getGson();
         String json = gson.toJson(jobPostDTO);

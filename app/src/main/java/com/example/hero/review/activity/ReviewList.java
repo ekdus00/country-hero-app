@@ -28,7 +28,9 @@ import com.example.hero.job.activity.JobDetail;
 import com.example.hero.job.activity.JobList;
 import com.example.hero.job.adapter.JobListAdapter;
 import com.example.hero.job.dto.JobInfoDTO;
+import com.example.hero.review.adatper.ReviewEmployerListAdapter;
 import com.example.hero.review.adatper.ReviewListAdapter;
+import com.example.hero.review.dto.OwnerReviewInfoDTO;
 import com.example.hero.review.dto.WorkerReviewInfoDTO;
 
 import retrofit2.Call;
@@ -54,7 +56,7 @@ public class ReviewList extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView textView = toolbar.findViewById(R.id.toolbar_title);
-        textView.setText("상호평가");
+        textView.setText("상호평가 가능목록");
 
         review_list_recyclerView = findViewById(R.id.review_list_recyclerView);
         review_list_recyclerView.setLayoutManager(new LinearLayoutManager(ReviewList.this));
@@ -82,8 +84,6 @@ public class ReviewList extends AppCompatActivity {
 
     }//onCreate()
 
-
-
     private void reviewListRequest() {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
@@ -94,23 +94,9 @@ public class ReviewList extends AppCompatActivity {
             public void onResponse(Call<List<WorkerReviewInfoDTO>> call, Response<List<WorkerReviewInfoDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
-                    if (jobList != null) {
-                        jobList.clear();  // 기존 데이터를 지우고
-                        jobList.addAll(response.body());  // 새 데이터를 추가합니다.
-                        adapter.notifyDataSetChanged();
-                    }
-
-
-//                    WorkerReviewInfoDTO workerInfoDTO = response.body();
-//
-//                    List<EmployInfoDTO> list1 = employResponseDTO.getOpenEmployJobPostList();
-//                    List<EmployInfoDTO> list2 = employResponseDTO.getCloseEmployJobPostList();
-//
-//                    adapter1 = new EmployerStatusAdapterA(list1, itemClickListener);
-//                    adapter2 = new EmployerStatusAdapterB(list2, itemClickListener);
-//
-//                    employer_status_progress_recyclerView.setAdapter(adapter1);
-//                    employer_status_deadline_recyclerView.setAdapter(adapter2);
+                    List<WorkerReviewInfoDTO> list = response.body();
+                    adapter = new ReviewListAdapter(list, btnClickListener);
+                    review_list_recyclerView.setAdapter(adapter);
 
                     Log.e("tag", "상호평가목록(구직자) 서버응답 성공" + response.code() + ", " + response.message());
                 } else {

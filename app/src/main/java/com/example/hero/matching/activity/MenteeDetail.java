@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hero.R;
@@ -24,6 +25,8 @@ import com.example.hero.etc.OnCommentClickListener;
 import com.example.hero.etc.RetrofitClient;
 import com.example.hero.etc.TokenManager;
 import com.example.hero.etc.UserManager;
+import com.example.hero.job.adapter.JobCommentAdapter;
+import com.example.hero.job.dto.JobPostCommentResponseDTO;
 import com.example.hero.matching.adapter.MatchingCommentAdapter;
 import com.example.hero.matching.dto.MatchingDetailResponseDTO;
 import com.example.hero.matching.dto.MatchingPostCommentDeleteRequestDTO;
@@ -33,6 +36,7 @@ import com.example.hero.matching.dto.MatchingPostCommentUpdateRequestDTO;
 import com.example.hero.resume.activity.ResumeCheck;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,7 +61,7 @@ public class MenteeDetail extends AppCompatActivity {
 
     TextView comment;
     ImageButton submitCommentBtn;
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
     MatchingCommentAdapter commentAdapter;
     ScrollView scrollView;
 
@@ -69,6 +73,7 @@ public class MenteeDetail extends AppCompatActivity {
     private TokenManager tokenManager;
     private UserManager userManager;
     private ApiService apiService;
+    private List<MatchingPostCommentResponseDTO> commentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,38 +88,6 @@ public class MenteeDetail extends AppCompatActivity {
         } else {
             matchingId = Integer.parseInt(intent.getStringExtra("matchingId"));
         }
-        title = findViewById(R.id.title_text);
-        name = findViewById(R.id.txt_name);
-        createdDate = findViewById(R.id.txt_created_date);
-        userName = findViewById(R.id.txt_user_name);
-        grade = findViewById(R.id.txt_grade);
-        area = findViewById(R.id.txt_area);
-        career = findViewById(R.id.txt_career);
-        eduDate = findViewById(R.id.txt_edu_date);
-        eduContent = findViewById(R.id.txt_edu_content);
-        scrollView = findViewById(R.id.scroll_view);
-
-        recyclerView = findViewById(R.id.recycler_view);
-
-        goMatchingPostEditBtn = findViewById(R.id.edit_btn);
-        goMatchingPostEditBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenteeDetail.this, MatchingPost.class);
-                intent.putExtra("matchingId", matchingId);
-                intent.putExtra("isEdit", true);
-                startActivity(intent);
-            }
-        });
-
-        comment = findViewById(R.id.txt_comment);
-        submitCommentBtn = findViewById(R.id.submit_comment_btn);
-        submitCommentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                commentCreate();
-            }
-        });
 
         commentRequest();
         buttonClickListener = (commentId, buttonType) -> {
@@ -136,6 +109,43 @@ public class MenteeDetail extends AppCompatActivity {
                     break;
             }
         };
+
+        title = findViewById(R.id.title_text);
+        name = findViewById(R.id.txt_name);
+//        createdDate = findViewById(R.id.txt_created_date);
+        userName = findViewById(R.id.txt_user_name);
+        grade = findViewById(R.id.txt_grade);
+        area = findViewById(R.id.txt_area);
+        career = findViewById(R.id.txt_career);
+        eduDate = findViewById(R.id.txt_edu_date);
+        eduContent = findViewById(R.id.txt_edu_content);
+        scrollView = findViewById(R.id.scroll_view);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        commentAdapter = new MatchingCommentAdapter(commentList, buttonClickListener);
+        recyclerView.setAdapter(commentAdapter);
+
+        goMatchingPostEditBtn = findViewById(R.id.edit_btn);
+        goMatchingPostEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenteeDetail.this, MatchingPost.class);
+                intent.putExtra("matchingId", matchingId);
+                intent.putExtra("isEdit", true);
+                startActivity(intent);
+            }
+        });
+
+        comment = findViewById(R.id.txt_comment);
+        submitCommentBtn = findViewById(R.id.submit_comment_btn);
+        submitCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commentCreate();
+            }
+        });
+
 
         if (matchingId != -1) {
             apiService =  RetrofitClient.getClient(tokenManager).create(ApiService.class);
@@ -178,8 +188,8 @@ public class MenteeDetail extends AppCompatActivity {
             });
         }
 
-        backBtn = findViewById(R.id.back_btn); // 뒤로가기 버튼의 객체(linear layout)를 id로 찾아서 받아옴
-        backBtn.setOnClickListener(new View.OnClickListener() { // 뒤로가기 버튼(linear layout)에 클릭 이벤트를 달아줌
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenteeDetail.this, MatchingList.class);
@@ -271,15 +281,20 @@ public class MenteeDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<MatchingPostCommentResponseDTO>> call, Response<List<MatchingPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(MenteeDetail.this, MenteeDetail.class);
-                    intent.putExtra("matchingId", matchingId);
-                    startActivity(intent);
-//                    startActivity(new Intent(JobDetail.this, JobDetail.class));
-                    Log.e("api", "매칭상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
 
+                    List<MatchingPostCommentResponseDTO> comments = response.body();
+                    commentAdapter = new MatchingCommentAdapter(comments, buttonClickListener);
+                    recyclerView.setAdapter(commentAdapter);
+
+//                    Intent intent = new Intent(MenteeDetail.this, MenteeDetail.class);
+//                    intent.putExtra("matchingId", matchingId);
+//                    startActivity(intent);
+
+                    Log.e("api", "매칭상세 댓글 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
                     Log.e("api", "매칭상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<MatchingPostCommentResponseDTO>> call, Throwable t) {
@@ -303,10 +318,13 @@ public class MenteeDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<MatchingPostCommentResponseDTO>> call, Response<List<MatchingPostCommentResponseDTO>> response) {
                 if (response.isSuccessful()) {
-
+                    List<MatchingPostCommentResponseDTO> comments = response.body();
+                    commentAdapter = new MatchingCommentAdapter(comments, buttonClickListener);
+                    recyclerView.setAdapter(commentAdapter);
                 } else {
                     Log.e("api", "매칭상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<MatchingPostCommentResponseDTO>> call, Throwable t) {
@@ -335,7 +353,8 @@ public class MenteeDetail extends AppCompatActivity {
                     recyclerView.setAdapter(commentAdapter);
                 } else {
                     Log.e("api", "매칭상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<MatchingPostCommentResponseDTO>> call, Throwable t) {
@@ -363,7 +382,8 @@ public class MenteeDetail extends AppCompatActivity {
                     recyclerView.setAdapter(commentAdapter);
                 } else {
                     Log.e("api", "매칭상세 댓글 서버응답 오류코드" + response.code() + ", " + response.message());
-                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());                }
+                    Log.e("api", "매칭상세 댓글 서버응답 오류" + response.errorBody().toString());
+                }
             }
             @Override
             public void onFailure(Call<List<MatchingPostCommentResponseDTO>> call, Throwable t) {

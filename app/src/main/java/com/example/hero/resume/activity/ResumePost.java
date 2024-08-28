@@ -35,6 +35,7 @@ import com.example.hero.mypage.dto.OwnerUserInfoUpdateRequestDTO;
 import com.example.hero.resume.adapter.CareerAdapter;
 import com.example.hero.resume.dto.ResumeEditResponseDTO;
 import com.example.hero.resume.dto.ResumeUpdateRequestDTO;
+import com.example.hero.review.adatper.ReviewEmployerListAdapter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,11 +63,12 @@ public class ResumePost extends AppCompatActivity {
     private CareerAdapter adapter;
     private Button resume_career_btn, resume_send;
     private RecyclerView resume_career_recyclerView;
-    private List<String> resumePostList2 = new ArrayList<>();
+    private List<String> resumePostList = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resume_post);
         tokenManager = new TokenManager(this);
+        resume_career_btn = findViewById(R.id.resume_career_btn);
 
         resume_info = findViewById(R.id.resume_info);
         resume_image_imageView = findViewById(R.id.resume_image_imageView);
@@ -75,22 +77,22 @@ public class ResumePost extends AppCompatActivity {
         resume_name = findViewById(R.id.resume_name);
 
         resume_career_edit = findViewById(R.id.resume_career_edit);
-        resume_career_btn = findViewById(R.id.resume_career_btn);
         resume_career_recyclerView = findViewById(R.id.resume_career_recyclerView);
 
-        adapter = new CareerAdapter(resumePostList2);
+        adapter = new CareerAdapter(resumePostList);
         resume_career_recyclerView.setAdapter(adapter);
         resume_career_recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         resume_career_btn.setOnClickListener(v -> {
+            Log.d("ResumePost", "Button Clicked");
             String text = resume_career_edit.getText().toString();
             if (!text.isEmpty()) {
-                resumePostList2.add(text);
+
+                resumePostList.add(text);
                 adapter.notifyDataSetChanged();
                 resume_career_edit.setText("");
             }
         });
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,7 +127,7 @@ public class ResumePost extends AppCompatActivity {
         MultipartBody.Part image = prepareFilePart("uploadImg", imageUri, ResumePost.this);
 
         ResumeUpdateRequestDTO dto = new ResumeUpdateRequestDTO();
-        dto.setEtcCareer(resumePostList2);
+        dto.setEtcCareer(resumePostList);
         dto.setUserIntro(text_resume_info);
 
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
@@ -167,9 +169,10 @@ public class ResumePost extends AppCompatActivity {
                     resume_review_result.setText(String.valueOf(dto.getTotalReviewScore()));
                     resume_info.setText(dto.getUserIntro());
 
-                    List<String> resumePostList = dto.getEtcCareer();
-                    adapter = new CareerAdapter(resumePostList);
-                    resume_career_recyclerView.setAdapter(adapter);
+                    List<String> list = dto.getEtcCareer();
+//                    resumePostList.clear();  // 기존 목록을 지우고
+                    resumePostList.addAll(list);  // 새 데이터를 추가
+                    adapter.notifyDataSetChanged();
 
                     resume_post_imageName.setText(dto.getUploadImgFileName());
 

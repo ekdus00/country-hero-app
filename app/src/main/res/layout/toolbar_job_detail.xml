@@ -13,35 +13,53 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="53dp"
-            android:layout_marginLeft="3dp"
             android:id="@+id/btn_back"
+            android:layout_gravity="left"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="3dp"
             android:background="@color/white"
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/back_button"
-            style="?android:attr/borderlessButtonStyle"
             android:text="@string/back"
-            android:textSize="18sp"
-            android:textColor="@color/black">
-        </Button>
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <TextView
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:drawableTint="#000000"
             android:text="(공고제목)"
             android:id="@+id/job_detail_title"
             android:textColor="@color/black"
             android:textSize="20sp">
         </TextView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <Button
-            android:text="북마크"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </Button>
+            android:layout_gravity="right"
+            android:layout_marginTop="5dp"
+            android:id="@+id/job_detail_clip"
+            android:layout_marginRight="15dp"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#A1C29D"
+            android:drawableTop="@drawable/icon_clip"
+            style="?android:attr/borderlessButtonStyle"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
     </LinearLayout>
 </androidx.appcompat.widget.Toolbar>

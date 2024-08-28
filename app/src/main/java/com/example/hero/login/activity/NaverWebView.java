@@ -108,12 +108,6 @@ public class NaverWebView extends AppCompatActivity {
                         startActivity(intent);
                     }
 
-//                    if ("Additional information required".equals(responseBody.trim())) {
-//                        Intent intent = new Intent(NaverWebView.this, UserTypeSet.class);
-//                        intent.putExtra("loginType", "Naver");
-//                        startActivity(intent);
-//                    }
-
                     if ("owner".equals(userType)) {
                         Log.d("LoginActivity", "Navigating to HomeRecruiter");
                         startActivity(new Intent(NaverWebView.this, HomeOwner.class));
@@ -168,11 +162,6 @@ public class NaverWebView extends AppCompatActivity {
                         tokenManager.saveAccessTokens(accessToken);
                         tokenManager.saveRefreshTokens(refreshToken);
                     }
-
-//                    String accessToken = headers.get("Authorization").replace("Bearer ", "");
-//                    String refreshToken = headers.get("Refresh-Token");
-//                    tokenManager.saveAccessTokens(accessToken);
-//                    tokenManager.saveRefreshTokens(refreshToken);
 
                     // 400 에러일 경우의 처리 로직 추가
                     if (response.code() == 400) {

@@ -46,9 +46,8 @@ public class ReviewEmployerList extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         TextView textView = toolbar.findViewById(R.id.toolbar_title);
-        textView.setText("상호평가");
+        textView.setText("상호평가 가능목록");
 
         review_employer_list_recyclerView = findViewById(R.id.review_employer_list_recyclerView);;
         review_employer_list_recyclerView.setLayoutManager(new LinearLayoutManager(ReviewEmployerList.this));
@@ -76,8 +75,6 @@ public class ReviewEmployerList extends AppCompatActivity {
 
     }//onCreate()
 
-
-
     private void reviewEmployerListRequest() {
         apiService = RetrofitClient.getClient(tokenManager).create(ApiService.class);
 
@@ -88,29 +85,16 @@ public class ReviewEmployerList extends AppCompatActivity {
             public void onResponse(Call<List<OwnerReviewInfoDTO>> call, Response<List<OwnerReviewInfoDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
-                    if (jobList != null) {
-                        jobList.clear();  // 기존 데이터를 지우고
-                        jobList.addAll(response.body());  // 새 데이터를 추가합니다.
-                        adapter.notifyDataSetChanged();
-                    }
+                    List<OwnerReviewInfoDTO> list = response.body();
+                    adapter = new ReviewEmployerListAdapter(list, btnClickListener);
+                    review_employer_list_recyclerView.setAdapter(adapter);
 
-//                    OwnerReviewInfoDTO workerInfoDTO = response.body();
-//
-//                    List<EmployInfoDTO> list1 = employResponseDTO.getOpenEmployJobPostList();
-//                    List<EmployInfoDTO> list2 = employResponseDTO.getCloseEmployJobPostList();
-//
-//                    adapter1 = new EmployerStatusAdapterA(list1, itemClickListener);
-//                    adapter2 = new EmployerStatusAdapterB(list2, itemClickListener);
-//
-//                    employer_status_progress_recyclerView.setAdapter(adapter1);
-//                    employer_status_deadline_recyclerView.setAdapter(adapter2);
                     Log.e("tag", "상호평가목록(구인자) 서버응답 성공" + response.code() + ", " + response.message());
                 } else {
                     Log.e("tag", "상호평가목록(구인자) 서버응답 오류코드" + response.code() + ", " + response.message());
                     Log.e("tag", "상호평가목록(구인자) 서버응답 오류" + response.errorBody().toString());
                 }
             }
-
             @Override
             public void onFailure(Call<List<OwnerReviewInfoDTO>> call, Throwable t) {
                 Log.e("tag", "상호평가목록(구인자) 서버요청 실패", t);

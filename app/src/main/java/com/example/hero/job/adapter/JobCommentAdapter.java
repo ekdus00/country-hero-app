@@ -3,6 +3,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,14 +40,6 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
         View view;
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_item, parent, false);
         return new JobCommentAdapter.ViewHolder(view, buttonClickListener, this);
-
-//        if (viewType == 0) {  // 부모 댓글
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_item, parent, false);
-//            return new JobCommentAdapter.ParentCommentViewHolder(view, buttonClickListener);
-//        } else {  // 자식 댓글
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_comment_list_child_item, parent, false);
-//            return new JobCommentAdapter.ChildCommentViewHolder(view);
-//        }
     }
 
 
@@ -54,12 +47,6 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
     public void onBindViewHolder(@NonNull JobCommentAdapter.ViewHolder holder, int position) {
         JobPostCommentResponseDTO dto = commentsList.get(position);
         holder.bind(dto, buttonClickListener);
-
-//        if (getItemViewType(position) == 0) {
-//            ((JobCommentAdapter.ParentCommentViewHolder) holder).bind(comment, buttonClickListener);
-//        } else {
-//            ((JobCommentAdapter.ChildCommentViewHolder) holder).bind(comment);
-//        }
     }
 
     @Override
@@ -71,12 +58,13 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
         TextView textViewContent, textViewAuthor, textViewDate;
         RecyclerView childRecyclerView;
         int commentId;
-        Button job_comment_childBtn, job_comment_editBtn, job_comment_deleteBtn;
+        ImageButton job_comment_childBtn, job_comment_editBtn, job_comment_deleteBtn;
         JobCommentAdapter adapter;
 
         public ViewHolder(View itemView, OnCommentClickListener buttonClickListener, JobCommentAdapter adapter) {
             super(itemView);
             this.adapter = adapter;
+
             textViewContent = itemView.findViewById(R.id.job_comment_content);
             textViewAuthor = itemView.findViewById(R.id.job_comment_userName);
             childRecyclerView = itemView.findViewById(R.id.job_commentChild_recyclerView);
@@ -107,13 +95,6 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
                     buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.DELETE);
                 }
             });
-
-//            job_comment_deleteBtn.setOnClickListener(v -> {
-//                if (buttonClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    buttonClickListener.OnCommentClick(commentId, OnCommentClickListener.ButtonType.DELETE);
-//                }
-//            });
-
         }
 
         public void bind(JobPostCommentResponseDTO dto, OnCommentClickListener buttonClickListener) {
@@ -124,7 +105,6 @@ public class JobCommentAdapter extends RecyclerView.Adapter<JobCommentAdapter.Vi
 
             //자식댓글
             if (dto.getChildCommentList() != null && !dto.getChildCommentList().isEmpty()) {
-//                JobCommentAdapter childAdapter = new JobCommentAdapter(dto.getChildCommentList(), buttonClickListener);
 
                 JobChildCommentAdapter childAdapter = new JobChildCommentAdapter(dto.getChildCommentList());
                 childRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));

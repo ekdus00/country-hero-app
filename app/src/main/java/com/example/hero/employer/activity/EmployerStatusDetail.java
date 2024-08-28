@@ -60,6 +60,7 @@ public class EmployerStatusDetail extends AppCompatActivity {
             startActivity(intent);
         };
 
+        //뒤로가기
         Button btn_Back = findViewById(R.id.btn_back);
         btn_Back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,30 +96,20 @@ public class EmployerStatusDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<WorkerInfoDTO>> call, Response<List<WorkerInfoDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-
                     workerList.clear();  // 기존 데이터를 지우고
                     workerList.addAll(response.body());  // 새 데이터를 추가합니다.
                     adapter.notifyDataSetChanged();
-
-//                    WorkerInfoDTO workerInfoDTO = response.body();
-//
-//                    List<EmployInfoDTO> list1 = employResponseDTO.getOpenEmployJobPostList();
-//                    List<EmployInfoDTO> list2 = employResponseDTO.getCloseEmployJobPostList();
-//
-//                    adapter1 = new EmployerStatusAdapterA(list1, itemClickListener);
-//                    adapter2 = new EmployerStatusAdapterB(list2, itemClickListener);
-//
-//                    employer_status_progress_recyclerView.setAdapter(adapter1);
-//                    employer_status_deadline_recyclerView.setAdapter(adapter2);
+                    Log.e("tag", "공고현황 서버응답 성공" + response.code() + ", " + response.message());
 
                 } else {
-                    Log.e("HTTP_ERROR", "Status Code: " + response.code());
+                    Log.e("tag", "공고현황 서버응답 오류코드" + response.code() + ", " + response.message());
+                    Log.e("tag", "공고현황 서버응답 오류" + response.errorBody().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<List<WorkerInfoDTO>> call, Throwable t) {
-                Log.e("NETWORK_ERROR", "Failed to connect to the server", t);
+                Log.e("tag", "공고마감 서버요청 실패", t);
             }
         });
 

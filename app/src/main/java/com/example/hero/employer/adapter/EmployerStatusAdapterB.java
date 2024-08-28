@@ -78,11 +78,11 @@ public class EmployerStatusAdapterB extends RecyclerView.Adapter<com.example.her
         public void bind(final EmployInfoDTO jobInfo, final OnItemClickListener listener) {
             currentJobId = jobInfo.getJobId();  // 현재 jobId 저장
 
-            address_country.setText(jobInfo.getJobName());
-            address_city.setText(jobInfo.getCountry());
-            cropForm.setText(jobInfo.getCity());
-            cropType.setText(jobInfo.getCropForm());
-            title.setText(jobInfo.getCropType());
+            address_country.setText(jobInfo.getCountry());
+            address_city.setText(jobInfo.getCity());
+            cropForm.setText(jobInfo.getCropForm());
+            cropType.setText(jobInfo.getCropType());
+            title.setText(jobInfo.getJobName());
 
             work_period_start.setText(jobInfo.getStartWorkDate());
             work_period_end.setText(jobInfo.getEndWorkDate());

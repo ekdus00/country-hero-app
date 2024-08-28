@@ -105,11 +105,6 @@ public class WorkerStatus extends AppCompatActivity{
                 if (response.isSuccessful() && response.body() != null) {
                     ParticipateResponseDTO dto = response.body();
 
-//                    adapter1.updateData(dto.getJobRequestList());
-//                    adapter2.updateData(dto.getApproveParticipateList());
-//                    adapter3.updateData(dto.getDeferParticipateList());
-//                    adapter4.updateData(dto.getPreviousParticipateList());
-
                     List<ParticipateInfoDTO> list1 = dto.getJobRequestList();
                     List<ParticipateInfoDTO> list2 = dto.getApproveParticipateList();
                     List<ParticipateInfoDTO> list3 = dto.getDeferParticipateList();
@@ -118,16 +113,17 @@ public class WorkerStatus extends AppCompatActivity{
                     adapter1 = new WorkerStatusAdapterA(list1, itemClickListener, buttonClickListener); //버튼 리스너 추가 해야됨
                     adapter2 = new WorkerStatusAdapterB(list2, itemClickListener);
                     adapter3 = new WorkerStatusAdapterB(list3, itemClickListener);
-                    adapter4 = new WorkerStatusAdapterC(list4, itemClickListener);
+//                    adapter4 = new WorkerStatusAdapterC(list4, itemClickListener);
 
                     worker_status_apply_recyclerView.setAdapter(adapter1);
                     worker_status_approval_recyclerView.setAdapter(adapter2);
                     worker_status_defer_recyclerView.setAdapter(adapter3);
-                    worker_status_past_recyclerView.setAdapter(adapter4);
+//                    worker_status_past_recyclerView.setAdapter(adapter4);
 
                 } else {
                     Log.e("api", "지원현황 서버응답 실패" + response.code() + ", " + response.message());
-                    Log.e("api", "지원현황 서버응답 실패" + response.errorBody());                 }
+                    Log.e("api", "지원현황 서버응답 실패" + response.errorBody());
+                }
             }
 
             @Override
@@ -172,7 +168,6 @@ public class WorkerStatus extends AppCompatActivity{
 
     }
 
-
     private void removeItemFromRecyclerView(int jobId) {
         for (int i = 0; i < list1.size(); i++) {
             if (list1.get(i).getJobId() == jobId) {
@@ -182,9 +177,5 @@ public class WorkerStatus extends AppCompatActivity{
             }
         }
     }
-
-
-
-
 
 }

@@ -41,9 +41,6 @@ public class SplashActivity extends Activity {
                         String a = fcmTokenManager.getFCMToken();
                         Log.v(TAG, "fcm토큰: " + token);
                         Log.v(TAG, "fcm토큰 저장값: " + a);
-
-//                    String msg = getString(R.string.msg_token_fmt, token);
-//                    Log.d(TAG, msg);
                     }
                 });
 

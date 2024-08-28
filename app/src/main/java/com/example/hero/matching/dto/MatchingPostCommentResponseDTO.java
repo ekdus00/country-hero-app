@@ -17,6 +17,25 @@ public class MatchingPostCommentResponseDTO {
         this.updatedCommentDatetime = updatedCommentDateTime;
     }
 
+    public void setChildCommentList(List<MatchingPostCommentResponseDTO> childCommentList) {
+        this.childCommentList = childCommentList;
+    }
+
+    public void setCommentId(Integer commentId) {
+        this.commentId = commentId;
+    }
+
+    public void setUpdatedCommentDatetime(String updatedCommentDatetime) {
+        this.updatedCommentDatetime = updatedCommentDatetime;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setCommentContent(String commentContent) {
+        this.commentContent = commentContent;
+    }
 
     // 부모 댓글 여부를 확인하는 메서드
     public boolean isParent() {

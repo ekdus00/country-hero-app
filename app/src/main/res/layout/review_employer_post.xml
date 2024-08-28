@@ -12,15 +12,18 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:padding="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_margin="20dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="1.구직자가 활동에 성실하게 참여했습니까?"
+                    android:text="1. 구직자가 활동에 성실하게 참여했습니까?"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
@@ -102,12 +105,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_margin="20dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="2.구직자가 활동 및 작업을 책임감 있게 완수했습니까?"
+                    android:text="2. 구직자가 활동 및 작업을 책임감 있게 완수했습니까?"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
@@ -189,12 +194,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_margin="20dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="3.구직자가 제출한 이력서와 구직자가 일치합니까?"
+                    android:text="3. 구직자가 제출한 이력서와 구직자가 일치합니까?"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
@@ -276,12 +283,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_margin="20dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="4.구직자에 대한 점수를 평가해주세요."
+                    android:text="4. 구직자에 대한 점수를 평가해주세요."
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
@@ -363,35 +372,51 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_margin="10dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="5.기타 의견을 자유롭게 작성해주세요."
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
+                    android:background="@drawable/border_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:layout_marginLeft="10dp"
+                        android:textSize="15dp"
+                        android:background="@null"
                         android:id="@+id/review_post_editText"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="330dp"
+                        android:layout_height="80dp"/>
                 </LinearLayout>
             </LinearLayout>
             <Button
                 android:id="@+id/review_employer_post_block"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/border_black"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/black"
                 android:text="구직자차단"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_width="340dp"
+                android:layout_height="40dp"/>
             <Button
                 android:id="@+id/review_employer_post_send"
+                android:layout_marginRight="10dp"
+
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_background_btn"
+                android:textColor="@color/white"
                 android:text="저장하기"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_width="170dp"
+                android:layout_height="40dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -70,7 +70,12 @@ public class ParticipateInfoHomeAdapter extends RecyclerView.Adapter<Participate
             applicant_status_title.setText(participateInfo.getJobName());
             applicant_status_address_country.setText(participateInfo.getCountry());
             applicant_status_address_city.setText(participateInfo.getCity());
-            applicant_status_approval.setText(participateInfo.getApproval());
+
+            if (participateInfo.getApproval() != null && participateInfo.getApproval().equals("approve")){
+                applicant_status_approval.setText("승인");
+            } else {
+                applicant_status_approval.setText("대기");
+            }
 
         }
 

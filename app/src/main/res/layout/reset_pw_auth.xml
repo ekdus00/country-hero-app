@@ -12,12 +12,10 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_margin="20dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
@@ -31,45 +29,104 @@
                 android:textSize="20dp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>
-            <EditText
-                android:hint="이름"
-                android:id="@+id/auth_name_editText"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+
+            <TextView
+                android:text="이름"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <EditText
-                android:hint="아이디"
-                android:id="@+id/auth_id_editText"
+            <LinearLayout
+                android:background="@drawable/border_gray3"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+                android:layout_width="340dp"
+                android:layout_height="45dp">
+                <EditText
+                    android:hint="이름"
+                    android:id="@+id/auth_name_editText"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <TextView
+                android:text="아이디"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:background="@drawable/border_gray3"
+                android:layout_gravity="center"
+                android:layout_width="340dp"
+                android:layout_height="45dp">
+                <EditText
+                    android:hint="아이디"
+                    android:id="@+id/auth_id_editText"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <TextView
+                android:text="출생연도"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <Spinner
                 android:id="@+id/auth_birth_spinner"
+                android:background="@drawable/border_gray3"
                 android:entries="@array/join_spinner"
                 android:layout_gravity="center"
                 android:spinnerMode="dialog"
-                android:layout_width="140dp"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:hint="이메일"
-                android:id="@+id/auth_email_editText"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
+                android:layout_width="340dp"
+                android:layout_height="45dp" />
+
+
+            <TextView
+                android:text="이메일"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:background="@drawable/border_gray3"
+                android:layout_gravity="center"
+                android:layout_width="340dp"
+                android:layout_height="45dp">
+                <EditText
+                    android:hint="이메일"
+                    android:id="@+id/auth_email_editText"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
             <Button
                 android:text="확인"
                 android:id="@+id/sendBtn"
-                android:layout_margin="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/rounded_background_btn"
+                android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="150dp"
+                android:layout_height="40dp"/>
         </LinearLayout>
 
-
     </LinearLayout>
-
 </LinearLayout>

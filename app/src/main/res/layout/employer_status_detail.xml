@@ -8,6 +8,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"/>
     <LinearLayout
+        android:background="#EDEDED"
+        android:paddingTop="15dp"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -27,9 +29,9 @@
                         android:id="@+id/employer_status_detail_recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="16dp"
+                        android:padding="5dp"
                         android:clipToPadding="false"
-                        android:background="#F0F0F0"
+                        android:background="#EDEDED"
                         android:scrollbars="vertical"/>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

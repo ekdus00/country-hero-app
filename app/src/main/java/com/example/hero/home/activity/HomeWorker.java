@@ -45,7 +45,6 @@ public class HomeWorker extends AppCompatActivity {
     JobInfoHomeAdapter adapter1;
     ParticipateInfoHomeAdapter adapter2;
     private TokenManager tokenManager;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_worker);
@@ -130,15 +129,17 @@ public class HomeWorker extends AppCompatActivity {
 
                     recyclerView1.setAdapter(adapter1);
                     recyclerView2.setAdapter(adapter2);
+                    Log.e("api", "홈화면(구직자) 서버요청 성공");
 
                 } else {
-                    Log.e("HTTP_ERROR", "Status Code: " + response.code());
+                    Log.e("api", "홈화면(구직자) 서버응답 실패" + response.code() + ", " + response.message());
+                    Log.e("api", "홈화면(구직자) 서버응답 실패" + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(Call<WorkerHomeDTO> call, Throwable t) {
-                Log.e("NETWORK_ERROR", "Failed to connect to the server", t);
+                Log.e("api", "홈화면(구직자) 서버요청 실패", t);
             }
         });
 

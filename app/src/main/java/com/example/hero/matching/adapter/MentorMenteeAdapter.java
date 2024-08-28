@@ -44,10 +44,20 @@ public class MentorMenteeAdapter extends RecyclerView.Adapter<MentorMenteeAdapte
         MatchingListInfoDTO data = dataList.get(position);
 
         //생성된 객체에서 각각값 뿌려주기
-        holder.txtStatus.setText(data.getWriterType());
+
+        if (data.getWriterType().equals("mentor")){
+            holder.txtStatus.setText("멘토");
+        } else {
+            holder.txtStatus.setText("멘티");
+        }
+
+        String createDate = data.getCreatedMatchingDate();
+        String dateOnly = createDate.substring(0, 10);
+        holder.txtDate.setText(dateOnly);
+
         holder.txtContent.setText(data.getMatchingName());
-        holder.txtDate.setText(data.getCreatedMatchingDate());
         holder.txtName.setText(data.getUserName());
+
         holder.matchingId.setText(data.getMatchingId().toString());
     }
 
@@ -62,9 +72,7 @@ public class MentorMenteeAdapter extends RecyclerView.Adapter<MentorMenteeAdapte
         public TextView txtContent;
         public TextView txtDate;
         public TextView txtName;
-
         public TextView matchingId;
-
         public RelativeLayout matchingItem;
 
         public ViewHolder(@NonNull View itemView) {

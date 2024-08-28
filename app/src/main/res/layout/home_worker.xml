@@ -3,6 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <include layout="@layout/toolbar_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"/>
+
     <androidx.core.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,33 +16,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="620dp">
+        android:layout_height="560dp">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
-                android:background="#CCD9C8"
-                android:layout_margin="20dp"
-                android:padding="10dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="20dp"
+                android:background="#A1C29D"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
+
                     <TextView
-                        android:text="게시된 일자리 공고 목록"
-                        android:layout_marginRight="120dp"
                         android:id="@+id/home_applicant_title1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="110dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:text="게시된 일자리 공고 목록" />
+
                     <Button
-                        android:text="전체>"
-                        android:id="@+id/home_applicant_title1_btn"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/home_applicant_title1_btn"
+                        android:backgroundTint="#A1C29D"
+                        android:drawableRight="@drawable/back_right"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:text="전체"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+
                 </LinearLayout>
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
@@ -50,14 +73,14 @@
                             android:id="@+id/home_job_list_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:background="#F0F0F0"/>
+                            android:padding="8dp"
+                            android:background="#A1C29D"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
             </LinearLayout>
 
             <LinearLayout
-                android:background="#CCD9C8"
+                android:background="#A1C29D"
                 android:layout_margin="20dp"
                 android:padding="10dp"
                 android:orientation="vertical"
@@ -69,20 +92,30 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:text="나의 지원현황"
-                        android:layout_marginRight="120dp"
                         android:id="@+id/home_applicant_title2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="175dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
                     <Button
-                        android:text="전체>"
-                        android:id="@+id/home_applicant_title2_btn"
-                        android:layout_marginLeft="50dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/home_applicant_title2_btn"
+                        android:backgroundTint="#A1C29D"
+                        android:drawableRight="@drawable/back_right"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:text="전체"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+
                 </LinearLayout>
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp">
+                    android:layout_height="260dp">
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
@@ -91,8 +124,8 @@
                             android:id="@+id/home_applicant_recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:background="#F0F0F0"/>
+                            android:padding="8dp"
+                            android:background="#A1C29D"/>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
             </LinearLayout>

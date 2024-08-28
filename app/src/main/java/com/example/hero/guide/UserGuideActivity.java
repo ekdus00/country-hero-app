@@ -15,16 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.hero.R;
 
 public class UserGuideActivity extends AppCompatActivity {
-
-    // 뒤로가기 버튼
     LinearLayout backBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_guide);
 
-        // 뒤로가기 버튼 클릭했을 때 이벤트 등록
+        // 뒤로가기
         backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override

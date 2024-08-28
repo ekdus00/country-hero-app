@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
     <androidx.core.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,65 +26,85 @@
             </LinearLayout>
 
             <LinearLayout
-                android:background="#CCD9C8"
-                android:layout_margin="20dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/rounded_background_green2"
+                android:orientation="vertical">
+
                 <LinearLayout
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/myPage_logout_btn"
-                        android:layout_marginLeft="180dp"
-                        android:text="로그아웃"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:background="@drawable/rounded_background_btn"
+                        android:layout_width="80dp"
+                        android:layout_height="38dp"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="185dp"
+                        android:text="로그아웃" />
+
                     <Button
+                        android:background="@drawable/rounded_background_btn"
                         android:id="@+id/myPage_modify_btn"
-                        android:text="정보수정"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="80dp"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="38dp"
+                        android:text="정보수정" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_margin="10dp"
-                    android:paddingLeft="50dp"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="50dp"
+                    android:paddingBottom="20dp">
+
                     <ImageView
                         android:id="@+id/myPage_imageView"
-                        android:src="@drawable/mypage"
                         android:layout_width="100dp"
-                        android:layout_height="100dp"/>
+                        android:layout_height="100dp"
+                        android:src="@drawable/icon_profile" />
+
                     <TextView
                         android:id="@+id/myPage_name_textView"
-                        android:textSize="20dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="70dp"
-                        android:text="(회원이름)"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_marginLeft="50dp"
+                        android:text="김구직"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="25dp" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:text="나의 상호평가 총점: "
+                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="나의 상호평가 총점: " />
+
                     <TextView
-                        android:text="(총점)"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="18dp"
                         android:id="@+id/my_total_reviewAvg"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="0.0" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -95,6 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <Button
+                    android:background="@drawable/rounded_background_btn2"
                     android:id="@+id/myPage_review_btn"
                     android:text="상호평가"
                     android:layout_width="370dp"
@@ -111,6 +131,7 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.google.android.material.bottomnavigation.BottomNavigationView
